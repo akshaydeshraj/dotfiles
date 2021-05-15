@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# XMonad and XMobar configs
+ln -sfn ~/dotfiles/xmonad/xmonad.hs ~/.xmonad/xmonad.hs
+ln -sfn ~/dotfiles/xmobar/xmobarrc ~/.config/xmobar/xmobarrc
