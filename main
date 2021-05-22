@@ -8,5 +8,9 @@ ln -sfn ~/dotfiles/xmobar/xmobarrc ~/.config/xmobar/xmobarrc
 xset r rate 200 50 # key repeat rate
 xinput set-prop 11 302 0.9 # Speed of mouse
 
+# Imwheel
+ln -sfn ~/dotfiles/imwheel/imwheelrc ~/.imwheelrc
+
 # SSH config
 ln -sfn ~/dotfiles/ssh/config ~/.ssh/config
+
