@@ -3,3 +3,10 @@
 # XMonad and XMobar configs
 ln -sfn ~/dotfiles/xmonad/xmonad.hs ~/.xmonad/xmonad.hs
 ln -sfn ~/dotfiles/xmobar/xmobarrc ~/.config/xmobar/xmobarrc
+
+# Mouse and Keyboard
+xset r rate 200 50 # key repeat rate
+xinput set-prop 11 302 0.9 # Speed of mouse
+
+# SSH config
+ln -sfn ~/dotfiles/ssh/config ~/.ssh/config
