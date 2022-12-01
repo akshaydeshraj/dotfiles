@@ -75,5 +75,13 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 ;;
+;;########################
+;;## CONFIG STARTS HERE ##
+;;########################
+;;
 ;; Open emacs in full screen
 (add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
+;;
+;; parinfer-rust since it doesn't have native arm64 builds
+;; source: https://www.arthurbrrs.me/clojure-doom-emacs-m1.html
+(use-package! parinfer-rust-mode)
