@@ -63,6 +63,30 @@ All secrets live in `~/.env` (never committed). See `.env.example` for required 
 - **Spaces**: Create 6 Spaces in Mission Control (browser, terminal, editor, chat, pkm, passwords)
 - **Logout**: Some macOS defaults require logout/restart
 
+## Auto-Sync Daemon
+
+A launchd agent runs every 10 minutes to:
+- Regenerate `Brewfile`, `npm-global-packages.txt`, `pipx-packages.txt` from system state
+- Detect config file changes (via stow symlinks)
+- Auto-commit and push to GitHub
+
+```bash
+# Check status
+launchctl list | grep dotfiles
+
+# View logs
+tail -f ~/.local/log/dotfiles-sync.log
+
+# Manually trigger a sync
+./sync-daemon.sh
+
+# Stop the daemon
+launchctl bootout gui/$(id -u)/com.dotfiles.autosync
+
+# Restart the daemon
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.dotfiles.autosync.plist
+```
+
 ## Updating
 
 ```bash

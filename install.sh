@@ -122,7 +122,19 @@ brew services start yabai 2>/dev/null || true
 brew services start skhd 2>/dev/null || true
 brew services start sketchybar 2>/dev/null || true
 
-# ── Step 13: GitHub auth ──
+# ── Step 13: Auto-sync daemon ──
+echo "Setting up dotfiles auto-sync daemon..."
+mkdir -p "$HOME/.local/log"
+PLIST_SRC="$DOTFILES_DIR/launchd/com.dotfiles.autosync.plist"
+PLIST_DST="$HOME/Library/LaunchAgents/com.dotfiles.autosync.plist"
+mkdir -p "$HOME/Library/LaunchAgents"
+sed -e "s|__DOTFILES_DIR__|$DOTFILES_DIR|g" -e "s|__HOME__|$HOME|g" \
+  "$PLIST_SRC" > "$PLIST_DST"
+launchctl bootout "gui/$(id -u)/com.dotfiles.autosync" 2>/dev/null || true
+launchctl bootstrap "gui/$(id -u)" "$PLIST_DST"
+echo "  Auto-sync daemon started (runs every 10 minutes)"
+
+# ── Step 14: GitHub auth ──
 if ! gh auth status &>/dev/null 2>&1; then
   echo ""
   echo "Authenticate with GitHub:"
