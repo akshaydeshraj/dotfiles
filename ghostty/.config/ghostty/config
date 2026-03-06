@@ -1,0 +1,9 @@
+theme = Solarized Dark Higher Contrast
+background-opacity = 0.95
+font-size = 16
+font-thicken = true
+keybind = cmd+d=new_split:auto
+
+# Paste safety
+clipboard-paste-protection = true
+clipboard-paste-bracketed-safe = true

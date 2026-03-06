@@ -1,0 +1,16 @@
+# Secrets
+.env
+*.env
+!.env.example
+
+# OS
+.DS_Store
+**/.DS_Store
+
+# Editor
+*~
+*.swp
+*.swo
+
+# Tasks (claude code workflow)
+tasks/

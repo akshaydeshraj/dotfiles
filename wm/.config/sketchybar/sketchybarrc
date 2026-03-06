@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# ===== Bar Appearance =====
+sketchybar --bar \
+  position=bottom \
+  height=36 \
+  color=0xff1e1e2e \
+  border_color=0xff313244 \
+  border_width=1 \
+  shadow=on \
+  corner_radius=0 \
+  y_offset=0 \
+  margin=0 \
+  padding_left=12 \
+  padding_right=12
+
+# ===== Default Item Styling =====
+sketchybar --default \
+  icon.font="SF Pro:Bold:14.0" \
+  icon.color=0xffcdd6f4 \
+  label.font="SF Pro:Semibold:13.0" \
+  label.color=0xffcdd6f4 \
+  padding_left=6 \
+  padding_right=6 \
+  background.color=0xff313244 \
+  background.corner_radius=6 \
+  background.height=26
+
+# ===== Workspace Indicators (left) =====
+SPACE_ICONS=("" "1:browser" "2:term" "3:editor" "4:chat" "5:pkm" "6:pass")
+SPACE_COLORS=("" "0xff89b4fa" "0xffa6e3a1" "0xfff9e2af" "0xff89dceb" "0xffcba6f7" "0xfff38ba8")
+
+for i in {1..6}; do
+  sketchybar --add space space.$i left \
+    --set space.$i \
+      associated_space=$i \
+      icon="${SPACE_ICONS[$i]}" \
+      icon.font="SF Pro:Bold:12.0" \
+      icon.color="${SPACE_COLORS[$i]}" \
+      icon.highlight_color=0xff1e1e2e \
+      background.color=0xff45475a \
+      background.drawing=off \
+      label.drawing=off \
+      script="$HOME/.config/sketchybar/plugins/space.sh" \
+      click_script="yabai -m space --focus $i"
+done
+
+# ===== Active App (center-left) =====
+sketchybar --add item front_app left \
+  --set front_app \
+    icon.drawing=off \
+    label.font="SF Pro:Bold:13.0" \
+    label.color=0xffa6e3a1 \
+    background.drawing=off \
+    script="$HOME/.config/sketchybar/plugins/front_app.sh" \
+  --subscribe front_app front_app_switched
+
+# ===== Right Side Items =====
+
+# ===== Template: Custom Cronjob Indicator =====
+# Uncomment and modify for your use case:
+# sketchybar --add item cronjob right \
+#   --set cronjob \
+#     update_freq=60 \
+#     icon="●" \
+#     background.drawing=off \
+#     script="$HOME/.config/sketchybar/plugins/cronjob.sh"
+
+# ===== Finalize =====
+sketchybar --update

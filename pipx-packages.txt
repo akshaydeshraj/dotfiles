@@ -1,0 +1,7 @@
+argcomplete==3.6.2
+git-filter-repo==2.47.0
+huggingface-hub==0.34.4
+mlx==0.25.1
+open-webui==0.6.28
+ranger-fm==1.9.4
+superclaude==4.1.6

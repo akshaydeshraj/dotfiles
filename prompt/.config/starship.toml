@@ -1,0 +1,30 @@
+# Increase timeout for slow commands (default is 500ms)
+command_timeout = 1000
+
+# Git: optimize for speed
+[git_status]
+ahead = "⇡${count}"
+behind = "⇢${count}"
+diverged = "⇕⇡${ahead_count}⇢${behind_count}"
+ignore_submodules = true
+untracked = ""           # Don't show untracked count (expensive in large repos)
+stashed = ""             # Skip stash check
+
+[git_branch]
+# Truncate long branch names
+truncation_length = 20
+
+# Node.js: detect only by package.json, not by running node
+[nodejs]
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
+detect_extensions = []  # Don't detect by .js files (too broad)
+
+# Optional: disable modules you don't need
+[package]
+disabled = true  # Parsing package.json can be slow
+
+# Keep prompt snappy
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
