@@ -212,17 +212,13 @@ cask "jordanbaird-ice"
 cask "maccy"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
-# HTTP debugging proxy
-cask "proxyman"
 # Image viewer
 cask "qview"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Mesh VPN based on WireGuard
 cask "tailscale-app"
-mas "Telephone", id: 406825478
 mas "WhatsApp", id: 310633997
-mas "Windows App", id: 1295203466
 mas "WireGuard", id: 1451685025
 mas "Xcode", id: 497799835
 go "golang.org/x/tools/gopls"
