@@ -85,7 +85,7 @@ brew "kubectx"
 # Simple terminal UI for git commands
 brew "lazygit"
 # Find what models run on your hardware
-brew "llmfit", link: false
+brew "llmfit"
 # Powerful, lightweight programming language
 brew "lua"
 # Package manager for the Lua programming language
