@@ -172,6 +172,8 @@ brew "zsh-completions"
 brew "zsh-syntax-highlighting"
 # GNU Emacs text editor
 brew "d12frosted/emacs-plus/emacs-plus@30"
+# A window border system for macOS
+brew "felixkratz/formulae/borders"
 # Custom macOS statusbar with shell plugin, interaction and graph support
 brew "felixkratz/formulae/sketchybar"
 # Prompt theme engine for any shell
