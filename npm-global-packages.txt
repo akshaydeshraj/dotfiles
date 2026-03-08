@@ -8,4 +8,5 @@ dmux@5.3.0
 openclaw@2026.3.7
 opencode-omni@null
 pnpm@10.13.1
+pyright@1.1.408
 yarn@1.22.22
