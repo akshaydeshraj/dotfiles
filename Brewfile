@@ -184,8 +184,6 @@ brew "felixkratz/formulae/sketchybar"
 brew "jandedobbeleer/oh-my-posh/oh-my-posh"
 # A simple terminal UI for docker, written in Go
 brew "jesseduffield/lazydocker/lazydocker"
-# Smart terminal session manager
-brew "joshmedeski/sesh/sesh"
 # Simple hotkey-daemon for macOS.
 brew "koekeishiya/formulae/skhd"
 # A tiling window manager for macOS based on binary space partitioning.
