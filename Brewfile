@@ -189,7 +189,7 @@ brew "koekeishiya/formulae/yabai"
 brew "sheeki03/tap/tirith"
 # Fast X CLI for tweeting, replying, and reading
 brew "steipete/tap/bird"
-# Google CLI for Gmail, Calendar, Drive, and Contacts
+# Google CLI for Gmail, Calendar, Drive, Docs, Sheets, and more
 brew "steipete/tap/gogcli"
 # Link → clean text → summary
 brew "steipete/tap/summarize"
