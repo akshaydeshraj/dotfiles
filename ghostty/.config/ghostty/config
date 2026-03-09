@@ -1,3 +1,6 @@
+# Auto-launch into tmux
+command = /bin/zsh -c 'while true; do /opt/homebrew/bin/tmux new-session -A -s main; done'
+
 # Cobalt2 Theme
 background = #122738
 foreground = #ffffff
@@ -25,7 +28,12 @@ palette = 15=#ffffff
 background-opacity = 0.85
 font-size = 16
 font-thicken = true
-keybind = cmd+d=new_split:auto
+# Split panes via tmux
+keybind = super+d=text:\x02%
+keybind = super+shift+d=text:\x02"
+
+# Session switcher (Cmd+K → Alt+K for tmux/sesh)
+keybind = super+k=text:\x1bk
 
 # Paste safety
 clipboard-paste-protection = true
