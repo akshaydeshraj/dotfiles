@@ -2,6 +2,7 @@ tap "akshaydeshraj/smartclip"
 tap "d12frosted/emacs-plus"
 tap "felixkratz/formulae"
 tap "jandedobbeleer/oh-my-posh"
+tap "jesseduffield/lazydocker"
 tap "jesseduffield/lazygit"
 tap "jimeh/emacs-builds"
 tap "koekeishiya/formulae"
@@ -178,6 +179,8 @@ brew "felixkratz/formulae/borders"
 brew "felixkratz/formulae/sketchybar"
 # Prompt theme engine for any shell
 brew "jandedobbeleer/oh-my-posh/oh-my-posh"
+# A simple terminal UI for docker, written in Go
+brew "jesseduffield/lazydocker/lazydocker"
 # Simple hotkey-daemon for macOS.
 brew "koekeishiya/formulae/skhd"
 # A tiling window manager for macOS based on binary space partitioning.
