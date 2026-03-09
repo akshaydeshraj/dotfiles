@@ -3,7 +3,7 @@ set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
-STOW_PACKAGES=(zsh git tmux ghostty wm prompt zed mise btop gh claude)
+STOW_PACKAGES=(zsh git tmux ghostty wm prompt zed mise btop gh claude atuin)
 FAILURES=()
 
 echo "=== Dotfiles Bootstrap ==="
@@ -73,6 +73,18 @@ git config --global core.pager delta
 git config --global interactive.diffFilter "delta --color-only"
 git config --global delta.navigate true
 git config --global delta.side-by-side true
+git config --global delta.syntax-theme TwoDark
+git config --global delta.minus-style "syntax #3a1528"
+git config --global delta.minus-emph-style "syntax #6b2038"
+git config --global delta.plus-style "syntax #1a3a1a"
+git config --global delta.plus-emph-style "syntax #2a5a2a"
+git config --global delta.line-numbers-minus-style "#ff628c"
+git config --global delta.line-numbers-plus-style "#3ad900"
+git config --global delta.line-numbers-zero-style "#0d3a58"
+git config --global delta.hunk-header-style "file line-number syntax"
+git config --global delta.hunk-header-decoration-style "blue box"
+git config --global delta.file-style "#ffc600 bold"
+git config --global delta.file-decoration-style "#ffc600 ul"
 git config --global merge.conflictstyle diff3
 git config --global credential.https://github.com.helper ""
 git config --global credential.https://github.com.helper "!/opt/homebrew/bin/gh auth git-credential"
@@ -121,6 +133,7 @@ echo "Starting services..."
 brew services start yabai 2>/dev/null || true
 brew services start skhd 2>/dev/null || true
 brew services start sketchybar 2>/dev/null || true
+brew services start borders 2>/dev/null || true
 
 # ── Step 13: Auto-sync daemon ──
 echo "Setting up dotfiles auto-sync daemon..."

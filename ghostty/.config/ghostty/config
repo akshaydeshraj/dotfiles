@@ -1,5 +1,28 @@
-theme = Solarized Dark Higher Contrast
-background-opacity = 0.95
+# Cobalt2 Theme
+background = #122738
+foreground = #ffffff
+cursor-color = #ffc600
+cursor-text = #122738
+selection-background = #0050A4
+selection-foreground = #ffffff
+palette = 0=#000000
+palette = 1=#ff628c
+palette = 2=#3ad900
+palette = 3=#ffc600
+palette = 4=#0088ff
+palette = 5=#fb94ff
+palette = 6=#80fcff
+palette = 7=#ffffff
+palette = 8=#0050A4
+palette = 9=#ff628c
+palette = 10=#3ad900
+palette = 11=#ffc600
+palette = 12=#0088ff
+palette = 13=#fb94ff
+palette = 14=#80fcff
+palette = 15=#ffffff
+
+background-opacity = 0.85
 font-size = 16
 font-thicken = true
 keybind = cmd+d=new_split:auto

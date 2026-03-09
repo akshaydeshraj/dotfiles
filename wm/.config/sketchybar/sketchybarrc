@@ -4,8 +4,8 @@
 sketchybar --bar \
   position=bottom \
   height=36 \
-  color=0xff1e1e2e \
-  border_color=0xff313244 \
+  color=0xff122738 \
+  border_color=0xff0d3a58 \
   border_width=1 \
   shadow=on \
   corner_radius=0 \
@@ -17,18 +17,18 @@ sketchybar --bar \
 # ===== Default Item Styling =====
 sketchybar --default \
   icon.font="SF Pro:Bold:14.0" \
-  icon.color=0xffcdd6f4 \
+  icon.color=0xffffffff \
   label.font="SF Pro:Semibold:13.0" \
-  label.color=0xffcdd6f4 \
+  label.color=0xffffffff \
   padding_left=6 \
   padding_right=6 \
-  background.color=0xff313244 \
+  background.color=0xff0d3a58 \
   background.corner_radius=6 \
   background.height=26
 
 # ===== Workspace Indicators (left) =====
 SPACE_ICONS=("" "1:browser" "2:term" "3:editor" "4:chat" "5:pkm" "6:pass")
-SPACE_COLORS=("" "0xff89b4fa" "0xffa6e3a1" "0xfff9e2af" "0xff89dceb" "0xffcba6f7" "0xfff38ba8")
+SPACE_COLORS=("" "0xff0088ff" "0xff3ad900" "0xffffc600" "0xff80fcff" "0xfffb94ff" "0xffff628c")
 
 for i in {1..6}; do
   sketchybar --add space space.$i left \
@@ -37,8 +37,8 @@ for i in {1..6}; do
       icon="${SPACE_ICONS[$i]}" \
       icon.font="SF Pro:Bold:12.0" \
       icon.color="${SPACE_COLORS[$i]}" \
-      icon.highlight_color=0xff1e1e2e \
-      background.color=0xff45475a \
+      icon.highlight_color=0xff122738 \
+      background.color=0xff0050A4 \
       background.drawing=off \
       label.drawing=off \
       script="$HOME/.config/sketchybar/plugins/space.sh" \
@@ -50,7 +50,7 @@ sketchybar --add item front_app left \
   --set front_app \
     icon.drawing=off \
     label.font="SF Pro:Bold:13.0" \
-    label.color=0xffa6e3a1 \
+    label.color=0xff3ad900 \
     background.drawing=off \
     script="$HOME/.config/sketchybar/plugins/front_app.sh" \
   --subscribe front_app front_app_switched

@@ -20,7 +20,7 @@ ALLOWLIST=(
   Brewfile
   npm-global-packages.txt
   pipx-packages.txt
-  zsh/ git/ tmux/ ghostty/ wm/ prompt/ zed/ mise/ btop/ gh/ claude/
+  zsh/ git/ tmux/ ghostty/ wm/ prompt/ zed/ mise/ btop/ gh/ claude/ atuin/
 )
 
 # Regenerate Brewfile (taps + leaves + casks + mas)

@@ -1,0 +1,11 @@
+# Cobalt2 theme for Atuin
+# Uses named colors from the palette crate
+
+[colors]
+AlertInfo = "deepskyblue"
+AlertWarn = "gold"
+AlertError = "hotpink"
+Annotation = "paleturquoise"
+Base = "white"
+Guidance = "aquamarine"
+Important = "gold"
