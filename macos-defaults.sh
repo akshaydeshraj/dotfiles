@@ -35,6 +35,17 @@ defaults write com.apple.screencapture location -string "$HOME/Desktop/Screensho
 defaults write com.apple.screencapture type -string "png"
 defaults write com.apple.screencapture disable-shadow -bool true
 
+# ===== Appearance (Cobalt2) =====
+defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"          # Dark mode
+defaults write NSGlobalDomain AppleAccentColor -int 3                     # Yellow accent
+defaults write NSGlobalDomain AppleHighlightColor -string "0.847059 0.847059 0.862745 Yellow"
+# Wallpaper — Cobalt2 (set first wallpaper from the collection)
+DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
+WALLPAPER="$DOTFILES_DIR/wallpapers/02_a_car_driving_on_a_road_at_night.png"
+if [[ -f "$WALLPAPER" ]]; then
+  osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$WALLPAPER\"" 2>/dev/null || true
+fi
+
 # ===== Window Management =====
 defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
 defaults write -g NSWindowShouldDragOnGesture YES

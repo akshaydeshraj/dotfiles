@@ -21,6 +21,7 @@ ALLOWLIST=(
   npm-global-packages.txt
   pipx-packages.txt
   zsh/ git/ tmux/ ghostty/ wm/ prompt/ zed/ mise/ btop/ gh/ claude/ atuin/
+  wallpapers/ macos-defaults.sh
 )
 
 # Regenerate Brewfile (taps + leaves + casks + mas)
