@@ -8,15 +8,18 @@
 
     <key>ProgramArguments</key>
     <array>
-        <string>/opt/homebrew/bin/bash</string>
+        <string>/bin/bash</string>
         <string>__DOTFILES_DIR__/sync-daemon.sh</string>
     </array>
 
+    <key>WorkingDirectory</key>
+    <string>__DOTFILES_DIR__</string>
+
     <key>StartInterval</key>
-    <integer>600</integer>
+    <integer>14400</integer>
 
     <key>RunAtLoad</key>
-    <true/>
+    <false/>
 
     <key>StandardOutPath</key>
     <string>__HOME__/.local/log/dotfiles-sync.out.log</string>
@@ -24,7 +27,15 @@
     <key>StandardErrorPath</key>
     <string>__HOME__/.local/log/dotfiles-sync.err.log</string>
 
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>__HOME__</string>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+
     <key>ThrottleInterval</key>
-    <integer>60</integer>
+    <integer>300</integer>
 </dict>
 </plist>

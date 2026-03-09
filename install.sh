@@ -145,19 +145,12 @@ sed -e "s|__DOTFILES_DIR__|$DOTFILES_DIR|g" -e "s|__HOME__|$HOME|g" \
   "$PLIST_SRC" > "$PLIST_DST"
 launchctl bootout "gui/$(id -u)/com.dotfiles.autosync" 2>/dev/null || true
 launchctl bootstrap "gui/$(id -u)" "$PLIST_DST"
-echo "  Auto-sync daemon started (runs every 10 minutes)"
-
-# ── Step 14: Claude diff-check daemon (every 4 hours) ──
-echo "Setting up Claude diff-check daemon..."
-DIFF_PLIST_SRC="$DOTFILES_DIR/launchd/com.dotfiles.diffcheck.plist"
-DIFF_PLIST_DST="$HOME/Library/LaunchAgents/com.dotfiles.diffcheck.plist"
-sed -e "s|__DOTFILES_DIR__|$DOTFILES_DIR|g" -e "s|__HOME__|$HOME|g" \
-  "$DIFF_PLIST_SRC" > "$DIFF_PLIST_DST"
+echo "  Auto-sync daemon started (runs every 4 hours)"
+# Clean up legacy diff-check daemon if present
 launchctl bootout "gui/$(id -u)/com.dotfiles.diffcheck" 2>/dev/null || true
-launchctl bootstrap "gui/$(id -u)" "$DIFF_PLIST_DST"
-echo "  Claude diff-check daemon started (runs every 4 hours)"
+rm -f "$HOME/Library/LaunchAgents/com.dotfiles.diffcheck.plist"
 
-# ── Step 15: GitHub auth ──
+# ── Step 14: GitHub auth ──
 if ! gh auth status &>/dev/null 2>&1; then
   echo ""
   echo "Authenticate with GitHub:"

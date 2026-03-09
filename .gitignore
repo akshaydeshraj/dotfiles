@@ -14,3 +14,4 @@
 
 # Tasks (claude code workflow)
 tasks/
+.claude/scheduled_tasks.lock
