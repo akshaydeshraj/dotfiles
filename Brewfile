@@ -5,6 +5,7 @@ tap "jandedobbeleer/oh-my-posh"
 tap "jesseduffield/lazydocker"
 tap "jesseduffield/lazygit"
 tap "jimeh/emacs-builds"
+tap "joshmedeski/sesh"
 tap "koekeishiya/formulae"
 tap "sheeki03/tap"
 tap "steipete/tap"
@@ -145,6 +146,8 @@ brew "stripe-cli"
 brew "swi-prolog"
 # User interface to the TELNET protocol
 brew "telnet"
+# Send macOS User Notifications from the command-line
+brew "terminal-notifier"
 # Simplified and community-driven man pages
 brew "tldr"
 # Terminal multiplexer
@@ -181,6 +184,8 @@ brew "felixkratz/formulae/sketchybar"
 brew "jandedobbeleer/oh-my-posh/oh-my-posh"
 # A simple terminal UI for docker, written in Go
 brew "jesseduffield/lazydocker/lazydocker"
+# Smart terminal session manager
+brew "joshmedeski/sesh/sesh"
 # Simple hotkey-daemon for macOS.
 brew "koekeishiya/formulae/skhd"
 # A tiling window manager for macOS based on binary space partitioning.
