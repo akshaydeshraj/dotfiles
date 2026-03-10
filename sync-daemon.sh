@@ -61,14 +61,15 @@ fi
 
 log "Running Claude diff check..."
 
-"$CLAUDE_BIN" -p \
+cat <<'PROMPT' | "$CLAUDE_BIN" -p \
   --dangerously-skip-permissions \
   --permission-mode bypassPermissions \
   --model sonnet \
   --max-budget-usd 0.50 \
   --no-session-persistence \
   --allowedTools "Bash Read Write Edit Glob Grep" \
-  "You are running as an automated dotfiles sync job in $DOTFILES.
+  >> "$LOG" 2>&1
+You are running as an automated dotfiles sync job. The repo is in the current working directory.
 
 PHASE 1 (already done for you): Brewfile, npm-global-packages.txt, and pipx-packages.txt have been regenerated. git pull --rebase has been done.
 
@@ -91,12 +92,12 @@ ALSO CHECK:
 - install.sh, macos-defaults.sh, sync-daemon.sh
 
 RULES:
-- For .zshrc: NEVER commit hardcoded IPs or BW_SESSION tokens. Keep secrets externalized via \$HOME/.env variables (\${HETZNER_IP}, \${NAS_IP}, etc.). If the live file has hardcoded secrets, replace them with env vars before copying.
+- For .zshrc: NEVER commit hardcoded IPs or BW_SESSION tokens. Keep secrets externalized via $HOME/.env variables (${HETZNER_IP}, ${NAS_IP}, etc.). If the live file has hardcoded secrets, replace them with env vars before copying.
 - Copy the live version into the repo for any diffs found
 - Stage all changes, commit with a descriptive message, push to origin master
 - If no diffs found, just output 'All configs in sync' and exit
 
-Be concise. Do the work silently — only output a summary at the end." \
-  >> "$LOG" 2>&1
+Be concise. Do the work silently — only output a summary at the end.
+PROMPT
 
 log "=== Sync complete ==="
