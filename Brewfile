@@ -164,6 +164,8 @@ brew "whisper-cpp"
 brew "wireguard-tools"
 # Generate your Xcode project from a spec file and your folder structure
 brew "xcodegen"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
 # Shell extension to navigate your filesystem faster

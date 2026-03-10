@@ -129,7 +129,7 @@ alias du='dust'
 alias top='btop'
 alias diff='delta'
 alias rm='rm -i'            # Prompt before each removal
-alias claude='claude --dangerously-skip-permissions --chrome'
+alias claude='claude --dangerously-skip-permissions --chrome --continue'
 alias hetz='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new -A -s main'
 alias hetz-c='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new-session -A -s claude \; send-keys "cd ~/sysadmin && claude" Enter'
 alias hetz-o='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new-session -A -s openclaw \; send-keys "cd ~/sysadmin && openclaw" Enter'

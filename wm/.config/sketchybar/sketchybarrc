@@ -86,7 +86,8 @@ sketchybar --add item cpu right \
     label.color=0xffffffff \
     label.padding_right=8 \
     background.drawing=on \
-    script="$HOME/.config/sketchybar/plugins/cpu.sh"
+    script="$HOME/.config/sketchybar/plugins/cpu.sh" \
+    click_script="open -a 'Activity Monitor'"
 
 # Memory usage
 sketchybar --add item memory right \
@@ -101,7 +102,8 @@ sketchybar --add item memory right \
     label.color=0xffffffff \
     label.padding_right=8 \
     background.drawing=on \
-    script="$HOME/.config/sketchybar/plugins/memory.sh"
+    script="$HOME/.config/sketchybar/plugins/memory.sh" \
+    click_script="open -a 'Activity Monitor'"
 
 # Disk usage
 sketchybar --add item disk right \
@@ -116,7 +118,38 @@ sketchybar --add item disk right \
     label.color=0xffffffff \
     label.padding_right=8 \
     background.drawing=on \
-    script="$HOME/.config/sketchybar/plugins/disk.sh"
+    script="$HOME/.config/sketchybar/plugins/disk.sh" \
+    click_script="open ~"
+
+# Network download speed
+sketchybar --add item net_down right \
+  --set net_down \
+    update_freq=3 \
+    icon="↓" \
+    icon.font="SF Pro:Bold:13.0" \
+    icon.color=0xff80fcff \
+    icon.padding_left=8 \
+    icon.padding_right=2 \
+    label.font="SF Mono:Medium:12.0" \
+    label.color=0xffffffff \
+    label.padding_right=8 \
+    background.drawing=on \
+    script="$HOME/.config/sketchybar/plugins/network.sh" \
+    click_script="open 'x-apple.systempreferences:com.apple.preference.network'"
+
+# Network upload speed
+sketchybar --add item net_up right \
+  --set net_up \
+    icon="↑" \
+    icon.font="SF Pro:Bold:13.0" \
+    icon.color=0xffff9d00 \
+    icon.padding_left=8 \
+    icon.padding_right=2 \
+    label.font="SF Mono:Medium:12.0" \
+    label.color=0xffffffff \
+    label.padding_right=8 \
+    background.drawing=on \
+    click_script="open 'x-apple.systempreferences:com.apple.preference.network'"
 
 # ===== Finalize =====
 sketchybar --update
