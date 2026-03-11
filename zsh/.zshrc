@@ -1,3 +1,14 @@
+# ─── Auto-reload zshrc when modified ──────────────────────────────
+_ZSHRC_MTIME=$(stat -f %m ~/.zshrc 2>/dev/null)
+_check_zshrc_reload() {
+  local mtime=$(stat -f %m ~/.zshrc 2>/dev/null)
+  if [[ "$mtime" != "$_ZSHRC_MTIME" ]]; then
+    _ZSHRC_MTIME=$mtime
+    source ~/.zshrc
+  fi
+}
+precmd_functions+=(_check_zshrc_reload)
+
 # ─── History Configuration ──────────────────────────────────────
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=1000000000
@@ -126,7 +137,14 @@ alias du='dust'
 alias top='btop'
 alias diff='delta'
 alias rm='rm -i'            # Prompt before each removal
-alias claude='claude --dangerously-skip-permissions --chrome --continue'
+unalias claude 2>/dev/null
+claude() {
+  local args=(--dangerously-skip-permissions --chrome)
+  if [ -d .claude ] && ls .claude/conversations/ >/dev/null 2>&1; then
+    args+=(--continue)
+  fi
+  command claude "${args[@]}" "$@"
+}
 alias hetz='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new -A -s main'
 alias hetz-c='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new-session -A -s claude \; send-keys "cd ~/sysadmin && claude" Enter'
 alias hetz-o='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new-session -A -s openclaw \; send-keys "cd ~/sysadmin && openclaw" Enter'
@@ -175,4 +193,4 @@ alias gam="/Users/akshaydeshraj/bin/gam7/gam"
 # SmartClip — auto-fix multi-line commands on paste
 source /Users/akshaydeshraj/Code/personal/smartclip/integrations/smartclip.zsh
 
-# BW_SESSION loaded from $HOME/.env (not committed)
+export BW_SESSION="${BW_SESSION}"
