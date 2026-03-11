@@ -1,6 +1,3 @@
-# ─── Machine-specific secrets (never committed) ──────────────────
-[[ -f "$HOME/.env" ]] && source "$HOME/.env"
-
 # ─── History Configuration ──────────────────────────────────────
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=1000000000
@@ -164,20 +161,18 @@ ZSH_HIGHLIGHT_STYLES[arg0]='fg=#0088ff'
 _cached_eval openclaw openclaw 'openclaw completion --shell zsh'
 
 # bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+[ -s "/Users/akshaydeshraj/.bun/_bun" ] && source "/Users/akshaydeshraj/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Tirith
-[[ -x "$(command -v tirith)" ]] && eval "$(tirith init)"
+eval "$(tirith init)"
 
-# GAM
-[[ -f "$HOME/bin/gam7/gam" ]] && alias gam="$HOME/bin/gam7/gam"
+alias gam="/Users/akshaydeshraj/bin/gam7/gam"
 
-# SmartClip
-[[ -f "$HOME/Code/personal/smartclip/integrations/smartclip.zsh" ]] && source "$HOME/Code/personal/smartclip/integrations/smartclip.zsh"
+# SmartClip — auto-fix multi-line commands on paste
+source /Users/akshaydeshraj/Code/personal/smartclip/integrations/smartclip.zsh
 
-# Bitwarden session
-[[ -n "$BW_SESSION" ]] && export BW_SESSION
+# BW_SESSION loaded from $HOME/.env (not committed)
