@@ -126,8 +126,6 @@ brew "python@3.12"
 brew "rclone"
 # Persistent key-value database, with built-in net interface
 brew "redis", restart_service: :changed
-# CLI proxy to minimize LLM token consumption
-brew "rtk"
 # Extremely fast Python linter, written in Rust
 brew "ruff"
 # Safe, concurrent, practical language
