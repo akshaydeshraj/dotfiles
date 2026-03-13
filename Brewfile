@@ -216,6 +216,8 @@ cask "docker-desktop"
 cask "font-symbols-only-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"
+# Client for the Google Drive storage service
+cask "google-drive"
 # Menu bar manager
 cask "jordanbaird-ice"
 # Clipboard manager
