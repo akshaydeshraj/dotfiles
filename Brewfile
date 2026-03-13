@@ -152,6 +152,8 @@ brew "tldr"
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Your CLI home video recorder
+brew "vhs"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
 # Internet file retriever
