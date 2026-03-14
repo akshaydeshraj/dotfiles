@@ -5,7 +5,7 @@
 ccusage@15.5.2
 clawdbot@2026.1.24-3
 dmux@5.3.0
-openclaw@2026.3.12
+openclaw@2026.3.13
 opencode-omni@null
 pnpm@10.13.1
 pyright@1.1.408
