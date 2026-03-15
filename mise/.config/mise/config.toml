@@ -4,3 +4,4 @@ ruby = "3"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python"]
+activate_aggressive = true
