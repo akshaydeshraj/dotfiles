@@ -35,6 +35,9 @@ keybind = super+shift+d=text:\x02"
 # Session switcher (Cmd+K → Alt+K for tmux/sesh)
 keybind = super+k=text:\x1bk
 
+# Claude Fork overlay (Cmd+B → Alt+B for tmux popup)
+keybind = super+b=text:\x1bb
+
 # Paste safety
 clipboard-paste-protection = true
 clipboard-paste-bracketed-safe = true
