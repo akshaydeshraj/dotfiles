@@ -196,6 +196,8 @@ brew "sheeki03/tap/tirith"
 brew "steipete/tap/bird"
 # Google CLI for Gmail, Calendar, Drive, Docs, Sheets, and more
 brew "steipete/tap/gogcli"
+# Model Context Protocol runtime and CLI generator
+brew "steipete/tap/mcporter"
 # Link → clean text → summary
 brew "steipete/tap/summarize"
 # WhatsApp CLI built on whatsmeow
