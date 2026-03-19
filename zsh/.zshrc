@@ -187,10 +187,6 @@ _cached_eval openclaw openclaw 'openclaw completion --shell zsh'
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-
-# Tirith
-eval "$(tirith init)"
-
 alias gam="/Users/akshaydeshraj/bin/gam7/gam"
 
 # SmartClip — auto-fix multi-line commands on paste

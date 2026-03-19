@@ -190,8 +190,6 @@ brew "jesseduffield/lazydocker/lazydocker"
 brew "koekeishiya/formulae/skhd"
 # A tiling window manager for macOS based on binary space partitioning.
 brew "koekeishiya/formulae/yabai"
-# Terminal security - catches homograph attacks, pipe-to-shell, ANSI injection
-brew "sheeki03/tap/tirith"
 # Fast X CLI for tweeting, replying, and reading
 brew "steipete/tap/bird"
 # Google CLI for Gmail, Calendar, Drive, Docs, Sheets, and more
