@@ -116,9 +116,6 @@ bindkey "^[[B" history-beginning-search-forward-end
 # Zoxide - smarter cd that learns your habits
 _cached_eval zoxide zoxide 'zoxide init zsh'
 
-# ─── Bitwarden Session (re-export from environment) ──────────────
-export BW_SESSION="${BW_SESSION}"
-
 export BAT_THEME="TwoDark"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
@@ -187,10 +184,12 @@ _cached_eval openclaw openclaw 'openclaw completion --shell zsh'
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
 alias gam="/Users/akshaydeshraj/bin/gam7/gam"
 
 # SmartClip — auto-fix multi-line commands on paste
 source /Users/akshaydeshraj/Code/personal/smartclip/integrations/smartclip.zsh
 
+export BW_SESSION="${BW_SESSION}"
 
 
