@@ -1,3 +1,6 @@
+# ─── Source machine-specific secrets ──────────────────────────────
+[[ -f "$HOME/.env" ]] && source "$HOME/.env"
+
 # ─── Auto-reload zshrc when modified ──────────────────────────────
 _ZSHRC_MTIME=$(stat -f %m ~/.zshrc 2>/dev/null)
 _check_zshrc_reload() {
