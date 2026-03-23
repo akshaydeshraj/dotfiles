@@ -192,4 +192,12 @@ source /Users/akshaydeshraj/Code/personal/smartclip/integrations/smartclip.zsh
 
 export BW_SESSION="${BW_SESSION}"
 
+export SENTRY_AUTH_TOKEN="${SENTRY_AUTH_TOKEN}"
+export SENTRY_ACCESS_TOKEN=$SENTRY_AUTH_TOKEN
 
+export METAMCP_BEARER_KEY="${METAMCP_BEARER_KEY}"
+export ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}"
+
+export LLM_API_KEY="${LLM_API_KEY}"
+export LLM_MODEL="claude-opus-4-6"
+export LLM_BASE_URL="https://claude.akshaydeshraj.me/v1"
