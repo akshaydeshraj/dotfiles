@@ -3,7 +3,7 @@ set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
-STOW_PACKAGES=(zsh git tmux ghostty wm prompt zed mise btop gh claude atuin)
+STOW_PACKAGES=(zsh git tmux ghostty wm prompt zed mise btop gh claude atuin arc)
 FAILURES=()
 
 echo "=== Dotfiles Bootstrap ==="

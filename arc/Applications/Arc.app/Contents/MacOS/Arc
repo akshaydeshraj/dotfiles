@@ -1,0 +1,3 @@
+#!/bin/bash
+# Wrapper that ensures Arc always launches with remote debugging enabled
+open -a "/Applications/Arc.app" --args --remote-debugging-port=9222
