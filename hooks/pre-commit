@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+# LLM-powered secret detection pre-commit hook
+# Uses Claude to analyze staged diffs and block commits containing hardcoded secrets
+
+CLAUDE_BIN=$(command -v claude 2>/dev/null || echo "")
+if [[ -z "$CLAUDE_BIN" ]]; then
+  echo "⚠️  claude CLI not found — skipping secret scan"
+  exit 0
+fi
+
+# Only check added/modified lines (not deletions — removing a secret should not be blocked)
+ADDED_LINES=$(git diff --cached --diff-filter=ACMR | grep '^+' | grep -v '^+++ b/' || true)
+if [[ -z "$ADDED_LINES" ]]; then
+  exit 0
+fi
+
+PROMPT="You are a secret-detection gate for a dotfiles git repo. Analyze ONLY these added lines from a staged diff and determine if they contain any HARDCODED secrets, API keys, tokens, passwords, or private IPs/hostnames that should not be committed to a public repo.
+
+IMPORTANT DISTINCTIONS:
+- Shell variable references like \${VAR}, \$VAR, \"\${VAR}\" are SAFE — these are placeholders
+- Actual secret values (API keys, tokens, passwords, session strings, private IPs) are UNSAFE
+- .env.example files with placeholder values like \"your-key-here\" are SAFE
+- Known public values, localhost, 0.0.0.0 are SAFE
+
+Respond with EXACTLY one line:
+- \"PASS\" if no hardcoded secrets found
+- \"FAIL: <brief explanation>\" if secrets are detected
+
+ADDED LINES:
+$ADDED_LINES"
+
+RESULT=$(echo "$PROMPT" | "$CLAUDE_BIN" -p \
+  --no-session-persistence \
+  --model haiku \
+  --allowedTools "" \
+  2>/dev/null) || {
+  echo "⚠️  claude CLI failed — skipping secret scan"
+  exit 0
+}
+
+# Check for PASS as a standalone word (avoid matching "password")
+TRIMMED=$(echo "$RESULT" | sed 's/^[[:space:]]*//')
+if echo "$TRIMMED" | grep -q "^PASS"; then
+  exit 0
+else
+  echo ""
+  echo "🚫 Secret detected in staged changes:"
+  echo "   $RESULT"
+  echo ""
+  echo "   Move secrets to ~/.env and use \${VAR} references instead."
+  echo "   To bypass: git commit --no-verify"
+  echo ""
+  exit 1
+fi

@@ -64,6 +64,10 @@ for pkg in "${STOW_PACKAGES[@]}"; do
   stow --no-folding --dir="$DOTFILES_DIR" --target="$HOME" "$pkg"
 done
 
+# ── Step 5b: Git hooks ──
+echo "Configuring git hooks..."
+git -C "$DOTFILES_DIR" config core.hooksPath "$DOTFILES_DIR/hooks"
+
 # ── Step 6: Git config ──
 echo "Configuring git..."
 git config --global user.name "$GIT_USER_NAME"
