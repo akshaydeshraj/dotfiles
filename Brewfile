@@ -138,6 +138,8 @@ brew "shellcheck"
 brew "sox"
 # Cross-shell prompt for astronauts
 brew "starship"
+# Organize software neatly under a single directory tree (e.g. /usr/local)
+brew "stow"
 # Command-line tool for Stripe
 brew "stripe-cli"
 # ISO/Edinburgh-style Prolog interpreter
