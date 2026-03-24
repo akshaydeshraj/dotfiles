@@ -34,6 +34,8 @@ brew "bazelisk"
 brew "bitwarden-cli"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
+# Sexy ANSI fonts for the console
+brew "cfonts"
 # Statistics utility to count lines of code
 brew "cloc"
 # GNU multiple precision arithmetic library
