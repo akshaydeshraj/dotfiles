@@ -34,4 +34,7 @@ session=$(annotate -it | fzf --reverse --no-sort --ansi \
 
 # Strip markers before connecting
 session=$(echo "$session" | sed 's/  [●🤖].*$//')
-[ -n "$session" ] && sesh connect "$session"
+if [ -n "$session" ]; then
+  rm -f "/tmp/claude-notify/${session}"
+  sesh connect "$session"
+fi
