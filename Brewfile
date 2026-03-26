@@ -6,8 +6,6 @@ tap "jesseduffield/lazydocker"
 tap "jesseduffield/lazygit"
 tap "jimeh/emacs-builds"
 tap "joshmedeski/sesh"
-# Smart tmux session manager
-brew "joshmedeski/sesh/sesh"
 tap "koekeishiya/formulae"
 tap "sheeki03/tap"
 tap "steipete/tap"
@@ -192,6 +190,8 @@ brew "felixkratz/formulae/sketchybar"
 brew "jandedobbeleer/oh-my-posh/oh-my-posh"
 # A simple terminal UI for docker, written in Go
 brew "jesseduffield/lazydocker/lazydocker"
+# Smart terminal session manager
+brew "joshmedeski/sesh/sesh"
 # Simple hotkey-daemon for macOS.
 brew "koekeishiya/formulae/skhd"
 # A tiling window manager for macOS based on binary space partitioning.
