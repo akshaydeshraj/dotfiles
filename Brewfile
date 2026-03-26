@@ -6,6 +6,8 @@ tap "jesseduffield/lazydocker"
 tap "jesseduffield/lazygit"
 tap "jimeh/emacs-builds"
 tap "joshmedeski/sesh"
+# Smart tmux session manager
+brew "joshmedeski/sesh/sesh"
 tap "koekeishiya/formulae"
 tap "sheeki03/tap"
 tap "steipete/tap"

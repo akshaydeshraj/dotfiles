@@ -1,0 +1,13 @@
+[default_session]
+startup_command = ""
+
+[session_defaults]
+preview_command = "eza --tree --level=2 --icons --color=always --git-ignore {}"
+
+[[startup_session]]
+name = "dotfiles"
+path = "~/Code/personal/dotfiles"
+
+[[startup_session]]
+name = "notes"
+path = "~/Notes"

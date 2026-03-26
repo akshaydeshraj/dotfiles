@@ -3,28 +3,35 @@ export PATH="/opt/homebrew/bin:$PATH"
 
 CURRENT=$(tmux display-message -p '#S')
 
-# Build session list with indicators:
-#   ● = current session
-#   🤖 = Claude waiting for input
-session=$(tmux list-sessions -F '#S' 2>/dev/null | while read -r s; do
-  marker=""
-  [ "$s" = "$CURRENT" ] && marker="  ●"
-  [ -f "/tmp/claude-notify/${s}" ] && marker="${marker}  🤖"
-  echo "${s}${marker}"
-done | \
-  fzf --reverse --border=none --no-info \
-  --print-query \
-  --header='  Pick or create a session' \
-  --color=bg+:#0050A4,fg+:#ffffff,hl:#ffc600,hl+:#ffc600,pointer:#ffc600,prompt:#0088ff \
-  | tail -1 | sed 's/  [●🤖].*$//')
+# Annotate sesh output with ● (current) and 🤖 (claude waiting)
+annotate() {
+  sesh list -i ${1:--it} | while IFS= read -r line; do
+    name=$(echo "$line" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/^. //')
+    markers=""
+    [ "$name" = "$CURRENT" ] && markers="  ●"
+    [ -f "/tmp/claude-notify/${name}" ] && markers="${markers}  🤖"
+    printf '%s%s\n' "$line" "$markers"
+  done
+}
 
-if [ -n "$session" ]; then
-  # Clear notification marker when switching to the session
-  rm -f "/tmp/claude-notify/${session}"
-
-  if tmux has-session -t "$session" 2>/dev/null; then
-    tmux switch-client -t "$session"
-  else
-    tmux new-session -d -s "$session" && tmux switch-client -t "$session"
-  fi
+# Reload mode: fzf calls this script back for refreshing the list
+if [ "$1" = "--reload" ]; then
+  annotate "$2"
+  exit 0
 fi
+
+session=$(annotate -it | fzf --reverse --no-sort --ansi \
+  --border=none --no-info \
+  --prompt '  ' \
+  --header '  ^a all / ^t tmux / ^x zoxide / ^d kill' \
+  --bind 'tab:down,btab:up' \
+  --bind "ctrl-a:change-prompt(  )+reload($0 --reload)" \
+  --bind "ctrl-t:change-prompt(  )+reload($0 --reload -it)" \
+  --bind "ctrl-x:change-prompt(  )+reload($0 --reload -iz)" \
+  --bind "ctrl-d:execute(tmux kill-session -t {2..})+reload($0 --reload -it)" \
+  --color=bg+:#0050A4,fg+:#ffffff,hl:#ffc600,hl+:#ffc600,pointer:#ffc600,prompt:#0088ff \
+)
+
+# Strip markers before connecting
+session=$(echo "$session" | sed 's/  [●🤖].*$//')
+[ -n "$session" ] && sesh connect "$session"
