@@ -20,10 +20,10 @@ if [ "$1" = "--reload" ]; then
   exit 0
 fi
 
-session=$(annotate -it | fzf --reverse --no-sort --ansi \
-  --border=none --no-info \
+result=$(annotate -it | fzf --reverse --no-sort --ansi \
+  --border=none --no-info --print-query \
   --prompt '  ' \
-  --header '  ^a all / ^t tmux / ^x zoxide / ^d kill' \
+  --header '  ^a all / ^t tmux / ^x zoxide / ^d kill / enter: new' \
   --bind 'tab:down,btab:up' \
   --bind "ctrl-a:change-prompt(  )+reload($0 --reload)" \
   --bind "ctrl-t:change-prompt(  )+reload($0 --reload -it)" \
@@ -32,9 +32,16 @@ session=$(annotate -it | fzf --reverse --no-sort --ansi \
   --color=bg+:#0050A4,fg+:#ffffff,hl:#ffc600,hl+:#ffc600,pointer:#ffc600,prompt:#0088ff \
 )
 
+# --print-query outputs: line 1 = query, line 2 = selected match (if any)
+query=$(echo "$result" | sed -n '1p')
+match=$(echo "$result" | sed -n '2p')
+
+# Prefer the selected match; fall back to the typed query for new sessions
+session=${match:-$query}
+
 # Strip markers before connecting
 session=$(echo "$session" | sed 's/  [●🤖].*$//')
 if [ -n "$session" ]; then
   rm -f "/tmp/claude-notify/${session}"
-  sesh connect "$session"
+  sesh connect "$session" 2>/dev/null || { tmux new-session -ds "$session" && tmux switch-client -t "$session"; }
 fi
