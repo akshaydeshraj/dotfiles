@@ -53,7 +53,8 @@
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true,
     "skit@skit-ai": true,
-    "cq@cq": true
+    "cq@cq": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "skit-ai": {

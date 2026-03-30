@@ -132,6 +132,8 @@ brew "redis", restart_service: :changed
 brew "ruff"
 # Safe, concurrent, practical language
 brew "rust"
+# Experimental Rust compiler front-end for IDEs
+brew "rust-analyzer"
 # Rust toolchain installer
 brew "rustup"
 # Static analysis and lint tool, for (ba)sh scripts
