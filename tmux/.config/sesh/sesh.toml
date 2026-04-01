@@ -5,6 +5,10 @@ startup_command = ""
 preview_command = "eza --tree --level=2 --icons --color=always --git-ignore {}"
 
 [[startup_session]]
+name = "main"
+path = "~"
+
+[[startup_session]]
 name = "dotfiles"
 path = "~/Code/personal/dotfiles"
 
