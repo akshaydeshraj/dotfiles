@@ -38,6 +38,8 @@ brew "btop"
 brew "cfonts"
 # Statistics utility to count lines of code
 brew "cloc"
+# Cross-platform make
+brew "cmake"
 # GNU multiple precision arithmetic library
 brew "gmp"
 # GNU File, Shell, and Text utilities
@@ -243,4 +245,5 @@ mas "WireGuard", id: 1451685025
 mas "Xcode", id: 497799835
 go "golang.org/x/tools/gopls"
 go "honnef.co/go/tools/cmd/staticcheck"
+cargo "devspec"
 cargo "tauri-cli"

@@ -204,3 +204,5 @@ export ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}"
 export LLM_API_KEY="${LLM_API_KEY}"
 export LLM_MODEL="claude-opus-4-6"
 export LLM_BASE_URL="https://claude.akshaydeshraj.me/v1"
+
+export PATH="$HOME/.cargo/bin:$PATH"
