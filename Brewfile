@@ -102,6 +102,8 @@ brew "mas"
 brew "mole"
 # Remote terminal application
 brew "mosh"
+# Fast, highly customisable system info script
+brew "neofetch"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Create, run, and share large language models (LLMs)
