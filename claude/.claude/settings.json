@@ -1,5 +1,8 @@
 {
   "respectGitignore": true,
+  "permissions": {
+    "defaultMode": "default"
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -54,7 +57,8 @@
     "pyright-lsp@claude-plugins-official": true,
     "skit@skit-ai": true,
     "cq@cq": true,
-    "rust-analyzer-lsp@claude-plugins-official": true
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "codex@openai-codex": true
   },
   "extraKnownMarketplaces": {
     "skit-ai": {
@@ -67,6 +71,12 @@
       "source": {
         "source": "github",
         "repo": "mozilla-ai/cq"
+      }
+    },
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
       }
     }
   },
