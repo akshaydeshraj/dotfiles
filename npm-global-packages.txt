@@ -1,8 +1,10 @@
 @fission-ai/openspec@0.16.0
 @google/gemini-cli@null
+@mariozechner/cchistory@1.1.11
 @mariozechner/pi-coding-agent@0.62.0
 @modelcontextprotocol/inspector@0.16.0
 @openai/codex@0.118.0
+@tomehq/cli@0.7.0
 ccusage@15.5.2
 clawdbot@2026.1.24-3
 dmux@5.3.0
