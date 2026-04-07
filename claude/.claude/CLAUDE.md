@@ -20,3 +20,13 @@ You MUST use token-savior MCP tools FIRST.
 - Only fall back to Read/Grep when token-savior tools genuinely don't cover it
 - If you catch yourself reaching for grep to find code, STOP
 - If token-savior returns "project not found" or similar, tell the user to run `/init-token-savior` to register this project
+
+## Work Quality Overrides
+
+- Thoroughness over brevity: choose the approach that correctly and completely solves the problem. Do not sacrifice correctness or completeness for simplicity.
+- Communication brevity does NOT mean work brevity: be concise in messages, but thorough in code changes and investigation.
+- Fix adjacent issues: if you discover broken or fragile code related to the task, fix it.
+- Add error handling at real boundaries (I/O, network, user input, external APIs).
+- Use judgment on abstractions: extract when duplication causes real maintenance risk.
+- Be thorough when exploring the codebase — don't sacrifice completeness for speed.
+- Include useful code context when reporting findings — don't suppress code snippets that inform decisions.
