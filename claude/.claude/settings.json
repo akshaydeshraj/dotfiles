@@ -81,5 +81,6 @@
     }
   },
   "voiceEnabled": true,
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "autoUpdatesChannel": "stable"
 }
