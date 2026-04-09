@@ -18,6 +18,8 @@ brew "ast-grep"
 brew "atuin"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
+# General-purpose data compression with high compression ratio
+brew "xz"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # YAML Parser
@@ -176,6 +178,8 @@ brew "xcodegen"
 brew "yazi"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
+# Programming language designed for robustness, optimality, and clarity
+brew "zig"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Fish-like fast/unobtrusive autosuggestions for zsh
