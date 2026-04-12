@@ -4,7 +4,7 @@
 @mariozechner/cchistory@1.1.11
 @mariozechner/pi-coding-agent@0.66.1
 @modelcontextprotocol/inspector@0.21.1
-@openai/codex@0.118.0
+@openai/codex@0.120.0
 @tomehq/cli@0.7.0
 ccusage@15.5.2
 droid@0.99.0

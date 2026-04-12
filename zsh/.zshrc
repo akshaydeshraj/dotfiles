@@ -149,6 +149,7 @@ claude() {
   fi
   command claude "${args[@]}" "$@"
 }
+alias donna='claude --append-system-prompt-file ~/Code/personal/dot-claw.pre-migration/donna-system-prompt.md'
 alias hetz='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new -A -s main'
 alias hetz-c='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new-session -A -s claude \; send-keys "cd ~/sysadmin && claude" Enter'
 alias hetz-o='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new-session -A -s openclaw \; send-keys "cd ~/sysadmin && openclaw" Enter'
