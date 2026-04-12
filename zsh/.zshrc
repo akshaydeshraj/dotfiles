@@ -76,6 +76,7 @@ if [[ -o interactive ]]; then
   _mise_lazy_load() {
     unset -f mise python python3 pip pip3 node npm npx _mise_lazy_load
     eval "$(~/.local/bin/mise activate zsh)"
+    _sfw_wrap  # re-define sfw wrappers now that real binaries are on PATH
   }
   mise() { _mise_lazy_load && mise "$@"; }
   python() { _mise_lazy_load && python "$@"; }
@@ -189,6 +190,24 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 alias gam="/Users/akshaydeshraj/bin/gam7/gam"
+
+# ─── sfw — safe package install wrappers ─────────────────────────
+# Routes install/add commands through sfw; passthrough for everything else.
+# _sfw_wrap is called after mise lazy-load so it can override the real binaries.
+_sfw_wrap() {
+  for _cmd in npm yarn pnpm pip pip3 uv cargo; do
+    eval "
+      ${_cmd}() {
+        case \"\$1\" in
+          install|add|i) command sfw ${_cmd} \"\$@\" ;;
+          *)             command ${_cmd} \"\$@\" ;;
+        esac
+      }
+    "
+  done
+  unset _cmd
+}
+_sfw_wrap  # define now for non-mise tools (cargo, uv, yarn, pnpm)
 
 # SmartClip — auto-fix multi-line commands on paste
 source /Users/akshaydeshraj/Code/personal/smartclip/integrations/smartclip.zsh
