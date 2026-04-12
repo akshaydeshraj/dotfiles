@@ -144,6 +144,8 @@ brew "rustup"
 brew "shellcheck"
 # SOund eXchange: universal sound sample translator
 brew "sox"
+# Non-interactive SSH password auth
+brew "sshpass"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
