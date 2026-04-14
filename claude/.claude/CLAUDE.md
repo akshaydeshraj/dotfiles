@@ -49,7 +49,7 @@ Write it to neocortex, not to `.claude/memory/`:
 - New concept or framework → create a concept note in `200 Notes/`
 - New tool or resource discovered → create a tool note in `200 Notes/`
 
-Follow the vault rules in `~/Code/personal/neocortex/AGENTS.md.md`:
+Follow the vault rules in `~/Code/personal/neocortex/AGENTS.md`:
 - Every note MUST have `type:` in frontmatter
 - Wikilinks in frontmatter MUST be quoted
 - Use `[[wikilinks]]` liberally

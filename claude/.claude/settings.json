@@ -1,5 +1,10 @@
 {
   "respectGitignore": true,
+  "env": {
+    "CLAUDE_CODE_EFFORT_LEVEL": "max",
+    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
+    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1"
+  },
   "permissions": {
     "defaultMode": "default"
   },
@@ -58,7 +63,8 @@
     "skit@skit-ai": true,
     "cq@cq": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
-    "codex@openai-codex": true
+    "codex@openai-codex": true,
+    "obsidian@obsidian-skills": true
   },
   "extraKnownMarketplaces": {
     "skit-ai": {
@@ -78,14 +84,15 @@
         "source": "github",
         "repo": "openai/codex-plugin-cc"
       }
+    },
+    "obsidian-skills": {
+      "source": {
+        "source": "github",
+        "repo": "kepano/obsidian-skills"
+      }
     }
   },
-  "env": {
-    "CLAUDE_CODE_EFFORT_LEVEL": "max",
-    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
-    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1"
-  },
+  "autoUpdatesChannel": "stable",
   "voiceEnabled": true,
-  "skipDangerousModePermissionPrompt": true,
-  "autoUpdatesChannel": "stable"
+  "skipDangerousModePermissionPrompt": true
 }
