@@ -225,3 +225,6 @@ export LLM_MODEL="claude-opus-4-6"
 export LLM_BASE_URL="https://claude.akshaydeshraj.me/v1"
 
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# Darkbloom
+export PATH="$HOME/.darkbloom/bin:$PATH"
