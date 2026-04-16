@@ -1,4 +1,3 @@
-@anthropic-ai/claude-code@2.1.92
 @fission-ai/openspec@0.16.0
 @google/gemini-cli@null
 @mariozechner/cchistory@1.1.11
