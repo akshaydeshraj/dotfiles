@@ -224,7 +224,7 @@ cask "basictex"
 # Desktop password and login vault
 cask "bitwarden"
 # Terminal-based AI coding assistant
-cask "claude-code"
+cask "claude-code@latest"
 # Menu bar usage monitor for Codex and Claude
 cask "steipete/tap/codexbar"
 # App to build and share containerised applications and microservices
