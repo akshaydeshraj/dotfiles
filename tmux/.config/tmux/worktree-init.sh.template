@@ -1,0 +1,46 @@
+#!/bin/bash
+# Drop this in your repo root as `.worktree-init.sh` and commit it.
+# Runs in the new worktree's directory after `git worktree add`,
+# before the tmux session is spawned.
+#
+# Env available:
+#   TMUX_SESSION    name of the session that will be created (e.g. "myrepo/feat-x")
+#   WORKTREE_PATH   absolute path of the new worktree
+#   BRANCH          branch name
+#   REPO_ROOT       path to the original (main) repo clone
+#
+# Tips:
+# - Keep it idempotent (re-running mustn't corrupt state).
+# - Don't block for long — heavy work should go in the background (&).
+# - Use `tmux send-keys -t "$TMUX_SESSION:work.2" "<cmd>" Enter` to start
+#   processes in the session's "logs" pane after it's spawned.
+
+set -euo pipefail
+
+# 1. Reuse secrets from the main clone (never commit these).
+if [ -f "$REPO_ROOT/.env" ]; then
+  ln -sf "$REPO_ROOT/.env" .env
+fi
+
+# 2. Install deps using the offline cache where possible.
+if [ -f "pnpm-lock.yaml" ]; then
+  pnpm install --prefer-offline --silent &
+elif [ -f "package-lock.json" ]; then
+  npm ci --prefer-offline --silent &
+elif [ -f "poetry.lock" ]; then
+  poetry install --no-interaction &
+elif [ -f "uv.lock" ]; then
+  uv sync &
+fi
+
+# 3. After the session is up, start the dev server in the logs pane.
+#    (The session exists because tree-switcher spawns it right after this script returns.)
+if [ -f "package.json" ] && grep -q '"dev"' package.json 2>/dev/null; then
+  (
+    # Give tree-switcher a moment to finish creating panes.
+    sleep 2
+    tmux send-keys -t "$TMUX_SESSION:work.2" "pnpm dev 2>&1 | tee /tmp/$BRANCH-dev.log" Enter 2>/dev/null || true
+  ) &
+fi
+
+exit 0

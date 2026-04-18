@@ -32,8 +32,14 @@ font-thicken = true
 keybind = super+d=text:\x02%
 keybind = super+shift+d=text:\x02"
 
-# Session switcher (Cmd+K → Alt+K for tmux/sesh)
+# Workspace tree switcher (Cmd+K → Alt+K for tmux)
 keybind = super+k=text:\x1bk
+
+# Worktree dashboard (Cmd+Shift+K → Alt+Shift+K for tmux)
+keybind = super+shift+k=text:\x1bK
+
+# Last session toggle (Cmd+J → Alt+J for tmux)
+keybind = super+j=text:\x1bj
 
 # Claude Fork overlay (Cmd+B → Alt+B for tmux popup)
 keybind = super+b=text:\x1bb
