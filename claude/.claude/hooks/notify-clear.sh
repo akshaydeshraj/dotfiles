@@ -1,17 +1,27 @@
 #!/bin/bash
-# Clear notification marker when Claude resumes work or session ends.
+# Clear Claude notification marker when Claude resumes work or the session ends.
 # Called from: UserPromptSubmit, SessionEnd hooks.
 
-NOTIFY_DIR="$HOME/.cache/claude-notify"
-SESSION=$(tmux display-message -p '#S' 2>/dev/null || echo "unknown")
+set -euo pipefail
 
-rm -f "$NOTIFY_DIR/$SESSION"
+NOTIFY_DIR="$HOME/.cache/tmux-project-workspaces/notify"
+LEGACY_NOTIFY_DIR="$HOME/.cache/claude-notify"
+STATE_SCRIPT="$HOME/Code/personal/dotfiles/tmux/plugins/tmux-project-workspaces/scripts/agent-state.sh"
+INPUT="$(cat)"
+EVENT="$(printf '%s' "$INPUT" | jq -r '.hook_event_name // ""' 2>/dev/null || true)"
+SESSION="${TMUX_SESSION:-$(tmux display-message -p '#S' 2>/dev/null || echo "unknown")}"
+SAFE_SESSION="$(printf '%s' "$SESSION" | tr '/:' '__')"
 
-count=$(find "$NOTIFY_DIR" -maxdepth 1 -type f ! -name '.*' 2>/dev/null | wc -l | tr -d ' ')
-if [ "$count" -gt 0 ]; then
-  printf '🤖 %s ' "$count" > "$NOTIFY_DIR/.count"
-else
-  : > "$NOTIFY_DIR/.count"
-fi
+rm -f "$NOTIFY_DIR/$SAFE_SESSION"
+rm -f "$LEGACY_NOTIFY_DIR/$SAFE_SESSION"
+
+case "$EVENT" in
+  UserPromptSubmit)
+    [ -x "$STATE_SCRIPT" ] && "$STATE_SCRIPT" touch claude "$SESSION" >/dev/null 2>&1 || true
+    ;;
+  SessionEnd)
+    [ -x "$STATE_SCRIPT" ] && "$STATE_SCRIPT" clear "$SESSION" >/dev/null 2>&1 || true
+    ;;
+esac
 
 tmux refresh-client -S 2>/dev/null || true

@@ -15,6 +15,7 @@ ACTION=$(printf '%s\n' \
   " sync from main (fetch + rebase)" \
   " open PR (push + gh pr create)" \
   " view PR in browser" \
+  " mark agent waiting / done" \
   " prune orphans" \
   "󰜺 kill this session only" \
   | fzf --reverse --prompt='  worktree  ' \
@@ -37,6 +38,9 @@ case "$ACTION" in
     ;;
   *"view PR"*)
     ( cd "$WT_PATH" && gh pr view --web ) 2>/dev/null
+    ;;
+  *"mark agent"*)
+    exec "$SCRIPT_DIR/agent-menu.sh"
     ;;
   *"prune orphans"*)
     tmux display-popup -E -w 80% -h 70% -b rounded -S "fg=#ffc600" -T " Orphans " \

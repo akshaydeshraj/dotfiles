@@ -141,14 +141,50 @@ alias du='dust'
 alias top='btop'
 alias diff='delta'
 alias rm='rm -i'            # Prompt before each removal
+
+_project_agent_state() {
+  local script="$HOME/Code/personal/dotfiles/tmux/plugins/tmux-project-workspaces/scripts/agent-state.sh"
+  [ -n "${TMUX:-}" ] || return 0
+  [ -x "$script" ] || return 0
+  "$script" "$@" >/dev/null 2>&1 || true
+}
+
+_run_project_agent() {
+  local tool="$1"
+  shift
+  local heartbeat_pid=""
+  _project_agent_state touch "$tool"
+  (
+    while true; do
+      sleep 30
+      _project_agent_state touch "$tool"
+    done
+  ) >/dev/null 2>&1 &
+  heartbeat_pid=$!
+  command "$tool" "$@"
+  local rc=$?
+  [ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" >/dev/null 2>&1 || true
+  _project_agent_state clear
+  return $rc
+}
+
 unalias claude 2>/dev/null
 claude() {
   local args=(--dangerously-skip-permissions --chrome)
   if [ -d .claude ] && ls .claude/conversations/ >/dev/null 2>&1; then
     args+=(--continue)
   fi
-  command claude "${args[@]}" "$@"
+  _run_project_agent claude "${args[@]}" "$@"
 }
+
+unalias codex 2>/dev/null
+codex() {
+  _run_project_agent codex "$@"
+}
+
+agent-wait() { _project_agent_state set wait "${1:-agent}"; }
+agent-done() { _project_agent_state set done "${1:-agent}"; }
+agent-off()  { _project_agent_state set off  "${1:-agent}"; }
 alias donna='claude --append-system-prompt-file ~/Code/personal/dot-claw.pre-migration/donna-system-prompt.md'
 alias hetz='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new -A -s main'
 alias hetz-c='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new-session -A -s claude \; send-keys "cd ~/sysadmin && claude" Enter'

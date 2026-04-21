@@ -139,14 +139,11 @@ header_for_row() {
   local key="$1" kind="$2"
 
   case "$key" in
-    ACTION:new-worktree)
-      printf '^a add repo  enter/^n create worktree  ^r reload'
-      ;;
     REPO:*)
-      printf '^a add repo  enter/^n new worktree  ^x untrack  ^r reload'
+      printf '^a add repo  enter switch primary  ^n new worktree  ^x untrack  ^r reload'
       ;;
     SECTION:projects)
-      printf '^a add repo  enter new worktree  ^r reload'
+      printf '^a add repo  ^n new worktree  ^r reload'
       ;;
     SECTION:plain)
       printf 'enter switch  ^k kill  ^r reload'
@@ -171,14 +168,11 @@ describe_row_shell() {
   local key="$1" path="$2" repo="$3" kind="$4"
 
   case "$key" in
-    ACTION:new-worktree)
-      printf 'Actions\nenter/^n: choose project and create worktree\n'
-      ;;
     REPO:*)
-      printf 'Projects\nenter/^n: new worktree  ^x: untrack\nrepo: %s\n' "$repo"
+      printf 'Projects\nenter: switch primary  ^n: new worktree  ^x: untrack\nrepo: %s\n' "$repo"
       ;;
     SECTION:projects)
-      printf 'Projects\n^a: add repo\n'
+      printf 'Projects\n^a: add repo  ^n: new worktree\n'
       ;;
     SECTION:plain)
       printf 'Sessions\nenter: switch\n'
@@ -210,14 +204,12 @@ render_shell() {
   plain_sessions=$(list_plain_sessions)
 
   if [ -z "$projects" ] && [ -z "$plain_sessions" ]; then
-    printf '\tHINT:\t\033[90m(no projects yet - type a repo name + enter to add, or ^a to pick)\033[0m\t\t\t\t\n'
+    printf '\tHINT:\t(no projects yet - type a repo name + enter to add, or ^a to pick)\t\t\t\t\n'
     return 0
   fi
 
-  printf 'new-worktree\tACTION:new-worktree\t\033[32m+ new worktree\033[0m\t\t\t\taction\n'
-
   if [ -n "$projects" ]; then
-    printf '\tSECTION:projects\t\033[1;33mProjects\033[0m\t\t\t\tsection\n'
+    printf 'projects\tSECTION:projects\t\033[1;33mProjects\033[0m\t\t\t\tsection\n'
     printf '%s\n' "$projects" | awk '!seen[$0]++' | sort -f | while read -r repo; do
       local name rows
       name=$(basename "$repo")
@@ -233,7 +225,7 @@ render_shell() {
       ')
 
       if [ -z "$rows" ]; then
-        printf '%s\t%s\t\033[90m▸ %s\033[0m\t\t%s\t%s\trepo\n' \
+        printf '%s\t%s\t▸ %s\t\t%s\t%s\trepo\n' \
           "$name" "REPO:$name" "$name" "$repo" "$repo"
         continue
       fi
@@ -242,10 +234,11 @@ render_shell() {
         "$name" "REPO:$name" "$name" "$repo" "$repo"
 
       printf '%s\n' "$rows" | while IFS=$'\t' read -r wt_path branch kind; do
-        local session m live age tags
+        local session search m live age tags
         [ -z "$wt_path" ] && continue
 
         session="$name/$branch"
+        search="$name $branch"
         m=""
         [ "$session" = "$CURRENT" ] && m="$m ●"
         [ -f "$NOTIFY/$session" ] && m="$m 🤖"
@@ -259,14 +252,14 @@ render_shell() {
         [[ "$m" == *"🤖"* ]] && tags="$tags [agent]"
         [[ "$m" == *"●"* ]] && tags="$tags ●"
 
-        printf '%s\t%s\t    \033[36m%-36s\033[0m\t\033[90m%s%s %s\033[0m\t%s\t%s\t%s\n' \
-          "$session" "$session" "$branch" "$live" "$tags" "$age" "$wt_path" "$repo" "$kind"
+        printf '%s\t%s\t    \033[36m%-36s\033[0m\t%s%s %s\t%s\t%s\t%s\n' \
+          "$search" "$session" "$branch" "$live" "$tags" "$age" "$wt_path" "$repo" "$kind"
       done
     done
   fi
 
   if [ -n "$plain_sessions" ]; then
-    printf '\tSECTION:plain\t\033[1;36mSessions\033[0m\t\t\t\tsection\n'
+    printf 'sessions\tSECTION:plain\t\033[1;36mSessions\033[0m\t\t\t\tsection\n'
     printf '%s\n' "$plain_sessions" | awk -F'\t' '!seen[$1]++' | sort -f | while IFS=$'\t' read -r session path; do
       local marker live note
       [ -n "$session" ] || continue
@@ -274,7 +267,7 @@ render_shell() {
       [ "$session" = "$CURRENT" ] && marker=" ●"
       live="[live]"
       note=" [session]"
-      printf '%s\tSESSION:%s\t    \033[36m%-36s\033[0m\t\033[90m%s%s%s\033[0m\t%s\t\tplain\n' \
+      printf '%s\tSESSION:%s\t    \033[36m%-36s\033[0m\t%s%s%s\t%s\t\tplain\n' \
         "$session" "$session" "$session" "$live" "$marker" "$note" "${path:-$HOME}"
     done
   fi
@@ -548,7 +541,7 @@ case "${1:-}" in
     tmux run-shell -b "$SCRIPT_DIR/confirm-delete.sh '$key' '$OUTER_CLIENT'"
     exit 0
     ;;
-  --request-new)
+    --request-new)
     repo="$2"
     if [ -z "$repo" ]; then
       repo=$(pick_project_for_new_worktree)
@@ -569,7 +562,7 @@ result=$("$SELF" --render | fzf \
   --ansi --reverse --no-sort --print-query \
   --delimiter=$'\t' --with-nth=3,4 --nth=1 \
   --prompt='  ' \
-  --header=$'^a add repo  enter switch/create  ^n new worktree  ^r reload' \
+  --header=$'^a add repo  enter switch  ^n new worktree  ^r reload' \
   --expect=enter \
   --bind "ctrl-r:reload($SELF --render)" \
   --bind "focus:transform-header:$SELF --header {2} {7}" \
@@ -657,7 +650,18 @@ case "$key" in
     exec "$SELF"
     ;;
   REPO:*)
-    [ -n "$repo" ] && tmux run-shell -b "$SELF --prompt-create '$repo' '$OUTER_CLIENT'"
+    if [ -n "$repo" ]; then
+      primary_branch=$(git -C "$repo" worktree list --porcelain 2>/dev/null | awk -v want="$repo" '
+        /^worktree /{wt=$2}
+        /^branch refs\/heads\//{
+          branch=$0
+          sub(/^branch refs\/heads\//, "", branch)
+          if (wt == want) { print branch; exit }
+        }')
+      if [ -n "$primary_branch" ] && core_available; then
+        "$CORE_BIN" open-worktree-session "$repo" "$repo" "$primary_branch" "$OUTER_CLIENT" >/dev/null 2>&1 || true
+      fi
+    fi
     ;;
   SESSION:*)
     if core_available; then

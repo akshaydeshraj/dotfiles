@@ -9,6 +9,7 @@ use std::process::{Command, Stdio};
 struct Context {
     projects_file: PathBuf,
     notify_dir: PathBuf,
+    agent_state_dir: PathBuf,
     current_session: String,
     sessions: HashMap<String, Option<String>>,
 }
@@ -89,15 +90,13 @@ fn render_cmd() {
 
     if projects.is_empty() && plain_sessions.is_empty() {
         println!(
-            "\tHINT:\t\x1b[90m(no projects yet - type a repo name + enter to add, or ^a to pick)\x1b[0m\t\t\t\t"
+            "\tHINT:\t(no projects yet - type a repo name + enter to add, or ^a to pick)\t\t\t\t"
         );
         return;
     }
 
-    println!("new-worktree\tACTION:new-worktree\t\x1b[32m+ new worktree\x1b[0m\t\t\t\taction");
-
     if !projects.is_empty() {
-        println!("\tSECTION:projects\t\x1b[1;33mProjects\x1b[0m\t\t\t\tsection");
+        println!("projects\tSECTION:projects\t\x1b[1;33mProjects\x1b[0m\t\t\t\tsection");
         let project_blocks: Vec<String> = projects
             .par_iter()
             .map(|repo| render_project(repo, &ctx))
@@ -108,16 +107,32 @@ fn render_cmd() {
     }
 
     if !plain_sessions.is_empty() {
-        println!("\tSECTION:plain\t\x1b[1;36mSessions\x1b[0m\t\t\t\tsection");
+        println!("sessions\tSECTION:plain\t\x1b[1;36mSessions\x1b[0m\t\t\t\tsection");
         for (session, path) in plain_sessions {
             let marker = if session == ctx.current_session {
                 " ●"
             } else {
                 ""
             };
+            let mut tags = String::new();
+            if let Some((status, tool)) = agent_state(&ctx.agent_state_dir, &session) {
+                let tool_tag = match tool.as_str() {
+                    "claude" => " [claude]",
+                    "codex" => " [codex]",
+                    _ if !tool.is_empty() => " [agent]",
+                    _ => "",
+                };
+                match status.as_str() {
+                    "run" => tags.push_str(&format!(" [run]{tool_tag}")),
+                    "wait" => tags.push_str(&format!(" [wait]{tool_tag}")),
+                    "done" => tags.push_str(&format!(" [done]{tool_tag}")),
+                    "off" => tags.push_str(&format!(" [off]{tool_tag}")),
+                    _ => {}
+                }
+            }
             let path = path.unwrap_or_else(|| home_dir().display().to_string());
             println!(
-                "{session}\tSESSION:{session}\t    \x1b[36m{session:<36}\x1b[0m\t\x1b[90m[live]{marker} [session]\x1b[0m\t{path}\t\tplain"
+                "{session}\tSESSION:{session}\t    \x1b[36m{session:<36}\x1b[0m\t[live]{marker} [session]{tags}\t{path}\t\tplain"
             );
         }
     }
@@ -125,11 +140,10 @@ fn render_cmd() {
 
 fn describe_row_cmd(key: &str, path: &str, repo: &str, kind: &str) {
     match key {
-        "ACTION:new-worktree" => {
-            println!("Actions\nenter/^n: choose project and create worktree");
-        }
         k if k.starts_with("REPO:") => {
-            println!("Projects\nenter/^n: new worktree  ^x: untrack\nrepo: {repo}");
+            println!(
+                "Projects\nenter: switch primary  ^n: new worktree  ^x: untrack\nrepo: {repo}"
+            );
         }
         "SECTION:projects" => {
             println!("Projects\n^a: add repo");
@@ -346,7 +360,15 @@ fn open_worktree_session_cmd(repo: &str, wt_path: &str, branch: &str, client: &s
         let _ = home; // silence if optimized path changes later
         if let Err(err) = run_checked(
             "tmux",
-            &["new-session", "-ds", &session, "-c", wt_path, "-n", "work"],
+            &[
+                "new-session",
+                "-ds",
+                &session,
+                "-c",
+                wt_path,
+                "-n",
+                "terminal",
+            ],
         ) {
             eprintln!("{err}");
             std::process::exit(1);
@@ -366,18 +388,6 @@ fn open_worktree_session_cmd(repo: &str, wt_path: &str, branch: &str, client: &s
         );
         let _ = run_checked(
             "tmux",
-            &[
-                "new-window",
-                "-t",
-                &format!("{session}:"),
-                "-n",
-                "free",
-                "-c",
-                wt_path,
-            ],
-        );
-        let _ = run_checked(
-            "tmux",
             &["set-environment", "-t", &session, "WORKTREE_PATH", wt_path],
         );
         let _ = run_checked(
@@ -388,7 +398,10 @@ fn open_worktree_session_cmd(repo: &str, wt_path: &str, branch: &str, client: &s
             "tmux",
             &["set-environment", "-t", &session, "WORKTREE_BRANCH", branch],
         );
-        let _ = run_checked("tmux", &["select-window", "-t", &format!("{session}:work")]);
+        let _ = run_checked(
+            "tmux",
+            &["select-window", "-t", &format!("{session}:terminal")],
+        );
     }
 
     if let Err(err) = switch_to_session(&session, client) {
@@ -408,6 +421,10 @@ fn context() -> Context {
         "PROJECT_WORKSPACES_NOTIFY_DIR",
         default_cache_dir().join("notify"),
     );
+    let agent_state_dir = env_path(
+        "PROJECT_WORKSPACES_AGENT_STATE_DIR",
+        default_cache_dir().join("agent-state"),
+    );
     let current_session = run("tmux", ["display-message", "-p", "#S"])
         .map(|s| s.trim().to_string())
         .unwrap_or_default();
@@ -416,6 +433,7 @@ fn context() -> Context {
     Context {
         projects_file,
         notify_dir,
+        agent_state_dir,
         current_session,
         sessions,
     }
@@ -437,7 +455,7 @@ fn render_project(repo: &str, ctx: &Context) -> String {
 
     if rows.is_empty() {
         out.push_str(&format!(
-            "{name}\tREPO:{name}\t\x1b[90m▸ {name}\x1b[0m\t\t{repo}\t{repo}\trepo\n"
+            "{name}\tREPO:{name}\t▸ {name}\t\t{repo}\t{repo}\trepo\n"
         ));
         return out;
     }
@@ -450,12 +468,29 @@ fn render_project(repo: &str, ctx: &Context) -> String {
         .par_iter()
         .map(|row| {
             let session = format!("{name}/{}", row.branch);
+            let search = format!("{name} {}", row.branch);
             let mut markers = String::new();
+            let mut tags = String::new();
             if session == ctx.current_session {
                 markers.push_str(" ●");
             }
             if ctx.notify_dir.join(&session).exists() {
                 markers.push_str(" 🤖");
+            }
+            if let Some((status, tool)) = agent_state(&ctx.agent_state_dir, &session) {
+                let tool_tag = match tool.as_str() {
+                    "claude" => " [claude]",
+                    "codex" => " [codex]",
+                    _ if !tool.is_empty() => " [agent]",
+                    _ => "",
+                };
+                match status.as_str() {
+                    "run" => tags.push_str(&format!(" [run]{tool_tag}")),
+                    "wait" => tags.push_str(&format!(" [wait]{tool_tag}")),
+                    "done" => tags.push_str(&format!(" [done]{tool_tag}")),
+                    "off" => tags.push_str(&format!(" [off]{tool_tag}")),
+                    _ => {}
+                }
             }
             if worktree_dirty(&row.path) {
                 markers.push_str(" ◆");
@@ -466,7 +501,6 @@ fn render_project(repo: &str, ctx: &Context) -> String {
                 "[stopped]"
             };
             let age = git_log_age(&row.path).unwrap_or_default();
-            let mut tags = String::new();
             if row.kind == "primary" {
                 tags.push_str(" [primary]");
             }
@@ -479,7 +513,7 @@ fn render_project(repo: &str, ctx: &Context) -> String {
                 markers = markers.replace(" 🤖", "");
             }
             format!(
-                "{session}\t{session}\t    \x1b[36m{:<36}\x1b[0m\t\x1b[90m{live}{markers}{tags} {age}\x1b[0m\t{}\t{repo}\t{}\n",
+                "{search}\t{session}\t    \x1b[36m{:<36}\x1b[0m\t{live}{markers}{tags} {age}\t{}\t{repo}\t{}\n",
                 row.branch, row.path, row.kind
             )
         })
@@ -490,6 +524,44 @@ fn render_project(repo: &str, ctx: &Context) -> String {
     }
 
     out
+}
+
+fn agent_state(dir: &Path, session: &str) -> Option<(String, String)> {
+    let safe: String = session
+        .chars()
+        .map(|c| if c == '/' || c == ':' { '_' } else { c })
+        .collect();
+    let path = dir.join(format!("{safe}.state"));
+    let contents = fs::read_to_string(path).ok()?;
+    let mut status = String::new();
+    let mut tool = String::new();
+    let mut updated_at: Option<u64> = None;
+    for line in contents.lines() {
+        if let Some(v) = line.strip_prefix("status=") {
+            status = v.trim().to_string();
+        } else if let Some(v) = line.strip_prefix("tool=") {
+            tool = v.trim().to_string();
+        } else if let Some(v) = line.strip_prefix("updated_at=") {
+            updated_at = v.trim().parse::<u64>().ok();
+        }
+    }
+    if status.is_empty() {
+        None
+    } else {
+        if status == "run" {
+            if let Some(updated) = updated_at {
+                let now = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .ok()
+                    .map(|d| d.as_secs())
+                    .unwrap_or(updated);
+                if now.saturating_sub(updated) > 90 {
+                    status = "off".to_string();
+                }
+            }
+        }
+        Some((status, tool))
+    }
 }
 
 fn list_projects(projects_file: &Path) -> Vec<String> {

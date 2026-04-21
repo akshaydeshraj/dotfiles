@@ -33,6 +33,17 @@
         ]
       }
     ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/akshaydeshraj/.claude/hooks/notify.sh"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": "",
