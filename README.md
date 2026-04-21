@@ -25,7 +25,7 @@ chmod +x install.sh
 |---------|---------|-------------|
 | `zsh` | `.zshrc`, `.zprofile` | Shell config with lazy-loading, modern CLI aliases |
 | `git` | `.config/git/ignore` | Global gitignore (git config set by install.sh) |
-| `tmux` | `.tmux.conf` | Terminal multiplexer (dmux theme) |
+| `tmux` | `.tmux.conf`, `tmux/plugins/tmux-project-workspaces/` | Terminal multiplexer, popup worktree/session picker, dashboard, worktree tools |
 | `ghostty` | `.config/ghostty/config` | Terminal emulator |
 | `wm` | `.yabairc`, `.skhdrc`, `.config/sketchybar/` | Tiling WM + hotkeys + status bar |
 | `prompt` | `.config/oh-my-posh/`, `.config/starship.toml` | Shell prompt themes |
@@ -106,6 +106,40 @@ cp ~/.config/newapp/config newapp/.config/newapp/config
 # Add to STOW_PACKAGES in install.sh, then:
 stow --no-folding -t ~ newapp
 ```
+
+## tmux Workspaces Plugin
+
+This repo includes a local tmux plugin at [tmux/plugins/tmux-project-workspaces](tmux/plugins/tmux-project-workspaces/README.md).
+
+What it provides:
+- `M-k`: workspace picker for projects, git worktrees, and plain tmux sessions
+- `M-K` or `prefix + Tab`: dashboard
+- `prefix + w`: worktree menu
+- `prefix + W`: fast worktree create
+- `prefix + G` / `prefix + R`: PR shortcuts
+
+The implementation is hybrid:
+- shell handles tmux popup/prompt/fzf UX
+- a Rust core binary handles render, repo/worktree resolution, create/remove actions, and kill/remove policy
+
+This split exists because the picker and worktree logic outgrew pure shell. The Rust core lives under:
+
+```text
+tmux/plugins/tmux-project-workspaces/
+├── tmux-project-workspaces.tmux
+├── Cargo.toml
+├── src/main.rs
+└── scripts/
+```
+
+Build and reload after editing:
+
+```bash
+cargo build --release --manifest-path tmux/plugins/tmux-project-workspaces/Cargo.toml
+tmux source-file ~/.tmux.conf
+```
+
+The plugin supports tmux options for storage paths, popup titles, and the Rust binary location. See the plugin README for the full option list and architecture notes.
 
 ## Key Design Decisions
 
