@@ -124,6 +124,8 @@ brew "pandoc"
 brew "pipx"
 # PNG image optimizing utility
 brew "pngquant"
+# PDF rendering library (based on the xpdf-3.0 code base)
+brew "poppler"
 # Cross-platform library for audio I/O
 brew "portaudio"
 # Object-relational database system
@@ -154,6 +156,8 @@ brew "starship"
 brew "stow"
 # Command-line tool for Stripe
 brew "stripe-cli"
+# Multi-modal AI tool to extract and summarize content
+brew "summarize"
 # ISO/Edinburgh-style Prolog interpreter
 brew "swi-prolog"
 # User interface to the TELNET protocol
@@ -214,8 +218,6 @@ brew "steipete/tap/bird"
 brew "steipete/tap/gogcli"
 # Model Context Protocol runtime and CLI generator
 brew "steipete/tap/mcporter"
-# Link → clean text → summary
-brew "steipete/tap/summarize"
 # WhatsApp CLI built on whatsmeow
 brew "steipete/tap/wacli"
 brew "yakitrak/yakitrak/obsidian-cli"

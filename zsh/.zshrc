@@ -71,22 +71,12 @@ fi
 # ─── Prompt ───────────────────────────────────────────────────────
 _cached_eval oh-my-posh oh-my-posh 'oh-my-posh init zsh --config ~/.config/oh-my-posh/cobalt2.omp.json'
 
-# ─── Lazy-load mise (manages Python, Node, and more) ────────────
+# ─── Eager-load mise (manages Python, Node, and more) ───────────
+# Eagerly activated so shebang scripts (e.g. #!/usr/bin/env node) resolve
+# through mise shims via raw PATH — lazy-load wouldn't fire for those.
+# _sfw_wrap runs later (below) and overlays sfw on top of mise's shims.
 if [[ -o interactive ]]; then
-  _mise_lazy_load() {
-    unset -f mise python python3 pip pip3 node npm npx _mise_lazy_load
-    eval "$(~/.local/bin/mise activate zsh)"
-    _sfw_wrap  # re-define sfw wrappers now that real binaries are on PATH
-  }
-  mise() { _mise_lazy_load && mise "$@"; }
-  python() { _mise_lazy_load && python "$@"; }
-  python3() { _mise_lazy_load && python3 "$@"; }
-  pip() { _mise_lazy_load && pip "$@"; }
-  pip3() { _mise_lazy_load && pip3 "$@"; }
-  # Node.js via mise (replaces nvm - run: mise use node@lts)
-  node() { _mise_lazy_load && node "$@"; }
-  npm() { _mise_lazy_load && npm "$@"; }
-  npx() { _mise_lazy_load && npx "$@"; }
+  eval "$(~/.local/bin/mise activate zsh)"
 fi
 
 # ─── Lazy-load direnv (loads on first cd) ────────────────────────
