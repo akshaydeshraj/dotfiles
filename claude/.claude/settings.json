@@ -82,7 +82,7 @@
   },
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true,
-    "skit@skit-ai": true,
+    "skit@skit-ai": false,
     "cq@cq": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
     "codex@openai-codex": true,
@@ -116,8 +116,8 @@
   },
   "autoUpdatesChannel": "stable",
   "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
   "verbose": true,
-  "preferredNotifChannel": "terminal_bell"
+  "preferredNotifChannel": "terminal_bell",
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
 }

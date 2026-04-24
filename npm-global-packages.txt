@@ -3,7 +3,7 @@
 @mariozechner/cchistory@1.1.11
 @mariozechner/pi-coding-agent@0.69.0
 @modelcontextprotocol/inspector@0.21.1
-@openai/codex@0.121.0
+@openai/codex@0.124.0
 @tomehq/cli@0.7.0
 ccusage@15.5.2
 codex@null
