@@ -116,6 +116,8 @@
   },
   "autoUpdatesChannel": "stable",
   "skipDangerousModePermissionPrompt": true,
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
-  "skipAutoPermissionPrompt": true
+  "verbose": true,
+  "preferredNotifChannel": "terminal_bell"
 }

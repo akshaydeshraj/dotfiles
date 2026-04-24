@@ -156,6 +156,8 @@ brew "starship"
 brew "stow"
 # Command-line tool for Stripe
 brew "stripe-cli"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
 # Multi-modal AI tool to extract and summarize content
 brew "summarize"
 # ISO/Edinburgh-style Prolog interpreter
@@ -184,8 +186,6 @@ brew "wireguard-tools"
 brew "xcodegen"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
-# Feature-rich command-line audio/video downloader
-brew "yt-dlp"
 # Programming language designed for robustness, optimality, and clarity
 brew "zig"
 # Shell extension to navigate your filesystem faster
