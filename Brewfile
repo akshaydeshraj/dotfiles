@@ -1,4 +1,5 @@
 tap "akshaydeshraj/smartclip"
+tap "coollabsio/coolify-cli"
 tap "d12frosted/emacs-plus"
 tap "felixkratz/formulae"
 tap "jandedobbeleer/oh-my-posh"
@@ -196,6 +197,8 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
+# CLI tool for interacting with the Coolify API
+brew "coollabsio/coolify-cli/coolify-cli"
 # GNU Emacs text editor
 brew "d12frosted/emacs-plus/emacs-plus@30"
 # A window border system for macOS
