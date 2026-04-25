@@ -1,7 +1,11 @@
 argcomplete==3.6.2
+black==26.3.1
 git-filter-repo==2.47.0
 huggingface-hub==0.34.4
+isort==8.0.1
 mlx==0.25.1
 open-webui==0.6.28
+pipenv==2026.5.2
+pyflakes==3.4.0
 ranger-fm==1.9.4
 superclaude==4.1.6

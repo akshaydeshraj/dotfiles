@@ -1,6 +1,12 @@
 # ─── Source machine-specific secrets ──────────────────────────────
 [[ -f "$HOME/.env" ]] && source "$HOME/.env"
 
+# ─── Dedupe key arrays (must come before any appends) ─────────────
+# Auto-reload below re-sources this file, so anything mutated additively
+# (path/fpath/precmd_functions) would accumulate without these.
+typeset -U path fpath
+typeset -aU precmd_functions
+
 # ─── Auto-reload zshrc when modified ──────────────────────────────
 _ZSHRC_MTIME=$(stat -f %m ~/.zshrc 2>/dev/null)
 _check_zshrc_reload() {
@@ -41,7 +47,6 @@ path=(
   /usr/local/bin
   $path
 )
-typeset -U path  # Remove duplicates
 
 # ─── Cached eval helper ────────────────────────────────────────
 # Caches output of slow "tool init zsh" commands. Auto-invalidates when the
@@ -60,7 +65,7 @@ _cached_eval() {
 }
 
 # ─── Completion System (with caching) ────────────────────────────
-fpath=(~/.zsh/completion $fpath)
+fpath=($HOME/.zsh/completion $fpath)
 autoload -Uz compinit
 if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
   compinit
@@ -85,7 +90,6 @@ _direnv_hook() {
   eval "$(direnv hook zsh)"
   _direnv_hook
 }
-typeset -ag precmd_functions
 precmd_functions+=(_direnv_hook)
 
 # ─── fzf Fuzzy Finder Integration ────────────────────────────────
@@ -140,6 +144,7 @@ _project_agent_state() {
 }
 
 _run_project_agent() {
+  setopt local_options local_traps
   local tool="$1"
   shift
   local heartbeat_pid=""
@@ -149,9 +154,10 @@ _run_project_agent() {
       sleep 30
       _project_agent_state touch "$tool"
     done
-  ) >/dev/null 2>&1 &
+  ) >/dev/null 2>&1 &!
   heartbeat_pid=$!
-  command "$tool" "$@"
+  trap '[ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" 2>/dev/null; _project_agent_state clear' INT TERM HUP
+  infisical run --projectId=0ab0efb3-526b-4309-8df9-8ef147476dc0 --env=prod --silent -- "$(whence -p "$tool")" "$@"
   local rc=$?
   [ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" >/dev/null 2>&1 || true
   _project_agent_state clear
@@ -161,7 +167,7 @@ _run_project_agent() {
 unalias claude 2>/dev/null
 claude() {
   local args=(--dangerously-skip-permissions --chrome)
-  if [ -d .claude ] && ls .claude/conversations/ >/dev/null 2>&1; then
+  if [ -d .claude/conversations ]; then
     args+=(--continue)
   fi
   _run_project_agent claude "${args[@]}" "$@"
@@ -170,6 +176,17 @@ claude() {
 unalias codex 2>/dev/null
 codex() {
   _run_project_agent codex "$@"
+}
+
+unalias pi 2>/dev/null
+pi() {
+  _run_project_agent pi "$@"
+}
+
+# AWS CLI — credentials injected from Infisical (project: skit-ai, env: prod)
+unalias aws 2>/dev/null
+aws() {
+  infisical run --projectId=c137d757-de63-40df-a30c-16bf28c5466f --env=prod --silent --log-level=warn -- command aws "$@"
 }
 
 agent-wait() { _project_agent_state set wait "${1:-agent}"; }
@@ -210,13 +227,13 @@ ZSH_HIGHLIGHT_STYLES[arg0]='fg=#0088ff'
 _cached_eval openclaw openclaw 'openclaw completion --shell zsh'
 
 # bun completions
-[ -s "/Users/akshaydeshraj/.bun/_bun" ] && source "/Users/akshaydeshraj/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+path=($BUN_INSTALL/bin $path)
 
-alias gam="/Users/akshaydeshraj/bin/gam7/gam"
+alias gam="$HOME/bin/gam7/gam"
 
 # ─── sfw — safe package install wrappers ─────────────────────────
 # Routes install/add commands through sfw; passthrough for everything else.
@@ -237,23 +254,15 @@ _sfw_wrap() {
 _sfw_wrap  # define now for non-mise tools (cargo, uv, yarn, pnpm)
 
 # SmartClip — auto-fix multi-line commands on paste
-source /Users/akshaydeshraj/Code/personal/smartclip/integrations/smartclip.zsh
+source "$HOME/Code/personal/smartclip/integrations/smartclip.zsh"
 
-export BW_SESSION="${BW_SESSION}"
-
-export SENTRY_AUTH_TOKEN="${SENTRY_AUTH_TOKEN}"
-export SENTRY_ACCESS_TOKEN=$SENTRY_AUTH_TOKEN
-
-export METAMCP_BEARER_KEY="${METAMCP_BEARER_KEY}"
-
-export LLM_API_KEY="${LLM_API_KEY}"
-export LLM_MODEL="claude-opus-4-6"
-export LLM_BASE_URL="https://claude.akshaydeshraj.me/v1"
-
-export PATH="$HOME/.cargo/bin:$PATH"
+path=($HOME/.cargo/bin $path)
 
 # Darkbloom
-export PATH="$HOME/.darkbloom/bin:$PATH"
+path=($HOME/.darkbloom/bin $path)
+
+# Go binaries (gopls, gomodifytags, gotests, gore, etc.)
+path=($HOME/go/bin $path)
 
 
 # BEGIN opam configuration
@@ -263,3 +272,8 @@ export PATH="$HOME/.darkbloom/bin:$PATH"
 # This section can be safely removed at any time if needed.
 [[ ! -r "$HOME/.opam/opam-init/init.zsh" ]] || source "$HOME/.opam/opam-init/init.zsh" > /dev/null 2> /dev/null
 # END opam configuration
+
+# Ensure .zshrc itself sources successfully — opam's variables.sh has a buggy
+# guard (`test -z … || return`) that returns 1 on re-source, which would
+# otherwise show as [x] in the prompt after `source ~/.zshrc`.
+true

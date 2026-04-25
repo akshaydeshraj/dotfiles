@@ -1,0 +1,45 @@
+#+title: Doom Config
+#+startup: indent
+#+property: header-args :tangle config.el :results none :exports results
+
+* Theme
+Custom Cobalt2 theme defined in =themes/doom-cobalt2-theme.el=.
+#+begin_src emacs-lisp
+(setq doom-theme 'doom-cobalt2)
+#+end_src
+
+* UI
+** Line numbers
+#+begin_src emacs-lisp
+(setq display-line-numbers-type t)
+#+end_src
+
+** Frame
+Maximize on launch, translucent background to match ghostty's =background-opacity = 0.85=, default text size 16pt.
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+(doom/set-frame-opacity 90 t)
+(set-face-attribute 'default nil :height 140)
+#+end_src
+
+** Treemacs
+Open the project tree the first time a file is opened (not on the dashboard) and re-open after =SPC h r r= reload. Follow the project of the current buffer.
+#+begin_src emacs-lisp
+(defun my/ensure-treemacs-visible ()
+  "Open treemacs unless it is already visible."
+  (when (display-graphic-p)
+    (require 'treemacs)
+    (unless (eq (treemacs-current-visibility) 'visible)
+      (save-selected-window (treemacs)))))
+
+(add-hook 'doom-first-file-hook #'my/ensure-treemacs-visible)
+(add-hook 'doom-after-reload-hook #'my/ensure-treemacs-visible)
+
+(after! treemacs
+  (treemacs-project-follow-mode +1))
+#+end_src
+
+* Org
+#+begin_src emacs-lisp
+(setq org-directory "~/org/")
+#+end_src
