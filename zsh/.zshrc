@@ -136,6 +136,8 @@ alias top='btop'
 alias diff='delta'
 alias rm='rm -i'            # Prompt before each removal
 
+alias cpp='g++-15 -std=gnu++20 -O2 -Wall -DLOCAL'
+
 _project_agent_state() {
   local script="$HOME/Code/personal/dotfiles/tmux/plugins/tmux-project-workspaces/scripts/agent-state.sh"
   [ -n "${TMUX:-}" ] || return 0

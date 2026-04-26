@@ -82,11 +82,12 @@
   },
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true,
-    "skit@skit-ai": false,
+    "skit@skit-ai": true,
     "cq@cq": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
     "codex@openai-codex": true,
-    "obsidian@obsidian-skills": true
+    "obsidian@obsidian-skills": true,
+    "clangd-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "skit-ai": {

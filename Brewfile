@@ -1,7 +1,9 @@
 tap "akshaydeshraj/smartclip"
+tap "borkdude/brew"
 tap "coollabsio/coolify-cli"
 tap "d12frosted/emacs-plus"
 tap "felixkratz/formulae"
+tap "infisical/get-cli"
 tap "jandedobbeleer/oh-my-posh"
 tap "jesseduffield/lazydocker"
 tap "jesseduffield/lazygit"
@@ -33,12 +35,12 @@ brew "azure-cli"
 brew "bat"
 # User-friendly launcher for Bazel
 brew "bazelisk"
-# Secure and free password manager for all of your devices
-brew "bitwarden-cli"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
 # Sexy ANSI fonts for the console
 brew "cfonts"
+# Formatting Clojure code
+brew "cljfmt"
 # Statistics utility to count lines of code
 brew "cloc"
 # Cross-platform make
@@ -69,6 +71,8 @@ brew "fd"
 brew "ffmpeg"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# GNU compiler collection
+brew "gcc"
 # Interact with Google Gemini AI models from the command-line
 brew "gemini-cli"
 # GitHub command-line tool
@@ -81,16 +85,24 @@ brew "git-delta"
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
+# Graph visualization software from AT&T and Bell Labs
+brew "graphviz"
 # Kubernetes package manager
 brew "helm"
 # Improved top (interactive process viewer)
 brew "htop"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
+# International Ispell
+brew "ispell"
 # Git-compatible distributed version control system
 brew "jj"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
+# Development kit for the Java programming language
+brew "openjdk"
+# Anti-bikeshedding Kotlin linter with built-in formatter
+brew "ktlint"
 # Tool that can switch between kubectl contexts easily and create aliases
 brew "kubectx"
 # Simple terminal UI for git commands
@@ -115,8 +127,6 @@ brew "neovim"
 brew "ripgrep"
 # AI coding agent, built for the terminal
 brew "opencode"
-# Development kit for the Java programming language
-brew "openjdk"
 # Multithreaded PNG optimizer written in Rust
 brew "oxipng"
 # Swiss-army knife of markup format conversion
@@ -147,6 +157,8 @@ brew "rust-analyzer"
 brew "rustup"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
+# Autoformat shell script source code
+brew "shfmt"
 # SOund eXchange: universal sound sample translator
 brew "sox"
 # Non-interactive SSH password auth
@@ -197,14 +209,18 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
+# A minimal and opinionated linter for Clojure code that sparks joy.
+brew "borkdude/brew/clj-kondo"
 # CLI tool for interacting with the Coolify API
 brew "coollabsio/coolify-cli/coolify-cli"
 # GNU Emacs text editor
-brew "d12frosted/emacs-plus/emacs-plus@30"
+brew "d12frosted/emacs-plus/emacs-plus@30", args: ["with-compress-install", "with-ctags", "with-dbus", "with-imagemagick", "with-mailutils", "with-xwidgets"]
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
 # Custom macOS statusbar with shell plugin, interaction and graph support
 brew "felixkratz/formulae/sketchybar"
+# The official Infisical CLI
+brew "infisical/get-cli/infisical"
 # Prompt theme engine for any shell
 brew "jandedobbeleer/oh-my-posh/oh-my-posh"
 # A simple terminal UI for docker, written in Go
@@ -249,6 +265,8 @@ cask "maccy"
 cask "ngrok"
 # Image viewer
 cask "qview"
+# Modern programming language in the Lisp/Scheme family
+cask "racket"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Mesh VPN based on WireGuard
@@ -256,7 +274,10 @@ cask "tailscale-app"
 mas "WhatsApp", id: 310633997
 mas "WireGuard", id: 1451685025
 mas "Xcode", id: 497799835
+go "github.com/fatih/gomodifytags"
 go "golang.org/x/tools/gopls"
+go "github.com/x-motemen/gore/cmd/gore"
+go "github.com/cweill/gotests/gotests"
 go "honnef.co/go/tools/cmd/staticcheck"
 cargo "devspec"
 cargo "tauri-cli"

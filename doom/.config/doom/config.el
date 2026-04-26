@@ -7,16 +7,136 @@
 (set-face-attribute 'default nil :height 140)
 
 (defun my/ensure-treemacs-visible ()
-  "Open treemacs unless it is already visible."
+  "Open treemacs unless it is already visible; refresh to current project."
   (when (display-graphic-p)
     (require 'treemacs)
-    (unless (eq (treemacs-current-visibility) 'visible)
+    (if (eq (treemacs-current-visibility) 'visible)
+        (ignore-errors (treemacs-display-current-project-exclusively))
       (save-selected-window (treemacs)))))
 
+(defvar my/treemacs-reload-buffer nil
+  "Buffer that was active before `doom/reload' started.")
+
+(defun my/cache-treemacs-reload-buffer ()
+  "Remember the buffer to restore in treemacs after `doom/reload'."
+  (setq my/treemacs-reload-buffer (window-buffer (selected-window))))
+
+(defun my/restore-treemacs-after-doom-reload ()
+  "Restore treemacs to the buffer that was active before `doom/reload'."
+  (when (display-graphic-p)
+    (require 'treemacs)
+    (let ((source-buffer
+           (if (buffer-live-p my/treemacs-reload-buffer)
+               my/treemacs-reload-buffer
+             (window-buffer (selected-window)))))
+      (when (buffer-live-p source-buffer)
+        (with-current-buffer source-buffer
+          (when (or buffer-file-name default-directory)
+            (save-selected-window
+              (treemacs-select-window)
+              (ignore-errors (treemacs-add-and-display-current-project-exclusively))
+              (when buffer-file-name
+                (ignore-errors (treemacs-find-file))))))))
+    (setq my/treemacs-reload-buffer nil)))
+
 (add-hook 'doom-first-file-hook #'my/ensure-treemacs-visible)
-(add-hook 'doom-after-reload-hook #'my/ensure-treemacs-visible)
+(add-hook 'doom-before-reload-hook #'my/cache-treemacs-reload-buffer)
+(add-hook 'doom-after-reload-hook #'my/restore-treemacs-after-doom-reload)
 
 (after! treemacs
   (treemacs-project-follow-mode +1))
 
+(defun my/freeze-treemacs-follow-during-doom-reload-a (fn &rest args)
+  "Disable `treemacs-project-follow-mode' while `doom/reload' runs.
+Prevents treemacs from flickering through the doom config directory as
+reload briefly visits .el files."
+  (let ((was-on (bound-and-true-p treemacs-project-follow-mode)))
+    (when was-on (treemacs-project-follow-mode -1))
+    (unwind-protect (apply fn args)
+      (when was-on (treemacs-project-follow-mode +1)))))
+
+(advice-add 'doom/reload :around #'my/freeze-treemacs-follow-during-doom-reload-a)
+
+(add-hook 'treemacs-mode-hook
+          (lambda () (setq-local line-spacing 5)))
+
 (setq org-directory "~/org/")
+
+(defvar my/cp-reload-debug t
+  "When non-nil, log compile-command restore traces during `doom/reload'.")
+
+(defun my/cp-reload-log (fmt &rest args)
+  "Emit a reload trace message when `my/cp-reload-debug' is non-nil."
+  (when my/cp-reload-debug
+    (apply #'message (concat "[cp-reload] " fmt) args)))
+
+(defun my/algorithms-cpp-buffer-p (&optional buffer)
+  "Return non-nil when BUFFER visits a C++ file in the algorithms project."
+  (with-current-buffer (or buffer (current-buffer))
+    (and buffer-file-name
+         (member (file-name-extension buffer-file-name) '("cpp" "cc" "cxx"))
+         (string-prefix-p
+          (expand-file-name "~/Code/personal/algorithms/")
+          (expand-file-name buffer-file-name)))))
+
+(defun my/cp-compile-command ()
+  "Set buffer-local compile-command for cpp files inside the algorithms project."
+  (when (my/algorithms-cpp-buffer-p)
+    (let* ((file (file-name-nondirectory buffer-file-name))
+           (stem (file-name-sans-extension file)))
+      (setq-local compile-command
+                  (format "g++-15 -std=gnu++20 -O2 -Wall -DLOCAL %s -o %s && ./%s"
+                          file stem stem)))))
+
+(defun my/refresh-cp-compile-commands ()
+  "Reapply algorithms compile commands to all live buffers."
+  (my/cp-reload-log
+   "refresh: current=%s buffers=%s template-live=%s template-cpp=%s"
+   (buffer-name (current-buffer))
+   (mapcar #'buffer-name (buffer-list))
+   (if-let ((template-buffer (get-file-buffer "~/Code/personal/algorithms/template.cpp")))
+       (buffer-name template-buffer)
+     nil)
+   (if-let ((template-buffer (get-file-buffer "~/Code/personal/algorithms/template.cpp")))
+       (my/algorithms-cpp-buffer-p template-buffer)
+     nil))
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (my/cp-compile-command))))
+
+(defun my/preserve-cp-compile-command-during-doom-reload-a (fn &rest args)
+  "Keep the current algorithms buffer's `compile-command' through `doom/reload'."
+  (let* ((source-buffer (current-buffer))
+         (source-file buffer-file-name)
+         (saved-command (and (my/algorithms-cpp-buffer-p source-buffer)
+                             compile-command))
+         (saved-local-p (with-current-buffer source-buffer
+                          (local-variable-p 'compile-command))))
+    (my/cp-reload-log
+     "save: current=%s file=%s saved-local=%s saved-command=%S"
+     (buffer-name source-buffer)
+     source-file
+     saved-local-p
+     saved-command)
+    (prog1 (apply fn args)
+      (let ((restore-buffer (or (and (buffer-live-p source-buffer) source-buffer)
+                                (and source-file (get-file-buffer source-file)))))
+        (my/cp-reload-log
+         "restore: current=%s restore-buffer=%s live=%s file=%s"
+         (buffer-name (current-buffer))
+         (and restore-buffer (buffer-name restore-buffer))
+         (and restore-buffer (buffer-live-p restore-buffer))
+         source-file)
+        (when (and saved-local-p restore-buffer)
+          (with-current-buffer restore-buffer
+            (setq-local compile-command saved-command)
+            (my/cp-reload-log
+             "restore-applied: buffer=%s compile-command=%S local=%s cpp=%s"
+             (buffer-name (current-buffer))
+             compile-command
+             (local-variable-p 'compile-command)
+             (my/algorithms-cpp-buffer-p (current-buffer)))))))))
+
+(add-hook 'c++-mode-hook #'my/cp-compile-command)
+(add-hook 'doom-after-reload-hook #'my/refresh-cp-compile-commands)
+(advice-add 'doom/reload :around #'my/preserve-cp-compile-command-during-doom-reload-a)
