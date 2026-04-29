@@ -3,9 +3,11 @@
 #+property: header-args :tangle config.el :results none :exports results
 
 * Theme
-Custom Cobalt2 theme defined in =themes/doom-cobalt2-theme.el=.
+Custom Tokyo Night Storm theme defined in =themes/doom-tokyo-night-storm-theme.el=.
+Hand-rolled to match the exact Storm palette (bg =#24283b=) — built-in =doom-tokyo-night= uses the default Night variant (bg =#1a1b26=).
+Palette source-of-truth: =~/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh=.
 #+begin_src emacs-lisp
-(setq doom-theme 'doom-cobalt2)
+(setq doom-theme 'doom-tokyo-night-storm)
 #+end_src
 
 * UI

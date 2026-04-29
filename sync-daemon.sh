@@ -82,10 +82,11 @@ STOW PACKAGES:
 - ~/.config/zed/settings.json vs zed/
 - ~/.config/btop/btop.conf and ~/.config/btop/themes/ vs btop/
 - ~/.yabairc and ~/.skhdrc and ~/.config/sketchybar/ and ~/.config/borders/ vs wm/
-- ~/.config/oh-my-posh/ vs prompt/
+- ~/.config/starship.toml vs prompt/
 - ~/.config/mise/config.toml vs mise/
 - ~/.config/gh/config.yml vs gh/
 - ~/.config/atuin/themes/ vs atuin/
+- ~/.config/bat/themes/ vs bat/
 
 ALSO CHECK:
 - Any changes to Brewfile, npm-global-packages.txt, pipx-packages.txt (regenerated above)

@@ -1,30 +1,96 @@
+# Starship — Tokyo Night Storm
+# Palette source-of-truth: ~/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh
+
+# Use the named palette below (lets us swap themes by changing one line).
+palette = "tokyo_night_storm"
+
 # Increase timeout for slow commands (default is 500ms)
 command_timeout = 1000
 
-# Git: optimize for speed
-[git_status]
-ahead = "⇡${count}"
-behind = "⇢${count}"
-diverged = "⇕⇡${ahead_count}⇢${behind_count}"
-ignore_submodules = true
-untracked = ""           # Don't show untracked count (expensive in large repos)
-stashed = ""             # Skip stash check
+# Prompt format — minimal, two-line. Line 1: context. Line 2: prompt char.
+format = """
+$directory\
+$git_branch\
+$git_status\
+$nodejs\
+$python\
+$rust\
+$golang\
+$aws\
+$cmd_duration\
+$line_break\
+$character"""
 
-[git_branch]
-# Truncate long branch names
-truncation_length = 20
-
-# Node.js: detect only by package.json, not by running node
-[nodejs]
-detect_files = ["package.json", ".node-version"]
-detect_folders = ["node_modules"]
-detect_extensions = []  # Don't detect by .js files (too broad)
-
-# Optional: disable modules you don't need
-[package]
-disabled = true  # Parsing package.json can be slow
-
-# Keep prompt snappy
 [character]
 success_symbol = "[❯](bold green)"
 error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold blue)"
+
+[directory]
+style = "bold blue"
+truncation_length = 3
+truncate_to_repo = true
+read_only = " "
+
+[git_branch]
+symbol = " "
+style = "bold yellow"
+truncation_length = 20
+
+[git_status]
+style = "bold red"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+modified = "✱${count}"
+staged = "+${count}"
+untracked = ""
+stashed = ""
+ignore_submodules = true
+
+[cmd_duration]
+min_time = 2_000
+style = "yellow"
+format = " [$duration]($style)"
+
+[nodejs]
+symbol = " "
+style = "green"
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
+detect_extensions = []
+
+[python]
+symbol = " "
+style = "yellow"
+
+[rust]
+symbol = " "
+style = "red"
+
+[golang]
+symbol = " "
+style = "cyan"
+
+[aws]
+symbol = " "
+style = "orange"
+format = "[$symbol($profile )(\\($region\\) )]($style)"
+
+[package]
+disabled = true
+
+# ── Tokyo Night Storm palette ──────────────────────────────────
+[palettes.tokyo_night_storm]
+black = "#1d202f"
+red = "#f7768e"
+green = "#9ece6a"
+yellow = "#e0af68"
+blue = "#7aa2f7"
+purple = "#bb9af7"
+cyan = "#7dcfff"
+white = "#a9b1d6"
+orange = "#ff9e64"
+bg = "#24283b"
+fg = "#c0caf5"
+border = "#414868"

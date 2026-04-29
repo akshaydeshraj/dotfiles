@@ -18,7 +18,7 @@ tmux_option() {
   fi
 }
 
-border_color="$(tmux_option '@project-workspaces-border-color' 'fg=#ffc600')"
+border_color="$(tmux_option '@project-workspaces-border-color' 'fg=#e0af68')"
 workspaces_title="$(tmux_option '@project-workspaces-workspaces-title' ' Workspaces ')"
 dashboard_title="$(tmux_option '@project-workspaces-dashboard-title' ' Dashboard ')"
 worktree_title="$(tmux_option '@project-workspaces-menu-title' ' Worktree ')"

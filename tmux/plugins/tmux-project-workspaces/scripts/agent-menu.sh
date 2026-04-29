@@ -2,6 +2,12 @@
 
 set -euo pipefail
 
+# ── Tokyo Night Storm palette ─────────────────────────────────────
+# Source-of-truth: ~/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh
+PALETTE_SH="$HOME/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh"
+# shellcheck source=/dev/null
+[ -f "$PALETTE_SH" ] && source "$PALETTE_SH"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STATE_SCRIPT="$SCRIPT_DIR/agent-state.sh"
 SESSION="$(tmux display-message -p '#S')"
@@ -29,7 +35,7 @@ ACTION=$(printf '%s\n' \
   " mark $TOOL done" \
   " clear agent state" \
   | fzf --reverse --prompt='  agent  ' \
-        --color=bg+:#0050A4,fg+:#ffffff,hl:#ffc600,hl+:#ffc600,pointer:#ffc600,prompt:#0088ff)
+        --color="$(tn_fzf_colors)")
 
 case "$ACTION" in
   *"waiting"*)

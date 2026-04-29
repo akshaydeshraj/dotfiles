@@ -1,6 +1,14 @@
 # ─── Source machine-specific secrets ──────────────────────────────
 [[ -f "$HOME/.env" ]] && source "$HOME/.env"
 
+# ─── Tokyo Night Storm palette (single source of truth) ───────────
+# Exports $TN_BG, $TN_FG, $TN_RED, etc. Used below for fzf, syntax
+# highlighting, autosuggestions. App-side configs (ghostty, tmux,
+# btop, sketchybar, etc.) hardcode the same hex with a comment
+# pointing back to palette.sh.
+[[ -f "$HOME/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh" ]] && \
+  source "$HOME/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh"
+
 # ─── Dedupe key arrays (must come before any appends) ─────────────
 # Auto-reload below re-sources this file, so anything mutated additively
 # (path/fpath/precmd_functions) would accumulate without these.
@@ -74,7 +82,8 @@ else
 fi
 
 # ─── Prompt ───────────────────────────────────────────────────────
-_cached_eval oh-my-posh oh-my-posh 'oh-my-posh init zsh --config ~/.config/oh-my-posh/cobalt2.omp.json'
+# Starship reads ~/.config/starship.toml (Tokyo Night Storm).
+_cached_eval starship starship 'starship init zsh'
 
 # ─── Eager-load mise (manages Python, Node, and more) ───────────
 # Eagerly activated so shebang scripts (e.g. #!/usr/bin/env node) resolve
@@ -94,13 +103,8 @@ precmd_functions+=(_direnv_hook)
 
 # ─── fzf Fuzzy Finder Integration ────────────────────────────────
 # Ctrl+R: fuzzy history search | Ctrl+T: fuzzy file search | Alt+C: fuzzy cd
-export FZF_DEFAULT_OPTS="
-  --color=bg+:#0050A4,bg:#122738,fg:#ffffff,fg+:#ffffff
-  --color=hl:#ffc600,hl+:#ffc600,info:#80fcff,marker:#3ad900
-  --color=prompt:#ffc600,spinner:#fb94ff,pointer:#ff628c,header:#0088ff
-  --color=border:#0d3a58,separator:#0d3a58,scrollbar:#0d3a58
-  --color=label:#80fcff,query:#ffffff
-"
+# Colors derived from $TN_* via tn_fzf_colors helper (palette.sh).
+export FZF_DEFAULT_OPTS="--color=$(tn_fzf_colors)"
 _cached_eval fzf fzf 'fzf --zsh'
 
 # Keep arrow keys for simple prefix search (works alongside fzf)
@@ -114,11 +118,15 @@ bindkey "^[[B" history-beginning-search-forward-end
 # Zoxide - smarter cd that learns your habits
 _cached_eval zoxide zoxide 'zoxide init zsh'
 
-export BAT_THEME="TwoDark"
+# bat: TN Storm tmTheme lives in dotfiles bat/ stow package. Rebuild after
+# tmTheme edits with: bat cache --build
+export BAT_THEME="tokyo-night-storm"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
-# ─── eza colors (Cobalt2) ─────────────────────────────────────────
-export EZA_COLORS="da=36:di=34;1:ln=35:ex=32;1:ur=33:uw=33:ux=33:gr=36:gw=36:gx=36:tr=35:tw=35:tx=35:sn=33:sb=33:uu=36:gu=36"
+# ─── eza colors ───────────────────────────────────────────────────
+# Truecolor (24-bit) RGB derived from $TN_* via tn_eza_colors helper
+# (palette.sh). Covers files, perms, ownership, sizes, dates, and git.
+export EZA_COLORS="$(tn_eza_colors)"
 
 # ─── Atuin - Better Shell History ─────────────────────────────────
 # Syncs history across devices, better search UI (Ctrl+R)
@@ -204,26 +212,26 @@ alias serena-work='docker run --rm -i --network host -v ~/Code/work:/workspaces/
 alias serena-personal='docker run --rm -i --network host -v ~/Code/personal:/workspaces/projects ghcr.io/oraios/serena:latest serena'
 
 # ─── Zsh Plugins (must be at end) ─────────────────────────────────
-# Autosuggestions: fish-like suggestions as you type (Cobalt2 dim blue)
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#0050A4"
+# Autosuggestions: fish-like suggestions as you type (TN dim border).
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=${TN_DIM}"
 source /opt/homebrew/opt/zsh-autosuggestions/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# Syntax highlighting: colors commands (Cobalt2 palette)
+# Syntax highlighting: colors commands (Tokyo Night Storm palette).
 source /opt/homebrew/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-ZSH_HIGHLIGHT_STYLES[command]='fg=#3ad900,bold'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=#3ad900,bold'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=#3ad900,bold'
-ZSH_HIGHLIGHT_STYLES[function]='fg=#3ad900,bold'
-ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#ff628c'
-ZSH_HIGHLIGHT_STYLES[path]='fg=#80fcff,underline'
-ZSH_HIGHLIGHT_STYLES[globbing]='fg=#fb94ff'
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#ffc600'
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#ffc600'
-ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=#ffc600'
-ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=#ff9d00'
-ZSH_HIGHLIGHT_STYLES[redirection]='fg=#fb94ff'
-ZSH_HIGHLIGHT_STYLES[comment]='fg=#0050A4'
-ZSH_HIGHLIGHT_STYLES[arg0]='fg=#0088ff'
+ZSH_HIGHLIGHT_STYLES[command]="fg=${TN_GREEN},bold"
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=${TN_GREEN},bold"
+ZSH_HIGHLIGHT_STYLES[alias]="fg=${TN_GREEN},bold"
+ZSH_HIGHLIGHT_STYLES[function]="fg=${TN_GREEN},bold"
+ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=${TN_RED}"
+ZSH_HIGHLIGHT_STYLES[path]="fg=${TN_CYAN},underline"
+ZSH_HIGHLIGHT_STYLES[globbing]="fg=${TN_MAGENTA}"
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=${TN_YELLOW}"
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=${TN_YELLOW}"
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]="fg=${TN_YELLOW}"
+ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=${TN_ORANGE}"
+ZSH_HIGHLIGHT_STYLES[redirection]="fg=${TN_MAGENTA}"
+ZSH_HIGHLIGHT_STYLES[comment]="fg=${TN_DIM}"
+ZSH_HIGHLIGHT_STYLES[arg0]="fg=${TN_BLUE}"
 
 # OpenClaw Completion
 _cached_eval openclaw openclaw 'openclaw completion --shell zsh'

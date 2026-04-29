@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
+# Yabai — Tokyo Night Storm (insert_feedback_color uses TN yellow #e0af68)
+# Palette source-of-truth: ~/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh
 
 # load scripting addition
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
@@ -22,7 +24,7 @@ yabai -m config                                 \
     active_window_opacity        1.0            \
     normal_window_opacity        0.90           \
     window_opacity               off            \
-    insert_feedback_color        0xffffc600     \
+    insert_feedback_color        0xffe0af68     \
     split_ratio                  0.50           \
     split_type                   auto           \
     auto_balance                 off            \

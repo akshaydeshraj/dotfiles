@@ -1,33 +1,37 @@
 # Auto-launch into tmux
 command = /bin/zsh -c 'while true; do /opt/homebrew/bin/tmux new-session -A -s main; done'
 
-# Cobalt2 Theme
-background = #122738
-foreground = #ffffff
-cursor-color = #ffc600
-cursor-text = #122738
-selection-background = #0050A4
-selection-foreground = #ffffff
-palette = 0=#000000
-palette = 1=#ff628c
-palette = 2=#3ad900
-palette = 3=#ffc600
-palette = 4=#0088ff
-palette = 5=#fb94ff
-palette = 6=#80fcff
-palette = 7=#ffffff
-palette = 8=#0050A4
-palette = 9=#ff628c
-palette = 10=#3ad900
-palette = 11=#ffc600
-palette = 12=#0088ff
-palette = 13=#fb94ff
-palette = 14=#80fcff
-palette = 15=#ffffff
+# Tokyo Night Storm theme
+# Palette source-of-truth: ~/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh
+background = #24283b
+foreground = #c0caf5
+selection-background = #2e3c64
+selection-foreground = #c0caf5
+cursor-color = #c0caf5
+cursor-text = #24283b
+palette = 0=#1d202f
+palette = 1=#f7768e
+palette = 2=#9ece6a
+palette = 3=#e0af68
+palette = 4=#7aa2f7
+palette = 5=#bb9af7
+palette = 6=#7dcfff
+palette = 7=#a9b1d6
+palette = 8=#414868
+palette = 9=#f7768e
+palette = 10=#9ece6a
+palette = 11=#e0af68
+palette = 12=#7aa2f7
+palette = 13=#bb9af7
+palette = 14=#7dcfff
+palette = 15=#c0caf5
 
 background-opacity = 0.85
 font-size = 16
-font-thicken = true
+# font-thicken: macOS-only "fake bold" that thickens every glyph. Disabled
+# for a lighter, more elegant feel. Set to true if text feels too thin on
+# your display.
+font-thicken = false
 # Split panes via tmux
 keybind = super+d=text:\x02%
 keybind = super+shift+d=text:\x02"

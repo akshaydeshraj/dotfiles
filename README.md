@@ -28,12 +28,19 @@ chmod +x install.sh
 | `tmux` | `.tmux.conf`, `tmux/plugins/tmux-project-workspaces/` | Terminal multiplexer, popup worktree/session picker, dashboard, worktree tools |
 | `ghostty` | `.config/ghostty/config` | Terminal emulator |
 | `wm` | `.yabairc`, `.skhdrc`, `.config/sketchybar/` | Tiling WM + hotkeys + status bar |
-| `prompt` | `.config/oh-my-posh/`, `.config/starship.toml` | Shell prompt themes |
-| `zed` | `.config/zed/settings.json` | Editor (vim mode, Solarized) |
+| `prompt` | `.config/starship.toml` | Starship prompt (Tokyo Night Storm) |
+| `zed` | `.config/zed/settings.json` | Editor (vim mode, Tokyo Night Storm) |
 | `mise` | `.config/mise/config.toml` | Runtime manager (Node LTS, Ruby 3) |
 | `btop` | `.config/btop/btop.conf` | System monitor |
 | `gh` | `.config/gh/config.yml` | GitHub CLI |
 | `claude` | `.claude/CLAUDE.md`, `.claude/RTK.md` | Claude Code instructions |
+| `doom` | `.config/doom/` | Doom Emacs config (Tokyo Night Storm) |
+| `atuin` | `.config/atuin/themes/` | Atuin shell history theme |
+| `bat` | `.config/bat/themes/` | bat syntax theme (Tokyo Night Storm tmTheme) |
+
+## Theme
+
+Active theme: **Tokyo Night Storm**. Source-of-truth: [`themes/tokyo-night-storm/palette.sh`](themes/tokyo-night-storm/palette.sh). Full mapping in [`themes/tokyo-night-storm/THEME.md`](themes/tokyo-night-storm/THEME.md). Previous theme (Cobalt2) is archived under [`themes/cobalt2/`](themes/cobalt2/).
 
 ## Secrets
 

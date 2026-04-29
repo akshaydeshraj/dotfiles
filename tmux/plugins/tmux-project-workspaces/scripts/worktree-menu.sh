@@ -3,6 +3,12 @@
 
 set -euo pipefail
 
+# ── Tokyo Night Storm palette ─────────────────────────────────────
+# Source-of-truth: ~/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh
+PALETTE_SH="$HOME/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh"
+# shellcheck source=/dev/null
+[ -f "$PALETTE_SH" ] && source "$PALETTE_SH"
+
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -19,7 +25,7 @@ ACTION=$(printf '%s\n' \
   " prune orphans" \
   "󰜺 kill this session only" \
   | fzf --reverse --prompt='  worktree  ' \
-        --color=bg+:#0050A4,fg+:#ffffff,hl:#ffc600,hl+:#ffc600,pointer:#ffc600,prompt:#0088ff)
+        --color="$(tn_fzf_colors)")
 
 case "$ACTION" in
   *"new worktree"*)
@@ -43,7 +49,7 @@ case "$ACTION" in
     exec "$SCRIPT_DIR/agent-menu.sh"
     ;;
   *"prune orphans"*)
-    tmux display-popup -E -w 80% -h 70% -b rounded -S "fg=#ffc600" -T " Orphans " \
+    tmux display-popup -E -w 80% -h 70% -b rounded -S "fg=${TN_YELLOW}" -T " Orphans " \
       "$SCRIPT_DIR/prune-orphans.sh --interactive"
     ;;
   *"kill this session"*)

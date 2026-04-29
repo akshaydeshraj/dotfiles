@@ -17,6 +17,12 @@
 
 set -euo pipefail
 
+# ── Tokyo Night Storm palette ─────────────────────────────────────
+# Source-of-truth: ~/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh
+PALETTE_SH="$HOME/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh"
+# shellcheck source=/dev/null
+[ -f "$PALETTE_SH" ] && source "$PALETTE_SH"
+
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -347,7 +353,7 @@ add_picker() {
   pick=$(printf '%s\n' "$cands" | fzf \
     --reverse --prompt='add ❯ ' \
     --header='pick a repo to track (Esc to cancel)' \
-    --color=bg+:#0050A4,fg+:#ffffff,hl:#ffc600,hl+:#ffc600,pointer:#ffc600,prompt:#0088ff) || return 0
+    --color="$(tn_fzf_colors)") || return 0
   [ -n "$pick" ] && add_project "$pick"
 }
 
@@ -360,7 +366,7 @@ pick_project_for_new_worktree() {
     --reverse --delimiter=$'\t' --with-nth=1,2 \
     --prompt='new worktree ❯ ' \
     --header='pick a project (Esc to cancel)' \
-    --color=bg+:#0050A4,fg+:#ffffff,hl:#ffc600,hl+:#ffc600,pointer:#ffc600,prompt:#0088ff) || return 0
+    --color="$(tn_fzf_colors)") || return 0
   printf '%s\n' "$pick" | awk -F'\t' '{print $2}'
 }
 
@@ -572,7 +578,7 @@ result=$("$SELF" --render | fzf \
   --bind "ctrl-k:execute-silent($SELF --kill-session {2})+reload($SELF --render)" \
   --bind "ctrl-p:execute-silent($SELF --open-pr {2})+abort" \
   --bind "ctrl-n:execute-silent($SELF --request-new {6})+abort" \
-  --color=bg+:#0050A4,fg+:#ffffff,hl:#ffc600,hl+:#ffc600,pointer:#ffc600,prompt:#0088ff)
+  --color="$(tn_fzf_colors)")
 fzf_exit=$?
 set -e
 

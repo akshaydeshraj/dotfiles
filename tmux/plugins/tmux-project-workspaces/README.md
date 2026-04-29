@@ -174,7 +174,7 @@ Plugin behavior is controlled through tmux options.
 Supported options:
 
 ```tmux
-set -g @project-workspaces-border-color 'fg=#ffc600'
+set -g @project-workspaces-border-color 'fg=#e0af68'
 set -g @project-workspaces-workspaces-title ' Workspaces '
 set -g @project-workspaces-dashboard-title ' Dashboard '
 set -g @project-workspaces-menu-title ' Worktree '

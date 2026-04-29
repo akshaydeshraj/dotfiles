@@ -4,6 +4,12 @@
 
 set -euo pipefail
 
+# ── Tokyo Night Storm palette ─────────────────────────────────────
+# Source-of-truth: ~/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh
+PALETTE_SH="$HOME/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh"
+# shellcheck source=/dev/null
+[ -f "$PALETTE_SH" ] && source "$PALETTE_SH"
+
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 
 DEFAULT_STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/tmux-project-workspaces"
@@ -120,7 +126,7 @@ sel=$(render | fzf --ansi --reverse --no-sort \
   --bind "ctrl-k:execute-silent(tmux kill-session -t {1} 2>/dev/null)+reload($SELF --render)" \
   --bind "ctrl-p:execute-silent(cd {2} 2>/dev/null && gh pr view --web)" \
   --bind "ctrl-s:execute(cd {2} 2>/dev/null && git fetch origin main && git rebase origin/main)" \
-  --color=bg+:#0050A4,fg+:#ffffff,hl:#ffc600,hl+:#ffc600,pointer:#ffc600,prompt:#0088ff)
+  --color="$(tn_fzf_colors)")
 
 [ -z "$sel" ] && exit 0
 target=$(printf '%s\n' "$sel" | awk -F'\t' '{print $1}')

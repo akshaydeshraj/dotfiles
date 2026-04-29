@@ -1,4 +1,4 @@
-(setq doom-theme 'doom-cobalt2)
+(setq doom-theme 'doom-tokyo-night-storm)
 
 (setq display-line-numbers-type t)
 

@@ -35,13 +35,15 @@ defaults write com.apple.screencapture location -string "$HOME/Desktop/Screensho
 defaults write com.apple.screencapture type -string "png"
 defaults write com.apple.screencapture disable-shadow -bool true
 
-# ===== Appearance (Cobalt2) =====
+# ===== Appearance (Tokyo Night Storm) =====
 defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"          # Dark mode
-defaults write NSGlobalDomain AppleAccentColor -int 3                     # Yellow accent
-defaults write NSGlobalDomain AppleHighlightColor -string "0.847059 0.847059 0.862745 Yellow"
-# Wallpaper — Cobalt2 (set first wallpaper from the collection)
+# AppleAccentColor enum: -1=Multicolor 0=Graphite 1=Red 2=Orange 3=Yellow
+# 4=Green 5=Blue 6=Purple 7=Pink. Blue matches TN Storm's primary accent #7aa2f7.
+defaults write NSGlobalDomain AppleAccentColor -int 5
+defaults write NSGlobalDomain AppleHighlightColor -string "0.698039 0.843137 1.000000 Blue"
+# Wallpaper — Tokyo Night Storm. Palette-derived, reproducible via wallpapers/generate.sh.
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-WALLPAPER="$DOTFILES_DIR/wallpapers/02_a_car_driving_on_a_road_at_night.png"
+WALLPAPER="$DOTFILES_DIR/wallpapers/01_tokyo-night-storm-glow.png"
 if [[ -f "$WALLPAPER" ]]; then
   osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$WALLPAPER\"" 2>/dev/null || true
 fi

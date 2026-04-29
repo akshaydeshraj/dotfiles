@@ -3,7 +3,7 @@ set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
-STOW_PACKAGES=(zsh git tmux ghostty wm prompt zed mise btop gh claude atuin arc)
+STOW_PACKAGES=(zsh git tmux ghostty wm prompt zed mise btop gh claude atuin arc doom bat)
 FAILURES=()
 
 echo "=== Dotfiles Bootstrap ==="
@@ -64,6 +64,14 @@ for pkg in "${STOW_PACKAGES[@]}"; do
   stow --no-folding --dir="$DOTFILES_DIR" --target="$HOME" "$pkg"
 done
 
+# ── Step 5a: Build bat theme cache ──
+# bat reads tmThemes from ~/.config/bat/themes/ but only after `cache --build`.
+# Stowing puts the symlink there; this step registers it so BAT_THEME works.
+if command -v bat &>/dev/null; then
+  echo "Building bat theme cache..."
+  bat cache --build >/dev/null 2>&1 || FAILURES+=("bat cache --build")
+fi
+
 # ── Step 5b: Git hooks ──
 echo "Configuring git hooks..."
 git -C "$DOTFILES_DIR" config core.hooksPath "$DOTFILES_DIR/hooks"
@@ -82,13 +90,14 @@ git config --global delta.minus-style "syntax #3a1528"
 git config --global delta.minus-emph-style "syntax #6b2038"
 git config --global delta.plus-style "syntax #1a3a1a"
 git config --global delta.plus-emph-style "syntax #2a5a2a"
-git config --global delta.line-numbers-minus-style "#ff628c"
-git config --global delta.line-numbers-plus-style "#3ad900"
-git config --global delta.line-numbers-zero-style "#0d3a58"
+# Tokyo Night Storm — palette source-of-truth: themes/tokyo-night-storm/palette.sh
+git config --global delta.line-numbers-minus-style "#f7768e"
+git config --global delta.line-numbers-plus-style "#9ece6a"
+git config --global delta.line-numbers-zero-style "#414868"
 git config --global delta.hunk-header-style "file line-number syntax"
 git config --global delta.hunk-header-decoration-style "blue box"
-git config --global delta.file-style "#ffc600 bold"
-git config --global delta.file-decoration-style "#ffc600 ul"
+git config --global delta.file-style "#e0af68 bold"
+git config --global delta.file-decoration-style "#e0af68 ul"
 git config --global merge.conflictstyle diff3
 git config --global credential.https://github.com.helper ""
 git config --global credential.https://github.com.helper "!/opt/homebrew/bin/gh auth git-credential"
