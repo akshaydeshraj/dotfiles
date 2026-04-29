@@ -1,0 +1,16 @@
+# Cobalt2 theme for Atuin
+
+[theme]
+name = "cobalt2"
+parent = "default"
+
+[colors]
+AlertInfo = "#0088ff"
+AlertWarn = "#ffc600"
+AlertError = "#ff628c"
+Annotation = "#80fcff"
+Base = "#ffffff"
+Guidance = "#3ad900"
+Important = "#ffc600"
+Title = "#ffc600"
+Muted = "#0050A4"
