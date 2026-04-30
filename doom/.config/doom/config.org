@@ -36,6 +36,13 @@ Keep Treemacs available, but open it manually when needed. Follow the project of
           (lambda () (setq-local line-spacing 5)))
 #+end_src
 
+** Projectile
+Auto-discover repos under =~/Code/personal= and =~/Code/work= so new projects show up in =SPC p p= without manually adding each one. Run =SPC p D= (=projectile-discover-projects-in-search-path=) after creating a new repo.
+#+begin_src emacs-lisp
+(after! projectile
+  (setq projectile-project-search-path '("~/Code/personal/" "~/Code/work/")))
+#+end_src
+
 * Org
 #+begin_src emacs-lisp
 (setq org-directory "~/org/")

@@ -13,6 +13,9 @@
 (add-hook 'treemacs-mode-hook
           (lambda () (setq-local line-spacing 5)))
 
+(after! projectile
+  (setq projectile-project-search-path '("~/Code/personal/" "~/Code/work/")))
+
 (setq org-directory "~/org/")
 
 (defun my/add-straight-package-to-load-path (package)
