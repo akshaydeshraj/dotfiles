@@ -4,7 +4,8 @@
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (doom/set-frame-opacity 90 t)
-(set-face-attribute 'default nil :height 140)
+(setq doom-font (font-spec :family "JetBrains Mono" :size 16 :weight 'thin)
+      doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size 16 :weight 'thin))
 
 (after! treemacs
   (treemacs-project-follow-mode +1))

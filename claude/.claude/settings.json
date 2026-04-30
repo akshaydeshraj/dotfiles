@@ -117,6 +117,7 @@
   },
   "autoUpdatesChannel": "stable",
   "skipDangerousModePermissionPrompt": true,
+  "theme": "dark-ansi",
   "verbose": true,
   "preferredNotifChannel": "terminal_bell",
   "skipAutoPermissionPrompt": true,

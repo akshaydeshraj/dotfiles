@@ -37,10 +37,15 @@ defaults write com.apple.screencapture disable-shadow -bool true
 
 # ===== Appearance (Tokyo Night Storm) =====
 defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"          # Dark mode
-# AppleAccentColor enum: -1=Multicolor 0=Graphite 1=Red 2=Orange 3=Yellow
-# 4=Green 5=Blue 6=Purple 7=Pink. Blue matches TN Storm's primary accent #7aa2f7.
-defaults write NSGlobalDomain AppleAccentColor -int 5
-defaults write NSGlobalDomain AppleHighlightColor -string "0.698039 0.843137 1.000000 Blue"
+# Accent color: UNSET → macOS Multicolor default (apps pick their natural
+# accent). Strong accents (yellow/blue/purple) clash with TN Storm's calm
+# palette. AppleAccentColor enum values also drift across macOS versions, so
+# deletion is more portable than a hardcoded int.
+defaults delete NSGlobalDomain AppleAccentColor 2>/dev/null || true
+# Highlight color (selection background): TN fg #c0caf5 — same pastel as
+# window borders and terminal text. Visible when selecting items in Finder,
+# Mail, Notes, text fields.
+defaults write NSGlobalDomain AppleHighlightColor -string "0.752941 0.792157 0.960784 Other"
 # Wallpaper — Tokyo Night Storm. Palette-derived, reproducible via wallpapers/generate.sh.
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 WALLPAPER="$DOTFILES_DIR/wallpapers/01_tokyo-night-storm-glow.png"

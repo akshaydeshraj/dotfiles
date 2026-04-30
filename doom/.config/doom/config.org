@@ -18,10 +18,12 @@ Palette source-of-truth: =~/Code/personal/dotfiles/themes/tokyo-night-storm/pale
 
 ** Frame
 Maximize on launch, translucent background to match ghostty's =background-opacity = 0.85=, default text size 16pt.
+Use JetBrains Mono Regular to match ghostty's bundled default font (ghostty ships JetBrains Mono and we don't override =font-family= in =ghostty/config=).
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (doom/set-frame-opacity 90 t)
-(set-face-attribute 'default nil :height 140)
+(setq doom-font (font-spec :family "JetBrains Mono" :size 16 :weight 'thin)
+      doom-variable-pitch-font (font-spec :family "JetBrains Mono" :size 16 :weight 'thin))
 #+end_src
 
 ** Treemacs

@@ -249,6 +249,7 @@ cask "claude-code@latest"
 cask "steipete/tap/codexbar"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
+cask "font-jetbrains-mono"
 cask "font-symbols-only-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"
