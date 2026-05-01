@@ -14,7 +14,10 @@
           (lambda () (setq-local line-spacing 5)))
 
 (after! projectile
-  (setq projectile-project-search-path '("~/Code/personal/" "~/Code/work/")))
+  (setq projectile-project-search-path '("~/Code/personal/" "~/Code/work/")
+        projectile-enable-caching nil
+        projectile-git-command "git ls-files -zco"
+        projectile-git-fd-args "-tl -H -I -0 -E .git -tf --strip-cwd-prefix -c never"))
 
 (setq org-directory "~/org/")
 

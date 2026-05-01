@@ -18,7 +18,7 @@ Palette source-of-truth: =~/Code/personal/dotfiles/themes/tokyo-night-storm/pale
 
 ** Frame
 Maximize on launch, translucent background to match ghostty's =background-opacity = 0.85=, default text size 16pt.
-Use JetBrains Mono Regular to match ghostty's bundled default font (ghostty ships JetBrains Mono and we don't override =font-family= in =ghostty/config=).
+
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (doom/set-frame-opacity 90 t)
@@ -38,9 +38,18 @@ Keep Treemacs available, but open it manually when needed. Follow the project of
 
 ** Projectile
 Auto-discover repos under =~/Code/personal= and =~/Code/work= so new projects show up in =SPC p p= without manually adding each one. Run =SPC p D= (=projectile-discover-projects-in-search-path=) after creating a new repo.
+
+Disable the file-list cache so files created by external tools (AI agents, scripts) show up in =SPC SPC= immediately. On git repos =git ls-files= is fast enough that caching isn't worth the staleness.
+
+Show gitignored files (e.g. =CLAUDE.md=, =AGENTS.md=, agent scratch directories) in the finder. They stay ignored by git, just visible to the editor.
+
+When =fd= is installed, projectile uses it instead of =git ls-files=, so the fix has to live in =projectile-git-fd-args=. Adding =-I= (=--no-ignore=) tells fd to bypass =.gitignore=. The =git ls-files= override is kept as a fallback for environments without fd.
 #+begin_src emacs-lisp
 (after! projectile
-  (setq projectile-project-search-path '("~/Code/personal/" "~/Code/work/")))
+  (setq projectile-project-search-path '("~/Code/personal/" "~/Code/work/")
+        projectile-enable-caching nil
+        projectile-git-command "git ls-files -zco"
+        projectile-git-fd-args "-tl -H -I -0 -E .git -tf --strip-cwd-prefix -c never"))
 #+end_src
 
 * Org
