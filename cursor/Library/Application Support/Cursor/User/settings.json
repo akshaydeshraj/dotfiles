@@ -1,0 +1,24 @@
+{
+    // Tokyo Night Storm palette — canonical source: themes/tokyo-night-storm/palette.sh
+    // Theme provided by enkia.tokyo-night extension (matches our palette exactly).
+    "workbench.colorTheme": "Tokyo Night Storm",
+    "tokyoNight.storm": true,
+
+    // Font: JetBrains Mono (installed via Brewfile cask `font-jetbrains-mono`)
+    "editor.fontFamily": "'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 15,
+    "editor.lineHeight": 1.6,
+    "terminal.integrated.fontFamily": "'JetBrains Mono', Menlo, Monaco, monospace",
+    "terminal.integrated.fontSize": 14,
+
+    // Mirror Zed UX defaults
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "editor.minimap.enabled": false,
+    "editor.cursorBlinking": "smooth",
+    "editor.smoothScrolling": true,
+    "editor.bracketPairColorization.enabled": true,
+    "workbench.editor.enablePreview": false,
+    "telemetry.telemetryLevel": "off"
+}

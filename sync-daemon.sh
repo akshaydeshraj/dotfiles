@@ -80,6 +80,7 @@ STOW PACKAGES:
 - ~/.tmux.conf and ~/.config/tmux/ vs tmux/
 - ~/.config/ghostty/config vs ghostty/
 - ~/.config/zed/settings.json vs zed/
+- ~/Library/Application Support/Cursor/User/settings.json vs cursor/
 - ~/.config/btop/btop.conf and ~/.config/btop/themes/ vs btop/
 - ~/.yabairc and ~/.skhdrc and ~/.config/sketchybar/ and ~/.config/borders/ vs wm/
 - ~/.config/starship.toml vs prompt/

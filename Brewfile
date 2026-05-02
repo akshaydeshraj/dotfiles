@@ -60,6 +60,8 @@ brew "duti"
 brew "elixir"
 # Utility for exporting data from Ente and decrypt the export from Ente Auth
 brew "ente-cli"
+# Command-line tool to interact with exercism.io
+brew "exercism"
 # Modern, maintained replacement for ls
 brew "eza"
 # Like neofetch, but much faster because written mostly in C
@@ -273,6 +275,7 @@ mas "WhatsApp", id: 310633997
 mas "WireGuard", id: 1451685025
 mas "Xcode", id: 497799835
 vscode "elixir-lsp.elixir-ls"
+vscode "enkia.tokyo-night"
 go "github.com/fatih/gomodifytags"
 go "golang.org/x/tools/gopls"
 go "github.com/x-motemen/gore/cmd/gore"
