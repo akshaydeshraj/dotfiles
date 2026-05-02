@@ -1,0 +1,10 @@
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      "cmd-k i": "editor::Hover",
+      "cmd-k s": "editor::ShowSignatureHelp",
+      "ctrl-space": "editor::ShowCompletions"
+    }
+  }
+]

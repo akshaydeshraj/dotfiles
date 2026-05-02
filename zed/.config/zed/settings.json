@@ -7,8 +7,94 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "language_models": {
+    "openai_compatible": {
+      "Omniroute": {
+        "api_url": "https://omniroute.akshaydeshraj.me/v1",
+        "available_models": [
+          {
+            "name": "nvidia/minimaxai/minimax-m2.7",
+            "max_tokens": 200000,
+            "max_output_tokens": 32000,
+            "max_completion_tokens": 200000,
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+              "chat_completions": true,
+              "interleaved_reasoning": false
+            }
+          },
+          {
+            "name": "cx/gpt-5.4",
+            "max_tokens": 200000,
+            "max_output_tokens": 32000,
+            "max_completion_tokens": 200000,
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+              "chat_completions": true,
+              "interleaved_reasoning": false
+            }
+          },
+          {
+            "name": "cu/default",
+            "max_tokens": 200000,
+            "max_output_tokens": 32000,
+            "max_completion_tokens": 200000,
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+              "chat_completions": true,
+              "interleaved_reasoning": false
+            }
+          }
+        ]
+      }
+    }
+  },
+  "edit_predictions": {
+    "provider": "open_ai_compatible_api",
+    "mode": "eager",
+    "open_ai_compatible_api": {
+      "api_url": "https://omniroute.akshaydeshraj.me/v1/completions",
+      "model": "cu/default",
+      "prompt_format": "infer",
+      "max_output_tokens": 64
+    }
+  },
+  "show_completions_on_input": true,
+  "show_completion_documentation": true,
+  "auto_signature_help": true,
+  "show_signature_help_after_edits": true,
+  "hover_popover_delay": 1200,
+  "hover_popover_hiding_delay": 300,
+  "languages": {
+    "Elixir": {
+      "language_servers": ["elixir-ls", "!expert", "!dexter", "!next-ls", "!lexical", "..."],
+      "format_on_save": "on"
+    },
+    "EEx": {
+      "language_servers": ["elixir-ls", "!expert", "!dexter", "!next-ls", "!lexical", "..."],
+      "format_on_save": "on"
+    },
+    "HEEx": {
+      "language_servers": ["elixir-ls", "!expert", "!dexter", "!next-ls", "!lexical", "..."],
+      "format_on_save": "on"
+    }
+  },
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 1000
+    }
+  },
   "project_panel": {
-    "dock": "right"
+    "dock": "left"
   },
   "outline_panel": {
     "dock": "right"
