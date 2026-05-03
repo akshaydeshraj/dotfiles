@@ -25,7 +25,7 @@ chmod +x install.sh
 |---------|---------|-------------|
 | `zsh` | `.zshrc`, `.zprofile` | Shell config with lazy-loading, modern CLI aliases |
 | `git` | `.config/git/ignore` | Global gitignore (git config set by install.sh) |
-| `tmux` | `.tmux.conf`, `tmux/plugins/tmux-project-workspaces/` | Terminal multiplexer, popup worktree/session picker, dashboard, worktree tools |
+| `tmux` | `.tmux.conf`, `.config/tmux/` | Terminal multiplexer, fzf session switcher, yazi/lazygit popups |
 | `ghostty` | `.config/ghostty/config` | Terminal emulator |
 | `wm` | `.yabairc`, `.skhdrc`, `.config/sketchybar/` | Tiling WM + hotkeys + status bar |
 | `prompt` | `.config/starship.toml` | Starship prompt (Tokyo Night Storm) |
@@ -114,39 +114,15 @@ cp ~/.config/newapp/config newapp/.config/newapp/config
 stow --no-folding -t ~ newapp
 ```
 
-## tmux Workspaces Plugin
+## tmux Keybinds
 
-This repo includes a local tmux plugin at [tmux/plugins/tmux-project-workspaces](tmux/plugins/tmux-project-workspaces/README.md).
+- `Alt+K`: fzf session switcher (popup), shows `●` for current session and `🤖` when Claude is waiting
+- `Alt+J`: switch to last session
+- `Alt+B`: Claude fork overlay (`claude --continue --fork-session`)
+- `prefix + e`: toggle yazi file explorer
+- `prefix + g`: lazygit popup
 
-What it provides:
-- `M-k`: workspace picker for projects, git worktrees, and plain tmux sessions
-- `M-K` or `prefix + Tab`: dashboard
-- `prefix + w`: worktree menu
-- `prefix + W`: fast worktree create
-- `prefix + G` / `prefix + R`: PR shortcuts
-
-The implementation is hybrid:
-- shell handles tmux popup/prompt/fzf UX
-- a Rust core binary handles render, repo/worktree resolution, create/remove actions, and kill/remove policy
-
-This split exists because the picker and worktree logic outgrew pure shell. The Rust core lives under:
-
-```text
-tmux/plugins/tmux-project-workspaces/
-├── tmux-project-workspaces.tmux
-├── Cargo.toml
-├── src/main.rs
-└── scripts/
-```
-
-Build and reload after editing:
-
-```bash
-cargo build --release --manifest-path tmux/plugins/tmux-project-workspaces/Cargo.toml
-tmux source-file ~/.tmux.conf
-```
-
-The plugin supports tmux options for storage paths, popup titles, and the Rust binary location. See the plugin README for the full option list and architecture notes.
+A previous Rust-based worktree/workspaces plugin lived at `tmux/plugins/tmux-project-workspaces/`. It was removed in favour of a minimal config; the snapshot is preserved on the `worktree-experiment` git tag.
 
 ## Key Design Decisions
 

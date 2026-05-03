@@ -1,5 +1,0 @@
-# stow ignore patterns (regex, package-relative)
-# Skip the plugins/ subtree — it's loaded by absolute path from .tmux.conf
-# and contains a Rust workspace whose target/ build artifacts must NOT be
-# symlinked into ~/plugins/.
-^/plugins
