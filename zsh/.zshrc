@@ -245,16 +245,47 @@ path=($BUN_INSTALL/bin $path)
 
 alias gam="$HOME/bin/gam7/gam"
 
+# ─── Supply chain: 7-day release cooldown ────────────────────────
+# Blocks any package version published <7d ago. Most malicious releases
+# are caught within 24-48h (axios, litellm, pytorch-lightning attacks
+# would all have been blocked). Pairs with sfw (socket malware scan)
+# below for defense in depth.
+#   - uv:   reads UV_EXCLUDE_NEWER env var (this line)
+#   - npm:  ~/.npmrc            min-release-age=7
+#   - pnpm: ~/.config/pnpm/rc   minimumReleaseAge=10080
+#   - pip:  --uploaded-prior-to flag injected by _sfw_wrap below
+#   - cargo: no clean integration with sfw; install cargo-cooldown
+#     manually if needed (`cargo install cargo-cooldown`).
+# Override for urgent CVE patches: UV_EXCLUDE_NEWER= cmd ...
+export UV_EXCLUDE_NEWER="7 days"
+
 # ─── sfw — safe package install wrappers ─────────────────────────
 # Routes install/add commands through sfw; passthrough for everything else.
 # _sfw_wrap is called after mise lazy-load so it can override the real binaries.
 _sfw_wrap() {
-  for _cmd in npm yarn pnpm pip pip3 uv cargo; do
+  # Most tools: just route install/add through sfw. Cooldown is enforced
+  # via env var (uv) or per-tool config files (npm/pnpm).
+  for _cmd in npm yarn pnpm uv cargo; do
     eval "
       ${_cmd}() {
         case \"\$1\" in
           install|add|i) command sfw ${_cmd} \"\$@\" ;;
           *)             command ${_cmd} \"\$@\" ;;
+        esac
+      }
+    "
+  done
+  # pip lacks a config-file equivalent for relative durations, so inject
+  # --uploaded-prior-to on each install call (recomputed dynamically).
+  for _cmd in pip pip3; do
+    eval "
+      ${_cmd}() {
+        case \"\$1\" in
+          install)
+            local _cd=\$(date -v-7d +%Y-%m-%d 2>/dev/null || date -d '7 days ago' +%Y-%m-%d)
+            command sfw ${_cmd} \"\$@\" --uploaded-prior-to \"\$_cd\"
+            ;;
+          *) command ${_cmd} \"\$@\" ;;
         esac
       }
     "

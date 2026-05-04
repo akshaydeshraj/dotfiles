@@ -90,23 +90,25 @@ def discover_profiles() -> list[Path]:
 
 
 def patch_workspaces(obj: dict) -> int:
-    """Mutate `obj` in place. Return number of workspaces modified."""
+    """Mutate `obj` in place. Return number of workspaces modified.
+
+    For workspaces in WORKSPACE_ACCENTS: set the primary gradient color to
+    the mapped TN value so Zen's --zen-primary-color reflects TN colors.
+    For all other workspaces: leave colors alone but still kill the
+    overlay so the userChrome.css flat colors show through.
+    """
     spaces = obj.get("spaces") or []
     changed = 0
     for space in spaces:
-        uuid = space.get("uuid")
-        if uuid not in WORKSPACE_ACCENTS:
-            continue
-        primary_rgb = list(WORKSPACE_ACCENTS[uuid])
         theme = space.get("theme") or {}
         if theme.get("type") != "gradient":
-            # Skip non-gradient themes (e.g. user already cleared it)
             continue
-        for color in theme.get("gradientColors") or []:
-            if color.get("isPrimary"):
-                color["c"] = primary_rgb
-        # Kill the visual overlay; keep the primary color so Zen still
-        # populates --zen-primary-color from it.
+        uuid = space.get("uuid")
+        if uuid in WORKSPACE_ACCENTS:
+            primary_rgb = list(WORKSPACE_ACCENTS[uuid])
+            for color in theme.get("gradientColors") or []:
+                if color.get("isPrimary"):
+                    color["c"] = primary_rgb
         theme["opacity"] = 0
         space["theme"] = theme
         changed += 1
