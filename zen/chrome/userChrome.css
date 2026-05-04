@@ -1,0 +1,242 @@
+/* Tokyo Night Storm — Zen browser chrome theme
+ * Palette source-of-truth: themes/tokyo-night-storm/palette.sh
+ *
+ * Applies to: sidebar, urlbar, tabs, toolbar, menus, popups, workspace UI.
+ *
+ * Per-workspace accents are hardwired by UUID below. If you delete and
+ * recreate a workspace, capture its new UUID from zen-sessions.jsonlz4
+ * (see zen/THEME.md) and update the selectors at the bottom of this file.
+ */
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* ── Tokyo Night Storm palette ────────────────────────────────── */
+:root {
+  --tn-bg:            #24283b;
+  --tn-bg-dark:       #1f2335;
+  --tn-bg-highlight:  #292e42;
+  --tn-fg:            #c0caf5;
+  --tn-fg-dark:       #a9b1d6;
+  --tn-selection-bg:  #2e3c64;
+  --tn-border:        #414868;
+  --tn-comment:       #565f89;
+
+  --tn-red:     #f7768e;
+  --tn-green:   #9ece6a;
+  --tn-yellow:  #e0af68;
+  --tn-blue:    #7aa2f7;
+  --tn-magenta: #bb9af7;
+  --tn-cyan:    #7dcfff;
+  --tn-orange:  #ff9e64;
+
+  /* Zen / Firefox theme variable overrides */
+  --zen-colors-primary: var(--tn-blue) !important;
+  --zen-colors-secondary: var(--tn-magenta) !important;
+  --zen-colors-tertiary: var(--tn-bg-highlight) !important;
+  --zen-colors-border: var(--tn-border) !important;
+
+  --toolbar-bgcolor: var(--tn-bg) !important;
+  --toolbar-color: var(--tn-fg) !important;
+  --tab-selected-bgcolor: var(--tn-bg-highlight) !important;
+  --tab-selected-textcolor: var(--tn-fg) !important;
+  --lwt-toolbarbutton-hover-background: rgba(192, 202, 245, 0.08) !important;
+  --lwt-toolbarbutton-active-background: rgba(192, 202, 245, 0.14) !important;
+  --urlbar-box-bgcolor: var(--tn-bg-dark) !important;
+  --urlbar-box-focus-bgcolor: var(--tn-bg-dark) !important;
+  --urlbar-box-text-color: var(--tn-fg) !important;
+  --autocomplete-popup-background: var(--tn-bg) !important;
+  --autocomplete-popup-color: var(--tn-fg) !important;
+  --autocomplete-popup-highlight-background: var(--tn-selection-bg) !important;
+  --autocomplete-popup-highlight-color: var(--tn-fg) !important;
+}
+
+/* ── Browser frame ────────────────────────────────────────────── */
+#main-window,
+#navigator-toolbox,
+#TabsToolbar,
+#PersonalToolbar {
+  background-color: var(--tn-bg) !important;
+  color: var(--tn-fg) !important;
+}
+
+/* Sidebar (vertical tabs) */
+#sidebar-box,
+#zen-sidebar-box,
+#zen-tabbox-wrapper,
+.zen-sidebar-tabs-wrapper,
+#vertical-tabs {
+  background-color: var(--tn-bg) !important;
+  color: var(--tn-fg) !important;
+  border-color: var(--tn-border) !important;
+}
+
+/* ── URL bar ──────────────────────────────────────────────────── */
+#urlbar,
+#urlbar-background {
+  background-color: var(--tn-bg-dark) !important;
+  color: var(--tn-fg) !important;
+  border: 1px solid var(--tn-border) !important;
+  box-shadow: none !important;
+}
+
+#urlbar[focused="true"] > #urlbar-background,
+#urlbar[open] > #urlbar-background {
+  border-color: var(--tn-blue) !important;
+  box-shadow: 0 0 0 1px var(--tn-blue) !important;
+}
+
+#urlbar-input {
+  color: var(--tn-fg) !important;
+}
+
+#urlbar .urlbarView {
+  background-color: var(--tn-bg) !important;
+  color: var(--tn-fg) !important;
+  border-color: var(--tn-border) !important;
+}
+
+#urlbar .urlbarView-row[selected],
+#urlbar .urlbarView-row:hover {
+  background-color: var(--tn-selection-bg) !important;
+  color: var(--tn-fg) !important;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────────── */
+.tabbrowser-tab {
+  color: var(--tn-fg-dark) !important;
+}
+
+.tabbrowser-tab[selected="true"],
+.tabbrowser-tab[multiselected="true"] {
+  background-color: var(--tn-bg-highlight) !important;
+  color: var(--tn-fg) !important;
+}
+
+.tabbrowser-tab[selected="true"] .tab-label,
+.tabbrowser-tab[selected="true"] .tab-icon-image {
+  filter: none !important;
+}
+
+.tab-line {
+  background-color: var(--zen-colors-primary, var(--tn-blue)) !important;
+}
+
+.tabbrowser-tab[pinned] {
+  border-color: var(--tn-border) !important;
+}
+
+/* Tab close button */
+.tab-close-button:hover {
+  background-color: var(--tn-red) !important;
+  color: var(--tn-bg) !important;
+}
+
+/* ── Toolbar buttons ──────────────────────────────────────────── */
+toolbar .toolbarbutton-1 {
+  color: var(--tn-fg) !important;
+}
+
+toolbar .toolbarbutton-1[open],
+toolbar .toolbarbutton-1:hover {
+  background-color: var(--tn-bg-highlight) !important;
+  color: var(--tn-fg) !important;
+}
+
+#back-button[disabled],
+#forward-button[disabled] {
+  opacity: 0.4 !important;
+}
+
+/* ── Workspace pills / switcher ──────────────────────────────── */
+#zen-workspaces-button toolbarbutton {
+  border-radius: 8px !important;
+  margin: 2px !important;
+}
+
+#zen-workspaces-button toolbarbutton[active="true"] {
+  background-color: var(--zen-colors-primary, var(--tn-blue)) !important;
+  color: var(--tn-bg) !important;
+  box-shadow: 0 0 0 1px var(--tn-blue) !important;
+}
+
+/* ── Per-workspace accents (hardwired by UUID) ───────────────── */
+/* Captured from zen-sessions.jsonlz4. Update if workspaces are recreated.
+ * Per Codex's reading of Zen's installed source, zen-workspace-id is set on
+ * tabs / menuitems / .zen-workspace-tabs-section — NOT on :root or
+ * #main-window. So workspace tinting only applies inside the workspace's
+ * own tab section. The global accent is driven by Zen's own --zen-primary-color
+ * which is set per-workspace from each space's stored theme primary color
+ * (see zen-sessions.jsonlz4 → spaces[].theme.gradientColors[isPrimary].c).
+ * The companion script `zen/clear-workspace-themes.py` writes TN RGB into
+ * those gradient primaries while Zen is quit, with opacity=0 so the
+ * gradient doesn't visually overlay the chrome.
+ */
+
+.zen-workspace-tabs-section[zen-workspace-id="{84c43e1f-a011-43ff-b812-9902759e4d37}"] {
+  --zen-primary-color: var(--tn-magenta) !important;
+}
+
+.zen-workspace-tabs-section[zen-workspace-id="{54313d76-7b8c-4a60-9172-8859ac2524ee}"] {
+  --zen-primary-color: var(--tn-blue) !important;
+}
+
+/* Tint URL focus ring + active tab line with the active workspace's primary. */
+#urlbar[focused="true"] > #urlbar-background {
+  border-color: var(--zen-primary-color, var(--tn-blue)) !important;
+  box-shadow: 0 0 0 1px var(--zen-primary-color, var(--tn-blue)) !important;
+}
+
+.tabbrowser-tab[selected="true"] .tab-line {
+  background-color: var(--zen-primary-color, var(--tn-blue)) !important;
+}
+
+/* ── Menus / popups ──────────────────────────────────────────── */
+menupopup,
+panel,
+.panel-arrowcontent,
+.menupopup-arrowscrollbox {
+  background-color: var(--tn-bg) !important;
+  color: var(--tn-fg) !important;
+  border: 1px solid var(--tn-border) !important;
+}
+
+menuitem:hover,
+menuitem[_moz-menuactive="true"] {
+  background-color: var(--tn-selection-bg) !important;
+  color: var(--tn-fg) !important;
+}
+
+menuseparator {
+  border-color: var(--tn-border) !important;
+}
+
+/* ── Findbar ─────────────────────────────────────────────────── */
+.findbar-container {
+  background-color: var(--tn-bg) !important;
+  color: var(--tn-fg) !important;
+  border-top: 1px solid var(--tn-border) !important;
+}
+
+/* ── Notifications / infobars ────────────────────────────────── */
+.notificationbox-stack {
+  background-color: var(--tn-bg) !important;
+  color: var(--tn-fg) !important;
+}
+
+/* ── Bookmarks bar ───────────────────────────────────────────── */
+#PersonalToolbar .bookmark-item {
+  color: var(--tn-fg-dark) !important;
+}
+
+#PersonalToolbar .bookmark-item:hover {
+  background-color: var(--tn-bg-highlight) !important;
+  color: var(--tn-fg) !important;
+}
+
+/* ── Splitters / borders ─────────────────────────────────────── */
+splitter,
+#sidebar-splitter,
+.toolbar-splitter {
+  background-color: var(--tn-border) !important;
+  border-color: var(--tn-border) !important;
+}

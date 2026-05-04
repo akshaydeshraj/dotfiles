@@ -64,7 +64,15 @@ for pkg in "${STOW_PACKAGES[@]}"; do
   stow --no-folding --dir="$DOTFILES_DIR" --target="$HOME" "$pkg"
 done
 
-# ── Step 5a: Build bat theme cache ──
+# ── Step 5a: Link Zen browser chrome ──
+# Zen profile paths embed a random ID and contain spaces, so we don't stow.
+# The helper script discovers profiles via profiles.ini and symlinks chrome/.
+if [[ -d "$HOME/Library/Application Support/zen" ]]; then
+  echo "Linking Zen browser chrome (Tokyo Night Storm)..."
+  bash "$DOTFILES_DIR/zen/link-profile.sh" || FAILURES+=("zen link-profile")
+fi
+
+# ── Step 5b: Build bat theme cache ──
 # bat reads tmThemes from ~/.config/bat/themes/ but only after `cache --build`.
 # Stowing puts the symlink there; this step registers it so BAT_THEME works.
 if command -v bat &>/dev/null; then
@@ -72,7 +80,7 @@ if command -v bat &>/dev/null; then
   bat cache --build >/dev/null 2>&1 || FAILURES+=("bat cache --build")
 fi
 
-# ── Step 5b: Git hooks ──
+# ── Step 5c: Git hooks ──
 echo "Configuring git hooks..."
 git -C "$DOTFILES_DIR" config core.hooksPath "$DOTFILES_DIR/hooks"
 

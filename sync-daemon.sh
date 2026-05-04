@@ -17,6 +17,12 @@ log() { echo "[$(date +'%Y-%m-%d %H:%M:%S')] $*" >> "$LOG"; }
 
 log "=== Sync started ==="
 
+# ── Phase 0: Push Zen browser chrome into profiles ──
+# Zen's macOS sandbox blocks symlinks, so we copy. Idempotent.
+if [[ -d "$HOME/Library/Application Support/zen" ]]; then
+  bash "$DOTFILES/zen/link-profile.sh" >> "$LOG" 2>&1 || log "zen sync failed"
+fi
+
 # ── Phase 1: Regenerate package lists (fast, no AI needed) ──
 brew bundle dump --force --file="$DOTFILES/Brewfile" --describe >> "$LOG" 2>&1 || log "brew bundle dump failed"
 

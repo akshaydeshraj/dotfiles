@@ -1,0 +1,54 @@
+/* Tokyo Night Storm — Zen browser content theme
+ * Palette source-of-truth: themes/tokyo-night-storm/palette.sh
+ *
+ * Re-skins about: pages (new tab, home, blank, private browsing) so the
+ * empty-state experience matches the chrome.
+ */
+
+@-moz-document url("about:blank"),
+               url("about:home"),
+               url("about:newtab"),
+               url("about:privatebrowsing"),
+               url-prefix("about:welcome") {
+  :root,
+  body {
+    background-color: #24283b !important;
+    color: #c0caf5 !important;
+  }
+
+  /* New-tab search bar */
+  .search-wrapper input,
+  .fake-editable {
+    background-color: #1f2335 !important;
+    color: #c0caf5 !important;
+    border: 1px solid #414868 !important;
+  }
+
+  .search-wrapper input:focus {
+    border-color: #7aa2f7 !important;
+    box-shadow: 0 0 0 1px #7aa2f7 !important;
+  }
+
+  /* Top sites tiles */
+  .top-site-outer .tile,
+  .card-outer {
+    background-color: #292e42 !important;
+    color: #c0caf5 !important;
+    border-color: #414868 !important;
+  }
+
+  .top-site-outer .title {
+    color: #a9b1d6 !important;
+  }
+
+  /* Section headers */
+  .section-title,
+  .click-target {
+    color: #c0caf5 !important;
+  }
+
+  /* Private-browsing hero */
+  .wordmark {
+    fill: #bb9af7 !important;
+  }
+}

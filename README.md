@@ -37,6 +37,7 @@ chmod +x install.sh
 | `doom` | `.config/doom/` | Doom Emacs config (Tokyo Night Storm) |
 | `atuin` | `.config/atuin/themes/` | Atuin shell history theme |
 | `bat` | `.config/bat/themes/` | bat syntax theme (Tokyo Night Storm tmTheme) |
+| `zen` | `chrome/userChrome.css`, `chrome/userContent.css` | Zen browser Tokyo Night Storm theme (linked into profiles via `zen/link-profile.sh`, not stowed) |
 
 ## Theme
 
