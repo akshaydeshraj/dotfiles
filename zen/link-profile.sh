@@ -69,7 +69,7 @@ for rel in "${PROFILE_PATHS[@]}"; do
   sync_one "$profile_dir/chrome/userChrome.css"  "$CHROME_SRC/userChrome.css"  || CHANGED=$((CHANGED + 1))
   sync_one "$profile_dir/chrome/userContent.css" "$CHROME_SRC/userContent.css" || CHANGED=$((CHANGED + 1))
   if (( CHANGED > before )); then
-    echo "  Synced chrome → $rel"
+    echo "  Synced chrome -> $rel"
   fi
 
   # Ensure prefs needed for userChrome.css + Browser Console.

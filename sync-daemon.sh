@@ -18,8 +18,8 @@ log() { echo "[$(date +'%Y-%m-%d %H:%M:%S')] $*" >> "$LOG"; }
 log "=== Sync started ==="
 
 # ── Phase 0: Push Zen browser chrome into profiles ──
-# Zen's macOS sandbox blocks symlinks, so we copy. Idempotent.
-if [[ -d "$HOME/Library/Application Support/zen" ]]; then
+# Keep Zen sync opt-in until the theme is fully verified.
+if [[ "${DOTFILES_SYNC_ZEN:-0}" == "1" && -d "$HOME/Library/Application Support/zen" ]]; then
   bash "$DOTFILES/zen/link-profile.sh" >> "$LOG" 2>&1 || log "zen sync failed"
 fi
 
