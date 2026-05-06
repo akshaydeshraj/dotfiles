@@ -153,11 +153,83 @@ _project_agent_state() {
   "$script" "$@" >/dev/null 2>&1 || true
 }
 
+# ─── Infisical multi-account routing ─────────────────────────────
+# Two self-hosted Infisical instances ("profiles") are kept logged in via
+# `infisical login --domain=...` — credentials live in the macOS keychain,
+# both accounts tracked in ~/.infisical/infisical-config.json. The CLI
+# selects the right keychain identity from the --domain flag, so we never
+# touch the global "active user" state.
+#
+# Per-repo opt-in: a repo with `.infisical.json` at its root gets its own
+# workspace. Domain is taken from the file's `_domain` field if present
+# (explicit, recommended); otherwise falls back to the cwd-based heuristic
+# below. Always prefer `_domain` — cwd routing is brittle (a work-tree path
+# can hold a repo whose secrets live in personal, etc.).
+#
+# Example .infisical.json:
+#   {
+#     "workspaceId": "0ab0efb3-...",
+#     "defaultEnvironment": "prod",
+#     "_domain": "https://infisical.akshaydeshraj.me"
+#   }
+# (Infisical CLI ignores `_domain`; only the wrapper reads it.)
+#
+# Default for everything else lives at `~/.infisical.json` — same schema.
+# Edit that file to change the default (no shell edits required). With no
+# per-repo and no home-level config, the tool runs without secret injection.
+#
+# Cwd-based domain resolution (used only when `.infisical.json` lacks
+# `_domain`), highest precedence first:
+#   1. $INFISICAL_PROFILE env var (explicit override)
+#   2. $PWD under ~/Code/work/*       → skit
+#   3. $PWD under ~/Code/personal/*   → personal
+#   4. fallback: skit (work)
+#
+# To add a new repo: drop a `.infisical.json` with `workspaceId` and `_domain`
+# at its root. To add a new profile: extend _resolve_infisical_domain below
+# and `infisical login --domain=<new-url>` once.
+_resolve_infisical_domain() {
+  local profile="${INFISICAL_PROFILE:-}"
+  if [ -z "$profile" ]; then
+    case "$PWD/" in
+      $HOME/Code/work/*)     profile=skit ;;
+      $HOME/Code/personal/*) profile=personal ;;
+      *)                     profile=skit ;;
+    esac
+  fi
+  case "$profile" in
+    skit)     echo "https://infisical.skit.ai" ;;
+    personal) echo "https://infisical.akshaydeshraj.me" ;;
+    *) echo "unknown infisical profile: $profile" >&2; return 1 ;;
+  esac
+}
+
+# Resolve the directory holding .infisical.json. The CLI only reads it from
+# the path passed via --project-config-dir (or cwd as a fallback), so for
+# repo subdirs we walk up to the git toplevel.
+_resolve_project_config_dir() {
+  git -C "$PWD" rev-parse --show-toplevel 2>/dev/null || echo "$PWD"
+}
+
+# Read the optional `_domain` field out of a .infisical.json. Infisical CLI
+# ignores unknown fields, so this is safe to embed alongside workspaceId.
+# Echoes empty string if the field is missing or the file is malformed.
+# Uses `command grep` to bypass the user's grep→rg alias.
+_extract_infisical_domain_override() {
+  local file="$1"
+  [ -f "$file" ] || return 0
+  command grep -oE '"_domain"[[:space:]]*:[[:space:]]*"[^"]*"' "$file" 2>/dev/null \
+    | command sed -E 's/.*"_domain"[[:space:]]*:[[:space:]]*"([^"]*)".*/\1/' \
+    | command head -1
+}
+
 _run_project_agent() {
   setopt local_options local_traps
   local tool="$1"
   shift
   local heartbeat_pid=""
+  local config_dir
+  config_dir="$(_resolve_project_config_dir)"
   _project_agent_state touch "$tool"
   (
     while true; do
@@ -167,8 +239,29 @@ _run_project_agent() {
   ) >/dev/null 2>&1 &!
   heartbeat_pid=$!
   trap '[ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" 2>/dev/null; _project_agent_state clear' INT TERM HUP
-  infisical run --projectId=0ab0efb3-526b-4309-8df9-8ef147476dc0 --env=prod --silent -- "$(whence -p "$tool")" "$@"
-  local rc=$?
+  # If the repo doesn't carry its own .infisical.json, fall back to the
+  # home-level default (~/.infisical.json) — same schema, edit one file
+  # instead of the shell function when the default needs to change.
+  if [[ ! -f "$config_dir/.infisical.json" ]] && [[ -f "$HOME/.infisical.json" ]]; then
+    config_dir="$HOME"
+  fi
+  local rc
+  if [[ -f "$config_dir/.infisical.json" ]]; then
+    local domain
+    domain="$(_extract_infisical_domain_override "$config_dir/.infisical.json")"
+    local domain_source="file"
+    if [ -z "$domain" ]; then
+      domain_source="cwd-resolver"
+      domain="$(_resolve_infisical_domain)" || { rc=$?; [ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" >/dev/null 2>&1; _project_agent_state clear; return $rc; }
+    fi
+    [ -n "${INFISICAL_DEBUG:-}" ] && print -u2 "[infisical-wrapper] config_dir=$config_dir domain=$domain (source=$domain_source)"
+    infisical run --domain="$domain" --project-config-dir="$config_dir" --env=prod --silent -- "$(whence -p "$tool")" "$@"
+    rc=$?
+  else
+    [ -n "${INFISICAL_DEBUG:-}" ] && print -u2 "[infisical-wrapper] no .infisical.json — running $tool without injection"
+    "$(whence -p "$tool")" "$@"
+    rc=$?
+  fi
   [ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" >/dev/null 2>&1 || true
   _project_agent_state clear
   return $rc
@@ -193,10 +286,12 @@ pi() {
   _run_project_agent pi "$@"
 }
 
-# AWS CLI — credentials injected from Infisical (project: skit-ai, env: prod)
+# AWS CLI — credentials injected from Infisical (work account).
+# Project ID lives in ~/.aws/.infisical.json; domain is fixed since AWS
+# creds only exist in the work instance regardless of cwd.
 unalias aws 2>/dev/null
 aws() {
-  infisical run --projectId=c137d757-de63-40df-a30c-16bf28c5466f --env=prod --silent --log-level=warn -- command aws "$@"
+  infisical run --domain=https://infisical.skit.ai --project-config-dir="$HOME/.aws" --env=prod --silent --log-level=warn -- command aws "$@"
 }
 
 agent-wait() { _project_agent_state set wait "${1:-agent}"; }
