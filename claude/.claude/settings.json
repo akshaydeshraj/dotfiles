@@ -6,7 +6,7 @@
     "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
   },
   "permissions": {
-    "defaultMode": "auto"
+    "defaultMode": "bypassPermissions"
   },
   "hooks": {
     "PreToolUse": [
@@ -116,6 +116,7 @@
     }
   },
   "autoUpdatesChannel": "stable",
+  "tui": "default",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark-ansi",
   "verbose": true,

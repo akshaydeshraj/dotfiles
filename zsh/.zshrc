@@ -155,16 +155,18 @@ _project_agent_state() {
 
 # ─── Infisical multi-account routing ─────────────────────────────
 # Two self-hosted Infisical instances ("profiles") are kept logged in via
-# `infisical login --domain=...` — credentials live in the macOS keychain,
-# both accounts tracked in ~/.infisical/infisical-config.json. The CLI
-# selects the right keychain identity from the --domain flag, so we never
-# touch the global "active user" state.
+# `infisical login --domain=...`. Both accounts live in `loggedInUsers`
+# inside ~/.infisical/infisical-config.json (credentials in macOS keychain).
+#
+# Important: Infisical CLI v0.43 ignores the --domain flag for routing —
+# every request is sent to whichever domain matches the file's
+# `loggedInUserEmail` + `LoggedInUserDomain`. So we MUST rewrite that
+# active-user pointer before each `infisical run` invocation. That's what
+# `_infisical_set_active_user` below does.
 #
 # Per-repo opt-in: a repo with `.infisical.json` at its root gets its own
-# workspace. Domain is taken from the file's `_domain` field if present
-# (explicit, recommended); otherwise falls back to the cwd-based heuristic
-# below. Always prefer `_domain` — cwd routing is brittle (a work-tree path
-# can hold a repo whose secrets live in personal, etc.).
+# workspace. Domain comes from the file's `_domain` field if present
+# (explicit, recommended); otherwise from cwd-based routing.
 #
 # Example .infisical.json:
 #   {
@@ -174,16 +176,17 @@ _project_agent_state() {
 #   }
 # (Infisical CLI ignores `_domain`; only the wrapper reads it.)
 #
-# Default for everything else lives at `~/.infisical.json` — same schema.
-# Edit that file to change the default (no shell edits required). With no
-# per-repo and no home-level config, the tool runs without secret injection.
+# Default workspaceId for repos that don't carry their own config lives in
+# `~/.infisical.json`. Its `_domain` field tags WHICH instance owns that
+# workspace (workspaceIds are instance-specific). The wrapper falls back
+# to this file ONLY when cwd routing agrees with `_domain`; otherwise it
+# skips injection rather than 404 against a foreign instance.
 #
-# Cwd-based domain resolution (used only when `.infisical.json` lacks
-# `_domain`), highest precedence first:
+# Cwd-based domain resolution, highest precedence first:
 #   1. $INFISICAL_PROFILE env var (explicit override)
 #   2. $PWD under ~/Code/work/*       → skit
 #   3. $PWD under ~/Code/personal/*   → personal
-#   4. fallback: skit (work)
+#   4. fallback                       → personal
 #
 # To add a new repo: drop a `.infisical.json` with `workspaceId` and `_domain`
 # at its root. To add a new profile: extend _resolve_infisical_domain below
@@ -194,7 +197,7 @@ _resolve_infisical_domain() {
     case "$PWD/" in
       $HOME/Code/work/*)     profile=skit ;;
       $HOME/Code/personal/*) profile=personal ;;
-      *)                     profile=skit ;;
+      *)                     profile=personal ;;
     esac
   fi
   case "$profile" in
@@ -202,6 +205,42 @@ _resolve_infisical_domain() {
     personal) echo "https://infisical.akshaydeshraj.me" ;;
     *) echo "unknown infisical profile: $profile" >&2; return 1 ;;
   esac
+}
+
+# Switch the active Infisical user/domain in ~/.infisical/infisical-config.json
+# to the one matching `target_domain` (e.g. https://infisical.skit.ai). This
+# is required because Infisical CLI's --domain flag is ignored for routing;
+# only the active-user pointer steers requests. Atomic via temp file +
+# os.replace. No-op if the target is already active or the config is missing.
+# Errors out (and aborts the caller) if the target domain has no logged-in
+# user — fix with `infisical login --domain=<target>` once.
+_infisical_set_active_user() {
+  local target_domain="${1%/}"
+  local cfg="$HOME/.infisical/infisical-config.json"
+  [ -f "$cfg" ] || return 0
+  command jq --version >/dev/null 2>&1 || { print -u2 "[infisical-wrapper] jq not found; cannot switch active user"; return 1; }
+  local target_api="${target_domain}/api"
+  local current_email current_domain
+  current_email="$(command jq -r '.loggedInUserEmail // ""' "$cfg" 2>/dev/null)"
+  current_domain="$(command jq -r '.LoggedInUserDomain // ""' "$cfg" 2>/dev/null)"
+  if [ "$current_domain" = "$target_api" ] && [ -n "$current_email" ]; then
+    return 0
+  fi
+  local target_email
+  target_email="$(command jq -r --arg d "$target_api" '.loggedInUsers[]? | select(.domain == $d) | .email' "$cfg" 2>/dev/null | command head -1)"
+  if [ -z "$target_email" ]; then
+    print -u2 "[infisical-wrapper] no logged-in user for $target_domain — run: infisical login --domain=$target_domain"
+    return 2
+  fi
+  local tmp
+  tmp="$(command mktemp "$cfg.XXXXXX")" || return 1
+  if ! command jq --arg email "$target_email" --arg domain "$target_api" \
+        '.loggedInUserEmail = $email | .LoggedInUserDomain = $domain' \
+        "$cfg" > "$tmp"; then
+    command rm -f "$tmp"
+    return 1
+  fi
+  command mv -f "$tmp" "$cfg" || { command rm -f "$tmp"; return 1; }
 }
 
 # Resolve the directory holding .infisical.json. The CLI only reads it from
@@ -239,27 +278,46 @@ _run_project_agent() {
   ) >/dev/null 2>&1 &!
   heartbeat_pid=$!
   trap '[ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" 2>/dev/null; _project_agent_state clear' INT TERM HUP
-  # If the repo doesn't carry its own .infisical.json, fall back to the
-  # home-level default (~/.infisical.json) — same schema, edit one file
-  # instead of the shell function when the default needs to change.
-  if [[ ! -f "$config_dir/.infisical.json" ]] && [[ -f "$HOME/.infisical.json" ]]; then
-    config_dir="$HOME"
-  fi
   local rc
-  if [[ -f "$config_dir/.infisical.json" ]]; then
-    local domain
-    domain="$(_extract_infisical_domain_override "$config_dir/.infisical.json")"
-    local domain_source="file"
-    if [ -z "$domain" ]; then
-      domain_source="cwd-resolver"
-      domain="$(_resolve_infisical_domain)" || { rc=$?; [ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" >/dev/null 2>&1; _project_agent_state clear; return $rc; }
+  local domain=""
+  local domain_source=""
+  local using_home_fallback=0
+  local skip_injection=0
+  # If the repo doesn't carry its own .infisical.json, fall back to the
+  # home-level default (~/.infisical.json) for workspaceId — but only if
+  # cwd routing agrees with the home file's `_domain` tag. Otherwise the
+  # home workspace lives in a different Infisical instance than where
+  # we'd route, so injection would 404. In that case skip injection.
+  if [[ ! -f "$config_dir/.infisical.json" ]] && [[ -f "$HOME/.infisical.json" ]]; then
+    local home_domain cwd_domain
+    home_domain="$(_extract_infisical_domain_override "$HOME/.infisical.json")"
+    cwd_domain="$(_resolve_infisical_domain)" || { rc=$?; [ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" >/dev/null 2>&1; _project_agent_state clear; return $rc; }
+    if [ -z "$home_domain" ] || [ "${home_domain%/}" = "${cwd_domain%/}" ]; then
+      config_dir="$HOME"
+      using_home_fallback=1
+      domain="$cwd_domain"
+      domain_source="cwd-resolver+home-fallback"
+    else
+      skip_injection=1
+      [ -n "${INFISICAL_DEBUG:-}" ] && print -u2 "[infisical-wrapper] home workspace tagged $home_domain but cwd routes to $cwd_domain — skipping injection"
     fi
-    [ -n "${INFISICAL_DEBUG:-}" ] && print -u2 "[infisical-wrapper] config_dir=$config_dir domain=$domain (source=$domain_source)"
-    infisical run --domain="$domain" --project-config-dir="$config_dir" --env=prod --silent -- "$(whence -p "$tool")" "$@"
+  fi
+  if (( skip_injection )) || [[ ! -f "$config_dir/.infisical.json" ]]; then
+    [ -n "${INFISICAL_DEBUG:-}" ] && (( ! skip_injection )) && print -u2 "[infisical-wrapper] no .infisical.json — running $tool without injection"
+    "$(whence -p "$tool")" "$@"
     rc=$?
   else
-    [ -n "${INFISICAL_DEBUG:-}" ] && print -u2 "[infisical-wrapper] no .infisical.json — running $tool without injection"
-    "$(whence -p "$tool")" "$@"
+    if [ -z "$domain" ]; then
+      domain="$(_extract_infisical_domain_override "$config_dir/.infisical.json")"
+      domain_source="file"
+      if [ -z "$domain" ]; then
+        domain_source="cwd-resolver"
+        domain="$(_resolve_infisical_domain)" || { rc=$?; [ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" >/dev/null 2>&1; _project_agent_state clear; return $rc; }
+      fi
+    fi
+    [ -n "${INFISICAL_DEBUG:-}" ] && print -u2 "[infisical-wrapper] config_dir=$config_dir domain=$domain (source=$domain_source)"
+    _infisical_set_active_user "$domain" || { rc=$?; [ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" >/dev/null 2>&1; _project_agent_state clear; return $rc; }
+    infisical run --domain="$domain" --project-config-dir="$config_dir" --env=prod --silent -- "$(whence -p "$tool")" "$@"
     rc=$?
   fi
   [ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" >/dev/null 2>&1 || true
@@ -288,9 +346,13 @@ pi() {
 
 # AWS CLI — credentials injected from Infisical (work account).
 # Project ID lives in ~/.aws/.infisical.json; domain is fixed since AWS
-# creds only exist in the work instance regardless of cwd.
+# creds only exist in the work instance regardless of cwd. The
+# _infisical_set_active_user call is required because the CLI's --domain
+# flag is decorative; routing follows the active user in
+# ~/.infisical/infisical-config.json.
 unalias aws 2>/dev/null
 aws() {
+  _infisical_set_active_user https://infisical.skit.ai || return $?
   infisical run --domain=https://infisical.skit.ai --project-config-dir="$HOME/.aws" --env=prod --silent --log-level=warn -- command aws "$@"
 }
 
