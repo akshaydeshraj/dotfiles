@@ -1,8 +1,8 @@
 @agentclientprotocol/claude-agent-acp@0.31.2
+@earendil-works/pi-coding-agent@0.74.0
 @fission-ai/openspec@0.16.0
 @google/gemini-cli@null
 @mariozechner/cchistory@1.1.11
-@mariozechner/pi-coding-agent@0.70.6
 @modelcontextprotocol/inspector@0.21.1
 @openai/codex@0.128.0
 @tomehq/cli@0.7.0
