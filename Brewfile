@@ -239,8 +239,6 @@ brew "steipete/tap/mcporter"
 # WhatsApp CLI built on whatsmeow
 brew "steipete/tap/wacli"
 brew "yakitrak/yakitrak/obsidian-cli"
-# Enable Windows-like alt-tab
-cask "alt-tab"
 # Compact TeX distribution as alternative to the full TeX Live / MacTeX
 cask "basictex"
 # Desktop password and login vault
@@ -274,8 +272,6 @@ cask "tailscale-app"
 mas "WhatsApp", id: 310633997
 mas "WireGuard", id: 1451685025
 mas "Xcode", id: 497799835
-vscode "elixir-lsp.elixir-ls"
-vscode "enkia.tokyo-night"
 go "github.com/fatih/gomodifytags"
 go "golang.org/x/tools/gopls"
 go "github.com/x-motemen/gore/cmd/gore"
