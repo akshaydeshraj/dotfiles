@@ -146,6 +146,84 @@ alias rm='rm -i'            # Prompt before each removal
 
 alias cpp='g++-15 -std=gnu++20 -O2 -Wall -DLOCAL'
 
+# ─── solve: one-shot init + compile + run for competitive programming ────
+# Usage:
+#   solve init             # copies <repo-root>/template.cpp → ./solution.cpp
+#                          # (refuses to overwrite if solution.cpp already exists)
+#   solve                  # compiles ./solution.cpp, runs with ./input.txt if present
+#   solve foo.cpp          # compiles foo.cpp → ./foo, runs with ./input.txt if present
+#   solve foo.cpp in.txt   # runs ./foo with in.txt as stdin
+#
+# Prefers clang++ on macOS (working ASan/UBSan + bits/stdc++.h via the repo's
+# .lsp/ shim). Falls back to Homebrew g++-N if clang isn't present (e.g. Linux),
+# where GCC's sanitizers and <bits/stdc++.h> work natively.
+# Uses gnu++20, -O2, sanitizers, -DLOCAL (so `#ifdef LOCAL` debug code fires).
+solve() {
+  emulate -L zsh
+
+  # `solve init` — scaffold solution.cpp from the repo's template.cpp.
+  if [[ "$1" == init ]]; then
+    local repo_root
+    repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"
+    if [[ -z "$repo_root" || ! -f "$repo_root/template.cpp" ]]; then
+      print -u2 "solve init: no template.cpp at git repo root"
+      return 1
+    fi
+    if [[ -e solution.cpp ]]; then
+      print -u2 "solve init: solution.cpp already exists here — refusing to overwrite"
+      return 1
+    fi
+    cp "$repo_root/template.cpp" solution.cpp
+    print "solve init: created ./solution.cpp from $repo_root/template.cpp"
+    return 0
+  fi
+
+  local src="${1:-solution.cpp}"
+  if [[ ! -f "$src" ]]; then
+    print -u2 "solve: $src not found (run 'solve init' to scaffold it)"
+    return 1
+  fi
+  local out="${src:r}"
+  local input_file="${2:-input.txt}"
+
+  local compiler=
+  if command -v clang++ >/dev/null 2>&1; then
+    compiler=clang++
+  else
+    for v in 15 14 13; do
+      if command -v g++-$v >/dev/null 2>&1; then
+        compiler=g++-$v
+        break
+      fi
+    done
+  fi
+  if [[ -z "$compiler" ]]; then
+    print -u2 "solve: no C++ compiler found (need clang++ or g++-{13,14,15})"
+    return 1
+  fi
+
+  local -a flags=(
+    -std=gnu++20 -O2 -Wall -Wextra -Wshadow
+    -fsanitize=address,undefined
+    -DLOCAL
+  )
+
+  # clang++ on macOS lacks <bits/stdc++.h>; pull the shim from the repo's .lsp/.
+  if [[ "$compiler" == clang++ ]]; then
+    local repo_root
+    repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"
+    [[ -n "$repo_root" && -d "$repo_root/.lsp" ]] && flags+=(-I"$repo_root/.lsp")
+  fi
+
+  "$compiler" "${flags[@]}" "$src" -o "$out" || return $?
+
+  if [[ -f "$input_file" ]]; then
+    "./$out" < "$input_file"
+  else
+    "./$out"
+  fi
+}
+
 _project_agent_state() {
   local script="$HOME/Code/personal/dotfiles/tmux/plugins/tmux-project-workspaces/scripts/agent-state.sh"
   [ -n "${TMUX:-}" ] || return 0

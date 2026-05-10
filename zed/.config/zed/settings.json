@@ -60,7 +60,7 @@
     }
   },
   "edit_predictions": {
-    "provider": "open_ai_compatible_api",
+    "provider": "zed",
     "mode": "eager",
     "open_ai_compatible_api": {
       "api_url": "https://omniroute.akshaydeshraj.me/v1/completions",
@@ -104,7 +104,7 @@
     "dock": "right"
   },
   "agent": {
-    "dock": "left",
+    "dock": "right",
     "favorite_models": [],
     "model_parameters": []
   },
