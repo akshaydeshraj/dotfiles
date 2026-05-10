@@ -414,7 +414,7 @@ alias gam="$HOME/bin/gam7/gam"
 #   - cargo: no clean integration with sfw; install cargo-cooldown
 #     manually if needed (`cargo install cargo-cooldown`).
 # Override for urgent CVE patches: UV_EXCLUDE_NEWER= cmd ...
-export UV_EXCLUDE_NEWER="7 days"
+export UV_EXCLUDE_NEWER="$(date -u -v-7d +%Y-%m-%dT%H:%M:%SZ)"
 
 # ─── sfw — safe package install wrappers ─────────────────────────
 # Routes install/add commands through sfw; passthrough for everything else.
