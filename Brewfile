@@ -9,6 +9,7 @@ tap "jesseduffield/lazygit"
 tap "jimeh/emacs-builds"
 tap "joshmedeski/sesh"
 tap "koekeishiya/formulae"
+tap "phequals7/muesli"
 tap "sheeki03/tap"
 tap "steipete/tap"
 tap "yakitrak/yakitrak"
@@ -259,6 +260,8 @@ cask "google-drive"
 cask "jordanbaird-ice"
 # Clipboard manager
 cask "maccy"
+# Local-first dictation and meeting transcription
+cask "phequals7/muesli/muesli"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
 # Image viewer
