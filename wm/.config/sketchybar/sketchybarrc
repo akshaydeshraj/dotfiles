@@ -1,1 +1,157 @@
-../../Code/personal/dotfiles/wm/.config/sketchybar/sketchybarrc
+#!/bin/bash
+# Sketchybar — Tokyo Night Storm
+# Palette source-of-truth: ~/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh
+
+# ===== Bar Appearance =====
+sketchybar --bar \
+  position=bottom \
+  height=36 \
+  color=0xff24283b \
+  border_color=0xff414868 \
+  border_width=1 \
+  shadow=on \
+  corner_radius=0 \
+  y_offset=0 \
+  margin=0 \
+  padding_left=16 \
+  padding_right=16
+
+# ===== Default Item Styling =====
+sketchybar --default \
+  icon.font="SF Pro:Bold:14.0" \
+  icon.color=0xffc0caf5 \
+  label.font="SF Pro:Semibold:13.0" \
+  label.color=0xffc0caf5 \
+  padding_left=4 \
+  padding_right=4 \
+  background.color=0xff414868 \
+  background.corner_radius=6 \
+  background.height=26
+
+# ===== Workspace Indicators (left) =====
+SPACE_ICONS=("" "1:browser" "2:term" "3:editor" "4:chat" "5:pkm" "6:pass")
+SPACE_COLORS=("" "0xff7aa2f7" "0xff9ece6a" "0xffe0af68" "0xff7dcfff" "0xffbb9af7" "0xfff7768e")
+
+for i in {1..6}; do
+  sketchybar --add space space.$i left \
+    --set space.$i \
+      associated_space=$i \
+      icon="${SPACE_ICONS[$i]}" \
+      icon.font="SF Pro:Bold:12.0" \
+      icon.color="${SPACE_COLORS[$i]}" \
+      icon.highlight_color=0xff24283b \
+      icon.padding_left=10 \
+      icon.padding_right=10 \
+      background.color=0xff2e3c64 \
+      background.drawing=off \
+      background.padding_left=2 \
+      background.padding_right=2 \
+      label.drawing=off \
+      script="$HOME/.config/sketchybar/plugins/space.sh" \
+      click_script="yabai -m space --focus $i"
+done
+
+# ===== Separator =====
+sketchybar --add item separator left \
+  --set separator \
+    icon="│" \
+    icon.font="SF Pro:Regular:16.0" \
+    icon.color=0xff414868 \
+    icon.padding_left=8 \
+    icon.padding_right=4 \
+    background.drawing=off \
+    label.drawing=off
+
+# ===== Active App (center-left) =====
+sketchybar --add item front_app left \
+  --set front_app \
+    icon.drawing=off \
+    label.font="SF Pro:Bold:13.0" \
+    label.color=0xff9ece6a \
+    label.padding_left=4 \
+    background.drawing=off \
+    script="$HOME/.config/sketchybar/plugins/front_app.sh" \
+  --subscribe front_app front_app_switched
+
+# ===== Right Side Items =====
+
+# CPU usage
+sketchybar --add item cpu right \
+  --set cpu \
+    update_freq=3 \
+    icon="CPU" \
+    icon.font="SF Pro:Bold:11.0" \
+    icon.color=0xff7aa2f7 \
+    icon.padding_left=8 \
+    icon.padding_right=4 \
+    label.font="SF Mono:Medium:12.0" \
+    label.color=0xffc0caf5 \
+    label.padding_right=8 \
+    background.drawing=on \
+    script="$HOME/.config/sketchybar/plugins/cpu.sh" \
+    click_script="open -a 'Activity Monitor'"
+
+# Memory usage
+sketchybar --add item memory right \
+  --set memory \
+    update_freq=5 \
+    icon="MEM" \
+    icon.font="SF Pro:Bold:11.0" \
+    icon.color=0xffe0af68 \
+    icon.padding_left=8 \
+    icon.padding_right=4 \
+    label.font="SF Mono:Medium:12.0" \
+    label.color=0xffc0caf5 \
+    label.padding_right=8 \
+    background.drawing=on \
+    script="$HOME/.config/sketchybar/plugins/memory.sh" \
+    click_script="open -a 'Activity Monitor'"
+
+# Disk usage
+sketchybar --add item disk right \
+  --set disk \
+    update_freq=30 \
+    icon="DSK" \
+    icon.font="SF Pro:Bold:11.0" \
+    icon.color=0xff9ece6a \
+    icon.padding_left=8 \
+    icon.padding_right=4 \
+    label.font="SF Mono:Medium:12.0" \
+    label.color=0xffc0caf5 \
+    label.padding_right=8 \
+    background.drawing=on \
+    script="$HOME/.config/sketchybar/plugins/disk.sh" \
+    click_script="open ~"
+
+# Network download speed
+sketchybar --add item net_down right \
+  --set net_down \
+    update_freq=3 \
+    icon="↓" \
+    icon.font="SF Pro:Bold:13.0" \
+    icon.color=0xff7dcfff \
+    icon.padding_left=8 \
+    icon.padding_right=2 \
+    label.font="SF Mono:Medium:12.0" \
+    label.color=0xffc0caf5 \
+    label.padding_right=8 \
+    background.drawing=on \
+    script="$HOME/.config/sketchybar/plugins/network.sh" \
+    click_script="open 'x-apple.systempreferences:com.apple.preference.network'"
+
+# Network upload speed
+sketchybar --add item net_up right \
+  --set net_up \
+    icon="↑" \
+    icon.font="SF Pro:Bold:13.0" \
+    icon.color=0xffff9e64 \
+    icon.padding_left=8 \
+    icon.padding_right=2 \
+    label.font="SF Mono:Medium:12.0" \
+    label.color=0xffc0caf5 \
+    label.padding_right=8 \
+    background.drawing=on \
+    click_script="open 'x-apple.systempreferences:com.apple.preference.network'"
+
+# ===== Finalize =====
+sketchybar --update

@@ -1,1 +1,3 @@
-../../../Code/personal/dotfiles/wm/.config/sketchybar/plugins/clock.sh
+#!/bin/bash
+
+sketchybar --set "$NAME" label="$(date '+%a %d %b %H:%M')"

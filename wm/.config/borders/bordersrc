@@ -1,1 +1,13 @@
-../../Code/personal/dotfiles/wm/.config/borders/bordersrc
+#!/bin/bash
+# JankyBorders — Tokyo Night Storm
+# Palette source-of-truth: ~/Code/personal/dotfiles/themes/tokyo-night-storm/palette.sh
+
+options=(
+  style=round
+  width=4.0
+  hidpi=on
+  active_color=0xffc0caf5    # TN fg (matches terminal text color)
+  inactive_color=0xff414868  # TN border
+)
+
+borders "${options[@]}"
