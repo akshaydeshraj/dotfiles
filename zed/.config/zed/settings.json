@@ -60,13 +60,16 @@
     }
   },
   "edit_predictions": {
-    "provider": "zed",
+    "ollama": {
+      "api_url": "http://localhost:11434"
+    },
+    "provider": "open_ai_compatible_api",
     "mode": "eager",
     "open_ai_compatible_api": {
       "api_url": "https://omniroute.akshaydeshraj.me/v1/completions",
-      "model": "cu/default",
-      "prompt_format": "infer",
-      "max_output_tokens": 64
+      "model": "nvidia/z-ai/glm-5.1",
+      "prompt_format": "glm",
+      "max_output_tokens": 500
     }
   },
   "show_completions_on_input": true,
