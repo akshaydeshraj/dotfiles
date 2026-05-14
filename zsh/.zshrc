@@ -240,7 +240,7 @@ _project_agent_state() {
 # every request is sent to whichever domain matches the file's
 # `loggedInUserEmail` + `LoggedInUserDomain`. So we MUST rewrite that
 # active-user pointer before each `infisical run` invocation. That's what
-# `_infisical_set_active_user` below does.
+# `infisical_set_active_user` below does.
 #
 # Per-repo opt-in: a repo with `.infisical.json` at its root gets its own
 # workspace. Domain comes from the file's `_domain` field if present
@@ -292,7 +292,7 @@ _resolve_infisical_domain() {
 # os.replace. No-op if the target is already active or the config is missing.
 # Errors out (and aborts the caller) if the target domain has no logged-in
 # user — fix with `infisical login --domain=<target>` once.
-_infisical_set_active_user() {
+infisical_set_active_user() {
   local target_domain="${1%/}"
   local cfg="$HOME/.infisical/infisical-config.json"
   [ -f "$cfg" ] || return 0
@@ -394,7 +394,7 @@ _run_project_agent() {
       fi
     fi
     [ -n "${INFISICAL_DEBUG:-}" ] && print -u2 "[infisical-wrapper] config_dir=$config_dir domain=$domain (source=$domain_source)"
-    _infisical_set_active_user "$domain" || { rc=$?; [ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" >/dev/null 2>&1; _project_agent_state clear; return $rc; }
+    infisical_set_active_user "$domain" || { rc=$?; [ -n "$heartbeat_pid" ] && kill "$heartbeat_pid" >/dev/null 2>&1; _project_agent_state clear; return $rc; }
     infisical run --domain="$domain" --project-config-dir="$config_dir" --env=prod --silent -- "$(whence -p "$tool")" "$@"
     rc=$?
   fi
@@ -425,12 +425,12 @@ pi() {
 # AWS CLI — credentials injected from Infisical (work account).
 # Project ID lives in ~/.aws/.infisical.json; domain is fixed since AWS
 # creds only exist in the work instance regardless of cwd. The
-# _infisical_set_active_user call is required because the CLI's --domain
+# infisical_set_active_user call is required because the CLI's --domain
 # flag is decorative; routing follows the active user in
 # ~/.infisical/infisical-config.json.
 unalias aws 2>/dev/null
 aws() {
-  _infisical_set_active_user https://infisical.skit.ai || return $?
+  infisical_set_active_user https://infisical.skit.ai || return $?
   infisical run --domain=https://infisical.skit.ai --project-config-dir="$HOME/.aws" --env=prod --silent --log-level=warn -- command aws "$@"
 }
 

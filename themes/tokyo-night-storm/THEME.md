@@ -36,6 +36,7 @@ Source-of-truth: `palette.sh` in this directory.
 | JankyBorders | `~/.config/borders/bordersrc` | Yellow active, gray-blue inactive |
 | Yabai | `~/.yabairc` | `insert_feedback_color` set to TN yellow |
 | Zed | `~/.config/zed/settings.json` | "Tokyo Night Storm" theme (built-in) |
+| Neovim | `~/.config/nvim/init.lua` | `folke/tokyonight.nvim` plugin, `colorscheme tokyonight-storm` |
 | fzf | `FZF_DEFAULT_OPTS` in `~/.zshrc` | Sourced from `palette.sh` via `tn_fzf_colors` helper |
 | zsh-autosuggestions | `~/.zshrc` | `$TN_DIM` (gray-blue) |
 | zsh-syntax-highlighting | `~/.zshrc` | Green commands, yellow strings, red errors, cyan paths |

@@ -17,6 +17,7 @@
 #   - wm/.config/borders/bordersrc
 #   - wm/.yabairc
 #   - zed/.config/zed/settings.json (theme name only)
+#   - nvim/.config/nvim/init.lua (colorscheme name only — folke/tokyonight.nvim)
 #
 # When tweaking colors, edit this file first, then propagate.
 

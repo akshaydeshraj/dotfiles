@@ -94,6 +94,7 @@ STOW PACKAGES:
 - ~/.config/gh/config.yml vs gh/
 - ~/.config/atuin/themes/ vs atuin/
 - ~/.config/bat/themes/ vs bat/
+- ~/.config/nvim/ vs nvim/.config/nvim/ (diff whole tree — init.lua, lua/, nvim-pack-lock.json, etc.)
 
 ALSO CHECK:
 - Any changes to Brewfile, npm-global-packages.txt, pipx-packages.txt (regenerated above)
