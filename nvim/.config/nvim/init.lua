@@ -182,7 +182,7 @@ do
   -- Diagnostic Config & Keymaps
   --  See `:help vim.diagnostic.Opts`
   vim.diagnostic.config {
-    update_in_insert = false,
+    update_in_insert = true,
     severity_sort = true,
     float = { border = 'rounded', source = 'if_many' },
     underline = { severity = { min = vim.diagnostic.severity.WARN } },
@@ -638,6 +638,13 @@ do
         mode = mode or 'n'
         vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
       end
+
+      -- Show documentation and diagnostics close to where you're working.
+      map('K', vim.lsp.buf.hover, 'Hover Documentation')
+      map('<leader>e', vim.diagnostic.open_float, 'Show Diagnostic')
+      map('[d', vim.diagnostic.goto_prev, 'Previous Diagnostic')
+      map(']d', vim.diagnostic.goto_next, 'Next Diagnostic')
+      map('<C-k>', vim.lsp.buf.signature_help, 'Signature Help')
 
       -- Rename the variable under your cursor.
       --  Most Language Servers support renaming across files, etc.

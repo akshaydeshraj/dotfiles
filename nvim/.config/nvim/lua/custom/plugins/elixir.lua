@@ -18,7 +18,7 @@ local gh = function(repo) return 'https://github.com/' .. repo end
 vim.lsp.config('elixirls', {
   settings = {
     elixirLS = {
-      dialyzerEnabled = true,
+      dialyzerEnabled = false,
       fetchDeps = false,
       enableTestLenses = true,
       suggestSpecs = true,
