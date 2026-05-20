@@ -9,6 +9,7 @@ tap "jesseduffield/lazygit"
 tap "jimeh/emacs-builds"
 tap "joshmedeski/sesh"
 tap "koekeishiya/formulae"
+tap "openclaw/tap"
 tap "phequals7/muesli"
 tap "sheeki03/tap"
 tap "steipete/tap"
@@ -231,14 +232,14 @@ brew "joshmedeski/sesh/sesh"
 brew "koekeishiya/formulae/skhd"
 # A tiling window manager for macOS based on binary space partitioning.
 brew "koekeishiya/formulae/yabai"
+# Google CLI for Gmail, Calendar, Drive, Docs, Sheets, and more
+brew "openclaw/tap/gogcli"
+# WhatsApp CLI built on whatsmeow
+brew "openclaw/tap/wacli"
 # Fast X CLI for tweeting, replying, and reading
 brew "steipete/tap/bird"
-# Google CLI for Gmail, Calendar, Drive, Docs, Sheets, and more
-brew "steipete/tap/gogcli"
 # Model Context Protocol runtime and CLI generator
 brew "steipete/tap/mcporter"
-# WhatsApp CLI built on whatsmeow
-brew "steipete/tap/wacli"
 brew "yakitrak/yakitrak/obsidian-cli"
 # Compact TeX distribution as alternative to the full TeX Live / MacTeX
 cask "basictex"
