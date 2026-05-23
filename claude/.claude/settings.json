@@ -122,5 +122,6 @@
   "verbose": true,
   "preferredNotifChannel": "terminal_bell",
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "effortLevel": "medium"
 }
