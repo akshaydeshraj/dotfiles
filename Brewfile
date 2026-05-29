@@ -54,6 +54,8 @@ brew "coreutils"
 brew "deno"
 # Load/unload environment variables based on $PWD
 brew "direnv"
+# DNS query and resolution tool
+brew "dnsx"
 # More intuitive version of du in rust
 brew "dust"
 # Select default apps for documents and URL schemes on macOS
@@ -84,6 +86,8 @@ brew "gh"
 brew "git"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
+# Audit git repos for secrets
+brew "gitleaks"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
@@ -96,12 +100,16 @@ brew "helm"
 brew "htop"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
+# Fast and multi-purpose HTTP toolkit
+brew "httpx", link: false
 # International Ispell
 brew "ispell"
 # Git-compatible distributed version control system
 brew "jj"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
+# Crawling and spidering framework
+brew "katana"
 # Development kit for the Java programming language
 brew "openjdk"
 # Anti-bikeshedding Kotlin linter with built-in formatter
@@ -126,6 +134,8 @@ brew "mosh"
 brew "neofetch"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# HTTP/DNS scanner configurable via YAML templates
+brew "nuclei"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # AI coding agent, built for the terminal
@@ -172,6 +182,8 @@ brew "starship"
 brew "stow"
 # Command-line tool for Stripe
 brew "stripe-cli"
+# Subdomain discovery tool
+brew "subfinder"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
 # Multi-modal AI tool to extract and summarize content
@@ -188,6 +200,8 @@ brew "tldr"
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Find and verify credentials
+brew "trufflehog"
 # Your CLI home video recorder
 brew "vhs"
 # Executes a program periodically, showing output fullscreen
