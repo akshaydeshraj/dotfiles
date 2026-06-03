@@ -1,4 +1,5 @@
 [tools]
+elixir = "1.19.5-otp-28"
 node = "22"
 ruby = "3"
 
