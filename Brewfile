@@ -226,43 +226,14 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
-# A minimal and opinionated linter for Clojure code that sparks joy.
-brew "borkdude/brew/clj-kondo"
-# CLI tool for interacting with the Coolify API
-brew "coollabsio/coolify-cli/coolify-cli"
-# GNU Emacs text editor
-brew "d12frosted/emacs-plus/emacs-plus@30", args: ["with-compress-install", "with-ctags", "with-dbus", "with-imagemagick", "with-mailutils", "with-xwidgets"]
-# A window border system for macOS
-brew "felixkratz/formulae/borders"
-# Custom macOS statusbar with shell plugin, interaction and graph support
-brew "felixkratz/formulae/sketchybar"
-# The official Infisical CLI
-brew "infisical/get-cli/infisical"
-# A simple terminal UI for docker, written in Go
-brew "jesseduffield/lazydocker/lazydocker"
-# Smart terminal session manager
-brew "joshmedeski/sesh/sesh"
-# Simple hotkey-daemon for macOS.
-brew "koekeishiya/formulae/skhd"
-# A tiling window manager for macOS based on binary space partitioning.
-brew "koekeishiya/formulae/yabai"
-# Google CLI for Gmail, Calendar, Drive, Docs, Sheets, and more
-brew "openclaw/tap/gogcli"
-# WhatsApp CLI built on whatsmeow
-brew "openclaw/tap/wacli"
 # Fast X CLI for tweeting, replying, and reading
 brew "steipete/tap/bird"
-# Model Context Protocol runtime and CLI generator
-brew "steipete/tap/mcporter"
-brew "yakitrak/yakitrak/obsidian-cli"
 # Compact TeX distribution as alternative to the full TeX Live / MacTeX
 cask "basictex"
 # Desktop password and login vault
 cask "bitwarden"
 # Terminal-based AI coding assistant
 cask "claude-code@latest"
-# Menu bar usage monitor for Codex and Claude
-cask "steipete/tap/codexbar"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
 cask "font-jetbrains-mono"
@@ -275,8 +246,6 @@ cask "google-drive"
 cask "jordanbaird-ice"
 # Clipboard manager
 cask "maccy"
-# Local-first dictation and meeting transcription
-cask "phequals7/muesli/muesli"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
 # Image viewer
