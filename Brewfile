@@ -16,6 +16,8 @@ tap "steipete/tap"
 tap "yakitrak/yakitrak"
 # Search tool like grep, but optimized for programmers
 brew "ack"
+# Apple Intelligence from the command-line, with OpenAi-compatible API server
+brew "apfel"
 # Code searching, linting, rewriting
 brew "ast-grep"
 # Improved shell history for zsh, bash, fish and nushell
@@ -226,8 +228,35 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
+# A minimal and opinionated linter for Clojure code that sparks joy.
+brew "borkdude/brew/clj-kondo", trusted: true
+# CLI tool for interacting with the Coolify API
+brew "coollabsio/coolify-cli/coolify-cli", trusted: true
+# GNU Emacs text editor
+brew "d12frosted/emacs-plus/emacs-plus@30", args: ["with-compress-install", "with-ctags", "with-dbus", "with-imagemagick", "with-mailutils", "with-xwidgets"], trusted: true
+# A window border system for macOS
+brew "felixkratz/formulae/borders", trusted: true
+# Custom macOS statusbar with shell plugin, interaction and graph support
+brew "felixkratz/formulae/sketchybar", trusted: true
+# The official Infisical CLI
+brew "infisical/get-cli/infisical", trusted: true
+# A simple terminal UI for docker, written in Go
+brew "jesseduffield/lazydocker/lazydocker", trusted: true
+# Smart terminal session manager
+brew "joshmedeski/sesh/sesh", trusted: true
+# Simple hotkey-daemon for macOS.
+brew "koekeishiya/formulae/skhd", trusted: true
+# A tiling window manager for macOS based on binary space partitioning.
+brew "koekeishiya/formulae/yabai", trusted: true
+# Google CLI for Gmail, Calendar, Drive, Docs, Sheets, and more
+brew "openclaw/tap/gogcli", trusted: true
+# WhatsApp CLI built on whatsmeow
+brew "openclaw/tap/wacli", trusted: true
 # Fast X CLI for tweeting, replying, and reading
-brew "steipete/tap/bird"
+brew "steipete/tap/bird", trusted: true
+# Model Context Protocol runtime and CLI generator
+brew "steipete/tap/mcporter", trusted: true
+brew "yakitrak/yakitrak/obsidian-cli", trusted: true
 # Compact TeX distribution as alternative to the full TeX Live / MacTeX
 cask "basictex"
 # Desktop password and login vault
