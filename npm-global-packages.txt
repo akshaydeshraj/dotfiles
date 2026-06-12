@@ -1,4 +1,5 @@
 @agentclientprotocol/claude-agent-acp@0.31.2
+@bonsai-ai/cli@0.4.17
 @earendil-works/pi-coding-agent@0.74.0
 @fission-ai/openspec@0.16.0
 @google/gemini-cli@null

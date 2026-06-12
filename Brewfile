@@ -263,6 +263,8 @@ cask "basictex"
 cask "bitwarden"
 # Terminal-based AI coding assistant
 cask "claude-code@latest"
+# Menu bar usage monitor for Codex and Claude
+cask "steipete/tap/codexbar"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
 cask "font-jetbrains-mono"
@@ -275,6 +277,8 @@ cask "google-drive"
 cask "jordanbaird-ice"
 # Clipboard manager
 cask "maccy"
+# Local-first dictation and meeting transcription
+cask "phequals7/muesli/muesli"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
 # Image viewer
@@ -305,6 +309,7 @@ uv "-"
 uv "mojo"
 uv "vmlx"
 npm "@agentclientprotocol/claude-agent-acp"
+npm "@bonsai-ai/cli"
 npm "@earendil-works/pi-coding-agent"
 npm "@fission-ai/openspec"
 npm "@google/gemini-cli"
