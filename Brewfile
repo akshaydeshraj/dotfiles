@@ -1,4 +1,5 @@
 tap "akshaydeshraj/smartclip"
+tap "asmvik/formulae"
 tap "borkdude/brew"
 tap "coollabsio/coolify-cli"
 tap "d12frosted/emacs-plus"
@@ -8,9 +9,8 @@ tap "jesseduffield/lazydocker"
 tap "jesseduffield/lazygit"
 tap "jimeh/emacs-builds"
 tap "joshmedeski/sesh"
-tap "koekeishiya/formulae"
+tap "muesli-hq/muesli"
 tap "openclaw/tap"
-tap "phequals7/muesli"
 tap "rtk-ai/tap"
 tap "sheeki03/tap"
 tap "steipete/tap"
@@ -243,10 +243,6 @@ brew "infisical/get-cli/infisical", trusted: true
 brew "jesseduffield/lazydocker/lazydocker", trusted: true
 # Smart terminal session manager
 brew "joshmedeski/sesh/sesh", trusted: true
-# Simple hotkey-daemon for macOS.
-brew "koekeishiya/formulae/skhd", trusted: true
-# A tiling window manager for macOS based on binary space partitioning.
-brew "koekeishiya/formulae/yabai", trusted: true
 # Google CLI for Gmail, Calendar, Drive, Docs, Sheets, and more
 brew "openclaw/tap/gogcli", trusted: true
 # WhatsApp CLI built on whatsmeow
