@@ -539,6 +539,8 @@ path=($HOME/.darkbloom/bin $path)
 # Go binaries (gopls, gomodifytags, gotests, gore, etc.)
 path=($HOME/go/bin $path)
 
+# Zig dev compiler
+path=($HOME/.local/opt/zig-dev $path)
 
 # BEGIN opam configuration
 # This is useful if you're using opam as it adds:

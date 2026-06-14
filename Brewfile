@@ -11,6 +11,7 @@ tap "joshmedeski/sesh"
 tap "koekeishiya/formulae"
 tap "openclaw/tap"
 tap "phequals7/muesli"
+tap "rtk-ai/tap"
 tap "sheeki03/tap"
 tap "steipete/tap"
 tap "yakitrak/yakitrak"
@@ -218,8 +219,6 @@ brew "wireguard-tools"
 brew "xcodegen"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
-# Programming language designed for robustness, optimality, and clarity
-brew "zig"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Fish-like fast/unobtrusive autosuggestions for zsh
@@ -252,6 +251,8 @@ brew "koekeishiya/formulae/yabai", trusted: true
 brew "openclaw/tap/gogcli", trusted: true
 # WhatsApp CLI built on whatsmeow
 brew "openclaw/tap/wacli", trusted: true
+# Rust Token Killer - High-performance CLI proxy to minimize LLM token consumption
+brew "rtk-ai/tap/rtk", trusted: true
 # Fast X CLI for tweeting, replying, and reading
 brew "steipete/tap/bird", trusted: true
 # Model Context Protocol runtime and CLI generator

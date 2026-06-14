@@ -9,17 +9,7 @@
     "defaultMode": "bypassPermissions"
   },
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/akshaydeshraj/.claude/hooks/rtk-rewrite.sh"
-          }
-        ]
-      }
-    ],
+    "PreToolUse": [],
     "Notification": [
       {
         "matcher": "",
@@ -115,6 +105,7 @@
       }
     }
   },
+  "effortLevel": "medium",
   "autoUpdatesChannel": "stable",
   "tui": "default",
   "skipDangerousModePermissionPrompt": true,
@@ -123,5 +114,5 @@
   "preferredNotifChannel": "terminal_bell",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
-  "effortLevel": "medium"
+  "model": "claude-fable-5[1m]"
 }
