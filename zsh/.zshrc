@@ -479,6 +479,10 @@ path=($BUN_INSTALL/bin $path)
 
 alias gam="$HOME/bin/gam7/gam"
 
+# Donna — Akshay's chief of staff (custom system prompt)
+alias donna='claude --system-prompt-file /Users/akshaydeshraj/Code/personal/dot-claw/system-prompt.md'
+alias donna-og='claude --append-system-prompt-file ~/Code/personal/dot-claw.pre-migration/donna-system-prompt.md'
+
 # ─── Supply chain: 7-day release cooldown ────────────────────────
 # Blocks any package version published <7d ago. Most malicious releases
 # are caught within 24-48h (axios, litellm, pytorch-lightning attacks
