@@ -19,4 +19,9 @@ fi
 mkdir -p /tmp/claude-notify
 touch "/tmp/claude-notify/${SESSION}"
 
-osascript -e "display notification \"Waiting for your input in session: ${SESSION}\" with title \"Claude Code — ${SESSION}\" sound name \"Funk\""
+osascript - "$SESSION" <<'APPLESCRIPT'
+on run argv
+  set s to item 1 of argv
+  display notification ("Waiting for your input in session: " & s) with title ("Claude Code - " & s) sound name "Funk"
+end run
+APPLESCRIPT
