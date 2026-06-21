@@ -14,7 +14,7 @@ tap "openclaw/tap"
 tap "rtk-ai/tap"
 tap "sheeki03/tap"
 tap "steipete/tap"
-tap "yakitrak/yakitrak"
+tap "yakitrak/yakitrak", trusted: { formulae: ["obsidian-cli"] }
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # Apple Intelligence from the command-line, with OpenAi-compatible API server
@@ -253,7 +253,6 @@ brew "rtk-ai/tap/rtk", trusted: true
 brew "steipete/tap/bird", trusted: true
 # Model Context Protocol runtime and CLI generator
 brew "steipete/tap/mcporter", trusted: true
-brew "yakitrak/yakitrak/obsidian-cli", trusted: true
 # Compact TeX distribution as alternative to the full TeX Live / MacTeX
 cask "basictex"
 # Desktop password and login vault
