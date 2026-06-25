@@ -70,6 +70,10 @@ When you receive feedback from Codex review hooks (via stderr):
 
 @RTK.md
 
+## Writing — no AI slop (applies to all prose: messages, docs, commits, PRs)
+
+@anti-slop.md
+
 ## Codebase Navigation — MANDATORY
 
 You MUST use token-savior MCP tools FIRST.
