@@ -10,7 +10,6 @@ tap "jesseduffield/lazygit"
 tap "jimeh/emacs-builds"
 tap "joshmedeski/sesh"
 tap "muesli-hq/muesli", "https://github.com/Muesli-HQ/homebrew-muesli.git"
-tap "openclaw/tap"
 tap "rtk-ai/tap"
 tap "sheeki03/tap"
 tap "steipete/tap"
@@ -101,8 +100,6 @@ brew "go"
 brew "graphviz"
 # Kubernetes package manager
 brew "helm"
-# Improved top (interactive process viewer)
-brew "htop"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
 # Fast and multi-purpose HTTP toolkit
@@ -133,12 +130,14 @@ brew "mas"
 brew "mole"
 # Remote terminal application
 brew "mosh"
-# Fast, highly customisable system info script
-brew "neofetch"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # HTTP/DNS scanner configurable via YAML templates
 brew "nuclei"
+# PNG image optimizing utility
+brew "pngquant"
+# Adds an OCR text layer to scanned PDF files
+brew "ocrmypdf"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # AI coding agent, built for the terminal
@@ -149,8 +148,6 @@ brew "oxipng"
 brew "pandoc"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
-# PNG image optimizing utility
-brew "pngquant"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
 # Cross-platform library for audio I/O
@@ -165,8 +162,6 @@ brew "rclone"
 brew "redis", restart_service: :changed
 # Extremely fast Python linter, written in Rust
 brew "ruff"
-# Safe, concurrent, practical language
-brew "rust"
 # Experimental Rust compiler front-end for IDEs
 brew "rust-analyzer"
 # Rust toolchain installer
@@ -243,10 +238,6 @@ brew "infisical/get-cli/infisical", trusted: true
 brew "jesseduffield/lazydocker/lazydocker", trusted: true
 # Smart terminal session manager
 brew "joshmedeski/sesh/sesh", trusted: true
-# Google CLI for Gmail, Calendar, Drive, Docs, Sheets, and more
-brew "openclaw/tap/gogcli", trusted: true
-# WhatsApp CLI built on whatsmeow
-brew "openclaw/tap/wacli", trusted: true
 # Rust Token Killer - High-performance CLI proxy to minimize LLM token consumption
 brew "rtk-ai/tap/rtk", trusted: true
 # Fast X CLI for tweeting, replying, and reading
@@ -293,9 +284,6 @@ go "golang.org/x/tools/gopls"
 go "github.com/x-motemen/gore/cmd/gore"
 go "github.com/cweill/gotests/gotests"
 go "honnef.co/go/tools/cmd/staticcheck"
-cargo "devspec"
-cargo "tauri-cli"
-cargo "tree-sitter-cli"
 uv "-"
 uv "-"
 uv "-"
