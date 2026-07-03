@@ -480,7 +480,7 @@ path=($BUN_INSTALL/bin $path)
 alias gam="$HOME/bin/gam7/gam"
 
 # Donna — Akshay's chief of staff (custom system prompt)
-alias donna='/Users/akshaydeshraj/Code/personal/chief-of-staff/bin/donna-codex'
+source "$HOME/Code/personal/chief-of-staff/900-donna/bin/donna.zsh"
 alias donna-og='claude --append-system-prompt-file ~/Code/personal/dot-claw.pre-migration/donna-system-prompt.md'
 
 # ─── Supply chain: 7-day release cooldown ────────────────────────
