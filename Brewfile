@@ -265,7 +265,7 @@ cask "jordanbaird-ice"
 # Clipboard manager
 cask "maccy"
 # Local-first dictation and meeting transcription
-cask "phequals7/muesli/muesli"
+cask "muesli"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
 # Image viewer
