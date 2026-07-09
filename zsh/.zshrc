@@ -558,3 +558,9 @@ path=($HOME/.local/opt/zig-dev $path)
 # guard (`test -z … || return`) that returns 1 on re-source, which would
 # otherwise show as [x] in the prompt after `source ~/.zshrc`.
 true
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
