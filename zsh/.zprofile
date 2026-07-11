@@ -6,3 +6,7 @@ export PATH="$PATH:$HOME/.local/bin"
 
 # Added by Obsidian
 export PATH="$PATH:/Applications/Obsidian.app/Contents/MacOS"
+
+# >>> Codex installer >>>
+export PATH="/Users/akshaydeshraj/.local/bin:$PATH"
+# <<< Codex installer <<<

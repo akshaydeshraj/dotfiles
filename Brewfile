@@ -30,8 +30,6 @@ brew "xz"
 brew "awscli"
 # YAML Parser
 brew "libyaml"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.13"
 # Microsoft Azure CLI 2.0
 brew "azure-cli"
 # Clone of cat(1) with syntax highlighting and Git integration
@@ -70,8 +68,6 @@ brew "ente-cli"
 brew "exercism"
 # Modern, maintained replacement for ls
 brew "eza"
-# Powerful, lightweight programming language
-brew "lua"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
@@ -122,6 +118,8 @@ brew "kubectx"
 brew "lazygit"
 # Find what models run on your hardware
 brew "llmfit"
+# Powerful, lightweight programming language
+brew "lua"
 # Package manager for the Lua programming language
 brew "luarocks"
 # Mac App Store command-line interface
@@ -156,6 +154,8 @@ brew "portaudio"
 brew "postgresql@14", restart_service: :changed
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
 # Rsync for cloud storage
 brew "rclone"
 # Persistent key-value database, with built-in net interface
