@@ -250,8 +250,7 @@ cask "basictex"
 cask "bitwarden"
 # Terminal-based AI coding assistant
 cask "claude-code@latest"
-# Menu bar usage monitor for Codex and Claude
-cask "steipete/tap/codexbar"
+cask "codexbar"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
 cask "font-jetbrains-mono"

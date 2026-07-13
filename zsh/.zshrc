@@ -414,7 +414,7 @@ claude() {
 
 unalias codex 2>/dev/null
 codex() {
-  _run_project_agent codex "$@"
+  _run_project_agent codex --dangerously-bypass-approvals-and-sandbox "$@"
 }
 
 unalias pi 2>/dev/null
