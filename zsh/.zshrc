@@ -537,8 +537,8 @@ source "$HOME/Code/personal/smartclip/integrations/smartclip.zsh"
 
 path=($HOME/.cargo/bin $path)
 
-# Darkbloom
-path=($HOME/.darkbloom/bin $path)
+# Darkbloom (keep Homebrew first so stale bundled tools cannot shadow it)
+path=(/opt/homebrew/bin $HOME/.darkbloom/bin $path)
 
 # Go binaries (gopls, gomodifytags, gotests, gore, etc.)
 path=($HOME/go/bin $path)
