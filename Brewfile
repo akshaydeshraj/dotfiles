@@ -160,6 +160,8 @@ brew "python@3.13"
 brew "rclone"
 # Persistent key-value database, with built-in net interface
 brew "redis", restart_service: :changed
+# UNIX-like reverse engineering framework and command-line toolset
+brew "rizin"
 # Extremely fast Python linter, written in Rust
 brew "ruff"
 # Experimental Rust compiler front-end for IDEs
