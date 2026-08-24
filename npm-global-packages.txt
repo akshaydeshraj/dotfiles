@@ -1,11 +1,11 @@
 @agentclientprotocol/claude-agent-acp@0.31.2
 @bonsai-ai/cli@0.4.17
-@earendil-works/pi-coding-agent@0.80.2
+@earendil-works/pi-coding-agent@0.84.2
 @fission-ai/openspec@0.16.0
 @google/gemini-cli@null
 @mariozechner/cchistory@1.1.11
 @modelcontextprotocol/inspector@0.21.1
-@openai/codex@0.145.0
+@openai/codex@0.149.1
 @tomehq/cli@0.7.0
 @zed-industries/codex-acp@0.12.0
 ccusage@15.5.2
@@ -18,7 +18,7 @@ js-beautify@1.15.4
 lecturebook@0.2.0
 npm@12.0.1
 openclaw@2026.4.1
-opencode-ai@1.18.3
+opencode-ai@1.18.13
 opencode-omni@null
 pnpm@10.33.0
 pyright@1.1.408
