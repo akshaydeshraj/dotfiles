@@ -10,6 +10,7 @@ tap "jesseduffield/lazygit"
 tap "jimeh/emacs-builds"
 tap "joshmedeski/sesh"
 tap "muesli-hq/muesli", "https://github.com/Muesli-HQ/homebrew-muesli.git"
+tap "nikitabobko/tap"
 tap "rtk-ai/tap"
 tap "sheeki03/tap"
 tap "steipete/tap"
@@ -151,7 +152,7 @@ brew "poppler"
 # Cross-platform library for audio I/O
 brew "portaudio"
 # Object-relational database system
-brew "postgresql@14", restart_service: :changed
+brew "postgresql@14"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
 # Interpreted, interactive, object-oriented programming language
@@ -159,7 +160,7 @@ brew "python@3.13"
 # Rsync for cloud storage
 brew "rclone"
 # Persistent key-value database, with built-in net interface
-brew "redis", restart_service: :changed
+brew "redis"
 # UNIX-like reverse engineering framework and command-line toolset
 brew "rizin"
 # Extremely fast Python linter, written in Rust
@@ -246,6 +247,8 @@ brew "rtk-ai/tap/rtk", trusted: true
 brew "steipete/tap/bird", trusted: true
 # Model Context Protocol runtime and CLI generator
 brew "steipete/tap/mcporter", trusted: true
+# AeroSpace is an i3-like tiling window manager for macOS
+cask "nikitabobko/tap/aerospace", trusted: true
 # Compact TeX distribution as alternative to the full TeX Live / MacTeX
 cask "basictex"
 # Desktop password and login vault
@@ -277,6 +280,9 @@ cask "racket"
 cask "raycast"
 # Mesh VPN based on WireGuard
 cask "tailscale-app"
+mas "WhatsApp", id: 310633997
+mas "WireGuard", id: 1451685025
+mas "Xcode", id: 497799835
 go "github.com/fatih/gomodifytags"
 go "golang.org/x/tools/gopls"
 go "github.com/x-motemen/gore/cmd/gore"

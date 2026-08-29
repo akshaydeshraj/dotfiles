@@ -40,6 +40,22 @@ fi
 echo "Installing brew packages..."
 brew bundle --file="$DOTFILES_DIR/Brewfile" --no-lock
 
+# Remove the window manager and hotkey daemon that AeroSpace replaces.
+for legacy_wm in yabai skhd; do
+  brew services stop "$legacy_wm" 2>/dev/null || true
+  if brew list --formula "$legacy_wm" &>/dev/null; then
+    brew uninstall "$legacy_wm"
+  fi
+done
+
+# Remove links created by older versions of the wm stow package.
+for legacy_config in .yabairc .skhdrc; do
+  legacy_path="$HOME/$legacy_config"
+  if [[ -L "$legacy_path" && "$(readlink "$legacy_path")" == *"/dotfiles/wm/$legacy_config" ]]; then
+    rm -f "$legacy_path"
+  fi
+done
+
 # ── Step 5: Stow dotfiles ──
 echo "Stowing dotfiles..."
 if ! command -v stow &>/dev/null; then
@@ -151,8 +167,7 @@ done < "$DOTFILES_DIR/pipx-packages.txt"
 
 # ── Step 12: Services ──
 echo "Starting services..."
-brew services start yabai 2>/dev/null || true
-brew services start skhd 2>/dev/null || true
+open -a AeroSpace 2>/dev/null || true
 brew services start sketchybar 2>/dev/null || true
 brew services start borders 2>/dev/null || true
 
@@ -197,7 +212,7 @@ fi
 
 echo ""
 echo "Manual steps remaining:"
-echo "  1. Partially disable SIP for yabai scripting addition"
-echo "  2. Grant Accessibility permissions to yabai and skhd"
-echo "  3. Create 6 Spaces in Mission Control"
+echo "  1. Re-enable SIP if you disabled it for the previous window manager"
+echo "  2. Grant Accessibility permission to AeroSpace"
+echo "  3. Keep one native macOS Space per display"
 echo "  4. Log out and back in for macOS defaults to take full effect"

@@ -34,7 +34,6 @@ Source-of-truth: `palette.sh` in this directory.
 | Atuin | `~/.config/atuin/themes/tokyo-night-storm.toml` | **Activation requires** `[theme] name = "tokyo-night-storm"` in `~/.config/atuin/config.toml` (config.toml is not tracked in dotfiles — has session token) |
 | Sketchybar | `~/.config/sketchybar/sketchybarrc` + `plugins/space.sh` + `plugins/wifi.sh` + `plugins/tailscale.sh` | All bar colors, space indicators, status icons |
 | JankyBorders | `~/.config/borders/bordersrc` | Yellow active, gray-blue inactive |
-| Yabai | `~/.yabairc` | `insert_feedback_color` set to TN yellow |
 | Zed | `~/.config/zed/settings.json` | "Tokyo Night Storm" theme (built-in) |
 | Neovim | `~/.config/nvim/init.lua` | `folke/tokyonight.nvim` plugin, `colorscheme tokyonight-storm` |
 | fzf | `FZF_DEFAULT_OPTS` in `~/.zshrc` | Sourced from `palette.sh` via `tn_fzf_colors` helper |
@@ -50,7 +49,7 @@ Source-of-truth: `palette.sh` in this directory.
 
 - **Shell-side** sources it (zshrc, tmux plugin scripts) and uses `$TN_*` vars.
 - **Starship** uses TOML's native `[palettes.tokyo_night_storm]` directive — same colors, named cleanly.
-- **App-side** configs (Doom, Atuin, ghostty, tmux conf, btop, sketchybar, borders, yabai, zed) hardcode hex values with a comment at the top of each file linking back to `palette.sh`. None of these tools support importing external palettes.
+- **App-side** configs (Doom, Atuin, ghostty, tmux conf, btop, sketchybar, borders, zed) hardcode hex values with a comment at the top of each file linking back to `palette.sh`. None of these tools support importing external palettes.
 
 To tweak the theme: edit `palette.sh` first, then propagate hex changes to app-side files.
 
@@ -100,7 +99,7 @@ All Cobalt2 standalone files are preserved in `themes/cobalt2/`. To revert:
 3. `cp themes/cobalt2/cobalt2.toml atuin/.config/atuin/themes/`
 4. `cp themes/cobalt2/cobalt2.omp.json prompt/.config/oh-my-posh/`
 5. `cp themes/cobalt2/cobalt2.theme btop/.config/btop/themes/`
-6. Manually revert inline hex changes in: zshrc, .tmux.conf, ghostty config, sketchybarrc, bordersrc, yabairc, btop.conf, zed settings, tmux plugin scripts.
+6. Manually revert inline hex changes in: zshrc, .tmux.conf, ghostty config, sketchybarrc, bordersrc, btop.conf, zed settings, tmux plugin scripts.
 
 (Inline reverts are tedious — git revert on the retheme commit is cleaner.)
 

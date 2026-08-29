@@ -49,7 +49,7 @@ export TN_ACCENT_ALT="$TN_BLUE"       # secondary accent
 export TN_CURSOR="$TN_FG"
 export TN_DIM="$TN_BR_BLACK"          # was cobalt2 dim blue (autosuggest, comments)
 
-# ── 0xAARRGGBB form (sketchybar / borders / yabai) ──────────────
+# ── 0xAARRGGBB form (sketchybar / borders) ──────────────────────
 export TN_BG_ARGB="0xff24283b"
 export TN_FG_ARGB="0xffc0caf5"
 export TN_SELECTION_BG_ARGB="0xff2e3c64"

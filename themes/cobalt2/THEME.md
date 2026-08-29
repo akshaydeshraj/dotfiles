@@ -30,7 +30,6 @@ Replicates the [omarchy-cobalt2-theme](https://github.com/hoblin/omarchy-cobalt2
 | Oh-My-Posh | `~/.config/oh-my-posh/cobalt2.omp.json` | Prompt segments remapped from Solarized |
 | btop | `~/.config/btop/themes/cobalt2.theme` | Dropped from upstream repo verbatim |
 | Sketchybar | `~/.config/sketchybar/sketchybarrc` | Remapped from Catppuccin Mocha |
-| Yabai | `~/.yabairc` | `insert_feedback_color` set to gold |
 | JankyBorders | `~/.config/borders/bordersrc` | Gold active border, dark blue inactive |
 | fzf | `FZF_DEFAULT_OPTS` in `~/.zshrc` | Full Cobalt2 color scheme |
 | zsh-autosuggestions | `ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE` in `~/.zshrc` | Dim blue (`#0050A4`) |

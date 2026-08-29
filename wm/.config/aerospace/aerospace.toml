@@ -1,0 +1,109 @@
+# AeroSpace window manager configuration.
+# https://nikitabobko.github.io/AeroSpace/guide
+
+config-version = 2
+
+start-at-login = true
+auto-reload-config = true
+
+after-startup-command = [
+  'layout --workspace 1 accordion',
+  'layout --workspace 2 accordion',
+  'exec-and-forget sketchybar',
+  'exec-and-forget sketchybar --reload',
+]
+
+exec-on-workspace-change = [
+  '/bin/bash',
+  '-c',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+]
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+on-focused-monitor-changed = []
+automatically-unhide-macos-hidden-apps = false
+focus-follows-mouse.enabled = false
+
+persistent-workspaces = ['1', '2', '3', '4', '5', '6']
+
+# Keep the previous padding and reserve space for the bottom SketchyBar.
+gaps.inner.horizontal = 6
+gaps.inner.vertical = 6
+gaps.outer.left = 12
+gaps.outer.bottom = 48
+gaps.outer.top = 12
+gaps.outer.right = 12
+
+# Route applications to named workspaces.
+on-window-detected = [
+  { if = 'test %{app-bundle-id} = company.thebrowser.Browser', run = 'move-node-to-workspace 1' },
+  { if = 'test %{app-bundle-id} = com.mitchellh.ghostty', run = 'move-node-to-workspace 2' },
+  { if = 'test %{app-bundle-id} = com.cmuxterm.app', run = 'move-node-to-workspace 2' },
+  { if = 'test %{app-bundle-id} = dev.zed.Zed', run = 'move-node-to-workspace 3' },
+  { if = 'test %{app-bundle-id} = com.hnc.Discord', run = 'move-node-to-workspace 4' },
+  { if = 'test %{app-bundle-id} = md.obsidian', run = 'move-node-to-workspace 5' },
+  { if = 'test %{app-bundle-id} = com.bitwarden.desktop', run = 'move-node-to-workspace 6' },
+
+  # Float utility and overlay windows. AeroSpace does not support sticky windows.
+  { if = 'test %{app-name} ~= ^System', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = com.apple.finder', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = com.apple.Preview', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = com.apple.calculator', run = 'layout floating' },
+  { if = 'test %{app-name} ~= ^Karabiner', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = com.apple.archiveutility', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = com.lwouis.alt-tab-macos', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = com.interversehq.qView', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = com.apple.ActivityMonitor', run = 'layout floating' },
+]
+
+[mode.main.binding]
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+
+alt-shift-1 = 'move-node-to-workspace --focus-follows-window 1'
+alt-shift-2 = 'move-node-to-workspace --focus-follows-window 2'
+alt-shift-3 = 'move-node-to-workspace --focus-follows-window 3'
+alt-shift-4 = 'move-node-to-workspace --focus-follows-window 4'
+alt-shift-5 = 'move-node-to-workspace --focus-follows-window 5'
+alt-shift-6 = 'move-node-to-workspace --focus-follows-window 6'
+
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+alt-shift-h = 'swap left'
+alt-shift-j = 'swap down'
+alt-shift-k = 'swap up'
+alt-shift-l = 'swap right'
+
+cmd-shift-h = 'move left'
+cmd-shift-j = 'move down'
+cmd-shift-k = 'move up'
+cmd-shift-l = 'move right'
+
+ctrl-alt-h = 'resize width -50'
+ctrl-alt-j = 'resize height +50'
+ctrl-alt-k = 'resize height -50'
+ctrl-alt-l = 'resize width +50'
+
+alt-f = 'fullscreen'
+alt-t = 'layout floating tiling'
+alt-e = 'layout tiles horizontal vertical'
+alt-shift-0 = 'balance-sizes'
+
+ctrl-alt-s = 'layout accordion'
+ctrl-alt-b = 'layout tiles'
+
+alt-n = 'focus --wrap-around dfs-next'
+alt-p = 'focus --wrap-around dfs-prev'

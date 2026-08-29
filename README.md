@@ -1,6 +1,6 @@
 # dotfiles
 
-macOS dev setup: zsh + yabai + skhd + sketchybar + Ghostty + tmux + Zed
+macOS dev setup: zsh + AeroSpace + SketchyBar + Ghostty + tmux + Zed
 
 Clone, add secrets, run one script. Uses [GNU Stow](https://www.gnu.org/software/stow/) for symlink management.
 
@@ -27,7 +27,7 @@ chmod +x install.sh
 | `git` | `.config/git/ignore` | Global gitignore (git config set by install.sh) |
 | `tmux` | `.tmux.conf`, `.config/tmux/` | Terminal multiplexer, fzf session switcher, yazi/lazygit popups |
 | `ghostty` | `.config/ghostty/config` | Terminal emulator |
-| `wm` | `.yabairc`, `.skhdrc`, `.config/sketchybar/` | Tiling WM + hotkeys + status bar |
+| `wm` | `.config/aerospace/`, `.config/sketchybar/` | Tiling WM + hotkeys + status bar |
 | `prompt` | `.config/starship.toml` | Starship prompt (Tokyo Night Storm) |
 | `zed` | `.config/zed/settings.json` | Editor (vim mode, Tokyo Night Storm) |
 | `mise` | `.config/mise/config.toml` | Runtime manager (Node LTS, Ruby 3) |
@@ -55,20 +55,20 @@ All secrets live in `~/.env` (never committed). See `.env.example` for required 
 
 1. Validates `~/.env` exists
 2. Installs Xcode CLI tools + Homebrew
-3. Installs all packages from `Brewfile` (91 formulae, 18 casks)
+3. Installs all packages from `Brewfile`
 4. Backs up conflicting dotfiles, then stows all packages
 5. Configures git from env vars
 6. Applies macOS defaults (Dock, Finder, keyboard, screenshots)
 7. Installs mise runtimes (Node, Ruby)
 8. Installs global npm + pipx packages (pinned versions)
-9. Starts yabai, skhd, sketchybar services
+9. Starts AeroSpace and the SketchyBar services
 10. Prompts for `gh auth login`
 
 ## Manual Steps After Install
 
-- **SIP**: Partially disable for yabai scripting addition
-- **Accessibility**: Grant permissions to yabai and skhd (System Settings > Privacy)
-- **Spaces**: Create 6 Spaces in Mission Control (browser, terminal, editor, chat, pkm, passwords)
+- **SIP**: Re-enable SIP from macOS Recovery if you disabled it for the previous window manager. AeroSpace does not require SIP changes.
+- **Accessibility**: Grant permission to AeroSpace (System Settings > Privacy & Security > Accessibility)
+- **Spaces**: Keep one native macOS Space per display. AeroSpace provides six workspaces (browser, terminal, editor, chat, pkm, passwords).
 - **Logout**: Some macOS defaults require logout/restart
 
 ## Auto-Sync Daemon
@@ -128,7 +128,7 @@ A previous Rust-based worktree/workspaces plugin lived at `tmux/plugins/tmux-pro
 ## Key Design Decisions
 
 - **Stow `--no-folding`**: Creates individual symlinks inside `~/.config/` rather than replacing the directory
-- **`wm/` bundles yabai+skhd+sketchybar**: They're tightly coupled (skhd calls yabai, sketchybar reads yabai spaces)
+- **`wm/` bundles AeroSpace and SketchyBar**: AeroSpace owns the hotkeys and sends workspace changes to SketchyBar.
 - **Git config not in repo**: Contains email, set by `install.sh` from env vars
 - **SSH config excluded**: Contains infrastructure details, managed manually
 - **Package versions pinned**: npm and pipx packages have version locks for reproducibility

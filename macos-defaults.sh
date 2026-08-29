@@ -8,7 +8,7 @@ defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide-time-modifier -float 0.3
 defaults write com.apple.dock show-recents -bool false
-defaults write com.apple.dock mru-spaces -bool false          # Don't rearrange Spaces (critical for yabai)
+defaults write com.apple.dock mru-spaces -bool false          # Do not rearrange native Spaces
 defaults write com.apple.dock minimize-to-application -bool true
 
 # ===== Mission Control =====
