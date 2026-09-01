@@ -247,6 +247,8 @@ brew "rtk-ai/tap/rtk", trusted: true
 brew "steipete/tap/bird", trusted: true
 # Model Context Protocol runtime and CLI generator
 brew "steipete/tap/mcporter", trusted: true
+# Lightning-fast macOS screenshots & AI vision analysis
+brew "steipete/tap/peekaboo", trusted: true
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace", trusted: true
 # Compact TeX distribution as alternative to the full TeX Live / MacTeX
@@ -280,9 +282,6 @@ cask "racket"
 cask "raycast"
 # Mesh VPN based on WireGuard
 cask "tailscale-app"
-mas "WhatsApp", id: 310633997
-mas "WireGuard", id: 1451685025
-mas "Xcode", id: 497799835
 go "github.com/fatih/gomodifytags"
 go "golang.org/x/tools/gopls"
 go "github.com/x-motemen/gore/cmd/gore"
