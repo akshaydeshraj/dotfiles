@@ -282,6 +282,9 @@ cask "racket"
 cask "raycast"
 # Mesh VPN based on WireGuard
 cask "tailscale-app"
+mas "WhatsApp", id: 310633997
+mas "WireGuard", id: 1451685025
+mas "Xcode", id: 497799835
 go "github.com/fatih/gomodifytags"
 go "golang.org/x/tools/gopls"
 go "github.com/x-motemen/gore/cmd/gore"
