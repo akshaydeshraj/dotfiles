@@ -439,7 +439,6 @@ agent-done() { _project_agent_state set done "${1:-agent}"; }
 agent-off()  { _project_agent_state set off  "${1:-agent}"; }
 alias hetz='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new -A -s main'
 alias hetz-c='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new-session -A -s claude \; send-keys "cd ~/sysadmin && claude" Enter'
-alias hetz-o='TERM=xterm-256color mosh akshay@${HETZNER_IP} -- tmux new-session -A -s openclaw \; send-keys "cd ~/sysadmin && openclaw" Enter'
 alias ssh-nas='ssh akshaydeshraj@${NAS_IP}'
 alias addpath='echo "export PATH=\"$PWD:\$PATH\"" >> ~/.zshrc && source ~/.zshrc'
 alias serena-work='docker run --rm -i --network host -v ~/Code/work:/workspaces/projects ghcr.io/oraios/serena:latest serena'
@@ -467,8 +466,6 @@ ZSH_HIGHLIGHT_STYLES[redirection]="fg=${TN_MAGENTA}"
 ZSH_HIGHLIGHT_STYLES[comment]="fg=${TN_DIM}"
 ZSH_HIGHLIGHT_STYLES[arg0]="fg=${TN_BLUE}"
 
-# OpenClaw Completion
-_cached_eval openclaw openclaw 'openclaw completion --shell zsh'
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
